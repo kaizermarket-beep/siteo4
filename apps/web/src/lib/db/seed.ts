@@ -44,7 +44,23 @@ async function main() {
     }
   }
 
-  // 2. Fixture demo user
+  // 2. Plans (Stripe price IDs stay null until Stripe checkout is wired — M6)
+  const planDefs = [
+    { key: "free", stripePriceId: null, maxSites: 1, allowsPremiumTemplates: false, allowsPublish: true },
+    { key: "pro", stripePriceId: null, maxSites: 5, allowsPremiumTemplates: true, allowsPublish: true },
+  ];
+  for (const def of planDefs) {
+    const [existing] = await db.select().from(schema.plans).where(eq(schema.plans.key, def.key));
+    if (existing) {
+      await db.update(schema.plans).set(def).where(eq(schema.plans.id, existing.id));
+      console.log(`Updated plan: ${def.key}`);
+    } else {
+      await db.insert(schema.plans).values(def);
+      console.log(`Created plan: ${def.key}`);
+    }
+  }
+
+  // 3. Fixture demo user
   const demoEmail = "demo@siteo.dev";
   let [demoUser] = await db.select().from(schema.users).where(eq(schema.users.email, demoEmail));
   if (!demoUser) {
@@ -56,7 +72,7 @@ async function main() {
     console.log(`Created demo user: ${demoEmail} / demo12345`);
   }
 
-  // 3. Fixture published site using the "agence" template
+  // 4. Fixture published site using the "agence" template
   const demoSlug = "demo";
   const [existingSite] = await db.select().from(schema.sites).where(eq(schema.sites.slug, demoSlug));
   if (!existingSite) {

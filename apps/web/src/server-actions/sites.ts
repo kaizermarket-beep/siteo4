@@ -1,11 +1,12 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sites, siteBlocks, templates } from "@/lib/db/schema";
 import { slugify, validateSlug } from "@/lib/slug";
+import { getUserEntitlements } from "@/lib/entitlements";
 
 export type CreateSiteState = { error?: string } | undefined;
 
@@ -29,6 +30,23 @@ export async function createSite(
   const [template] = await db.select().from(templates).where(eq(templates.slug, templateSlug));
   if (!template) {
     return { error: "Modèle introuvable." };
+  }
+
+  const entitlements = await getUserEntitlements(session.user.id);
+
+  if (template.isPremium && !entitlements.allowsPremiumTemplates) {
+    return { error: "Ce modèle est réservé au plan Pro." };
+  }
+
+  const [{ count: currentSiteCount }] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(sites)
+    .where(eq(sites.userId, session.user.id));
+
+  if (currentSiteCount >= entitlements.maxSites) {
+    return {
+      error: `Limite de ${entitlements.maxSites} site(s) atteinte pour votre plan (${entitlements.planKey}).`,
+    };
   }
 
   const slug = slugify(rawSlug || name);

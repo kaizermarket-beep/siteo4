@@ -1,9 +1,15 @@
 import { db } from "@/lib/db";
 import { templates } from "@/lib/db/schema";
+import { auth } from "@/lib/auth";
+import { getUserEntitlements } from "@/lib/entitlements";
 import { NewSiteForm } from "./NewSiteForm";
 
 export default async function NewSitePage() {
-  const allTemplates = await db.select().from(templates);
+  const session = await auth();
+  const [allTemplates, entitlements] = await Promise.all([
+    db.select().from(templates),
+    getUserEntitlements(session!.user!.id!),
+  ]);
 
   return (
     <div className="flex flex-col gap-8">
@@ -15,6 +21,7 @@ export default async function NewSitePage() {
           description: t.description ?? "",
           isPremium: t.isPremium,
         }))}
+        allowsPremiumTemplates={entitlements.allowsPremiumTemplates}
       />
     </div>
   );

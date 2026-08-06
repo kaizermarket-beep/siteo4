@@ -11,9 +11,16 @@ type TemplateOption = {
   isPremium: boolean;
 };
 
-export function NewSiteForm({ templates }: { templates: TemplateOption[] }) {
+export function NewSiteForm({
+  templates,
+  allowsPremiumTemplates,
+}: {
+  templates: TemplateOption[];
+  allowsPremiumTemplates: boolean;
+}) {
   const [state, formAction, pending] = useActionState(createSite, undefined);
-  const [selectedTemplate, setSelectedTemplate] = useState(templates[0]?.slug ?? "");
+  const firstAvailable = templates.find((t) => allowsPremiumTemplates || !t.isPremium);
+  const [selectedTemplate, setSelectedTemplate] = useState(firstAvailable?.slug ?? "");
   const [name, setName] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
   const [slug, setSlug] = useState("");
@@ -30,34 +37,41 @@ export function NewSiteForm({ templates }: { templates: TemplateOption[] }) {
       <fieldset className="flex flex-col gap-3">
         <legend className="mb-2 text-sm font-medium text-neutral-700">Choisissez un modèle</legend>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {templates.map((template) => (
-            <label
-              key={template.slug}
-              className={`cursor-pointer rounded-lg border p-4 text-sm transition ${
-                selectedTemplate === template.slug
-                  ? "border-neutral-900 ring-1 ring-neutral-900"
-                  : "border-neutral-200 hover:border-neutral-400"
-              }`}
-            >
-              <input
-                type="radio"
-                name="templateSlug"
-                value={template.slug}
-                checked={selectedTemplate === template.slug}
-                onChange={() => setSelectedTemplate(template.slug)}
-                className="sr-only"
-              />
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-neutral-900">{template.name}</span>
-                {template.isPremium && (
-                  <span className="rounded-full bg-neutral-900 px-2 py-0.5 text-xs text-white">
-                    Premium
-                  </span>
-                )}
-              </div>
-              <p className="mt-1 text-neutral-600">{template.description}</p>
-            </label>
-          ))}
+          {templates.map((template) => {
+            const locked = template.isPremium && !allowsPremiumTemplates;
+            return (
+              <label
+                key={template.slug}
+                className={`rounded-lg border p-4 text-sm transition ${
+                  locked
+                    ? "cursor-not-allowed border-neutral-200 opacity-50"
+                    : "cursor-pointer " +
+                      (selectedTemplate === template.slug
+                        ? "border-neutral-900 ring-1 ring-neutral-900"
+                        : "border-neutral-200 hover:border-neutral-400")
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="templateSlug"
+                  value={template.slug}
+                  checked={selectedTemplate === template.slug}
+                  disabled={locked}
+                  onChange={() => setSelectedTemplate(template.slug)}
+                  className="sr-only"
+                />
+                <div className="flex items-center justify-between">
+                  <span className="font-medium text-neutral-900">{template.name}</span>
+                  {template.isPremium && (
+                    <span className="rounded-full bg-neutral-900 px-2 py-0.5 text-xs text-white">
+                      {locked ? "Premium — plan Pro requis" : "Premium"}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-neutral-600">{template.description}</p>
+              </label>
+            );
+          })}
         </div>
       </fieldset>
 
