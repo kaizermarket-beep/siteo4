@@ -27,23 +27,25 @@ export default async function SitesPage() {
       ) : (
         <ul className="flex flex-col gap-2">
           {userSites.map((site) => (
-            <li
-              key={site.id}
-              className="flex items-center justify-between rounded-md border border-neutral-200 px-4 py-3 text-sm"
-            >
-              <div>
-                <span className="font-medium text-neutral-900">{site.name}</span>{" "}
-                <span className="text-neutral-500">— {site.slug}.siteo.com</span>
-              </div>
-              <span
-                className={`rounded-full px-2 py-0.5 text-xs ${
-                  site.status === "published"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-neutral-100 text-neutral-600"
-                }`}
+            <li key={site.id}>
+              <Link
+                href={`/app/sites/${site.id}/edit`}
+                className="flex items-center justify-between rounded-md border border-neutral-200 px-4 py-3 text-sm hover:border-neutral-400"
               >
-                {site.status === "published" ? "Publié" : "Brouillon"}
-              </span>
+                <div>
+                  <span className="font-medium text-neutral-900">{site.name}</span>{" "}
+                  <span className="text-neutral-500">— {site.slug}.siteo.com</span>
+                </div>
+                <span
+                  className={`rounded-full px-2 py-0.5 text-xs ${
+                    site.status === "published"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-neutral-100 text-neutral-600"
+                  }`}
+                >
+                  {site.status === "published" ? "Publié" : "Brouillon"}
+                </span>
+              </Link>
             </li>
           ))}
         </ul>
