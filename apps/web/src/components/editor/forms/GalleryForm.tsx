@@ -2,11 +2,14 @@
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { z } from "zod";
 import { galleryContentSchema, type GalleryContent } from "@/validation/blocks";
 import { useAutosave } from "../use-autosave";
 import { updateBlockContent } from "@/server-actions/blocks";
 import { useEditorStore } from "../editor-context";
 import { Field, inputClass, SaveIndicator } from "./shared";
+
+type GalleryFormValues = z.input<typeof galleryContentSchema>;
 
 export function GalleryForm({
   blockId,
@@ -16,7 +19,7 @@ export function GalleryForm({
   defaultValues: GalleryContent;
 }) {
   const setBlockContent = useEditorStore((s) => s.setBlockContent);
-  const { register, control, watch } = useForm<GalleryContent>({
+  const { register, control, watch } = useForm<GalleryFormValues>({
     resolver: zodResolver(galleryContentSchema),
     defaultValues,
   });

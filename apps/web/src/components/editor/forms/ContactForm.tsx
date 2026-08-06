@@ -2,11 +2,14 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { z } from "zod";
 import { contactContentSchema, type ContactContent } from "@/validation/blocks";
 import { useAutosave } from "../use-autosave";
 import { updateBlockContent } from "@/server-actions/blocks";
 import { useEditorStore } from "../editor-context";
 import { Field, inputClass, SaveIndicator } from "./shared";
+
+type ContactFormValues = z.input<typeof contactContentSchema>;
 
 export function ContactForm({
   blockId,
@@ -16,7 +19,7 @@ export function ContactForm({
   defaultValues: ContactContent;
 }) {
   const setBlockContent = useEditorStore((s) => s.setBlockContent);
-  const { register, watch } = useForm<ContactContent>({
+  const { register, watch } = useForm<ContactFormValues>({
     resolver: zodResolver(contactContentSchema),
     defaultValues,
   });

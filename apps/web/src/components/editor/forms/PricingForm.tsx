@@ -2,11 +2,14 @@
 
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { z } from "zod";
 import { pricingContentSchema, type PricingContent } from "@/validation/blocks";
 import { useAutosave } from "../use-autosave";
 import { updateBlockContent } from "@/server-actions/blocks";
 import { useEditorStore } from "../editor-context";
 import { Field, inputClass, SaveIndicator } from "./shared";
+
+type PricingFormValues = z.input<typeof pricingContentSchema>;
 
 export function PricingForm({
   blockId,
@@ -16,7 +19,7 @@ export function PricingForm({
   defaultValues: PricingContent;
 }) {
   const setBlockContent = useEditorStore((s) => s.setBlockContent);
-  const { register, control, watch } = useForm<PricingContent>({
+  const { register, control, watch } = useForm<PricingFormValues>({
     resolver: zodResolver(pricingContentSchema),
     defaultValues,
   });

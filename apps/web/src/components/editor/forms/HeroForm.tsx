@@ -2,15 +2,22 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { z } from "zod";
 import { heroContentSchema, type HeroContent } from "@/validation/blocks";
 import { useAutosave } from "../use-autosave";
 import { updateBlockContent } from "@/server-actions/blocks";
 import { useEditorStore } from "../editor-context";
 import { Field, inputClass, SaveIndicator } from "./shared";
 
+// react-hook-form is typed against the schema's *input* shape (fields with
+// .default() are optional pre-parse) — the resolver parses up to the
+// output shape (HeroContent) internally. Using the output type here trips
+// a resolver type mismatch even though runtime behavior is correct.
+type HeroFormValues = z.input<typeof heroContentSchema>;
+
 export function HeroForm({ blockId, defaultValues }: { blockId: string; defaultValues: HeroContent }) {
   const setBlockContent = useEditorStore((s) => s.setBlockContent);
-  const { register, watch } = useForm<HeroContent>({
+  const { register, watch } = useForm<HeroFormValues>({
     resolver: zodResolver(heroContentSchema),
     defaultValues: {
       ...defaultValues,

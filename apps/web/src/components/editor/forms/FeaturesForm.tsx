@@ -2,11 +2,14 @@
 
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import type { z } from "zod";
 import { featuresContentSchema, type FeaturesContent } from "@/validation/blocks";
 import { useAutosave } from "../use-autosave";
 import { updateBlockContent } from "@/server-actions/blocks";
 import { useEditorStore } from "../editor-context";
 import { Field, inputClass, SaveIndicator } from "./shared";
+
+type FeaturesFormValues = z.input<typeof featuresContentSchema>;
 
 export function FeaturesForm({
   blockId,
@@ -16,7 +19,7 @@ export function FeaturesForm({
   defaultValues: FeaturesContent;
 }) {
   const setBlockContent = useEditorStore((s) => s.setBlockContent);
-  const { register, control, watch } = useForm<FeaturesContent>({
+  const { register, control, watch } = useForm<FeaturesFormValues>({
     resolver: zodResolver(featuresContentSchema),
     defaultValues,
   });
