@@ -93,7 +93,9 @@ export function NewSiteForm({ templates }: { templates: TemplateOption[] }) {
               }}
               className="min-w-0 flex-1 px-3 py-2 outline-none"
             />
-            <span className="whitespace-nowrap px-3 py-2 text-neutral-500">.siteo.com</span>
+            <span className="whitespace-nowrap px-3 py-2 text-neutral-500">
+              .{process.env.NEXT_PUBLIC_ROOT_DOMAIN}
+            </span>
           </div>
         </div>
 

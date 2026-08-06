@@ -34,7 +34,9 @@ export default async function SitesPage() {
               >
                 <div>
                   <span className="font-medium text-neutral-900">{site.name}</span>{" "}
-                  <span className="text-neutral-500">— {site.slug}.siteo.com</span>
+                  <span className="text-neutral-500">
+                    — {site.slug}.{process.env.NEXT_PUBLIC_ROOT_DOMAIN}
+                  </span>
                 </div>
                 <span
                   className={`rounded-full px-2 py-0.5 text-xs ${

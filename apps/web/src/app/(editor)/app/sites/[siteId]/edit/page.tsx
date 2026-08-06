@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sites, siteBlocks } from "@/lib/db/schema";
 import { Editor } from "@/components/editor/Editor";
+import { PublishButton } from "@/components/editor/PublishButton";
 import type { BlockType } from "@/validation/blocks";
 
 export default async function EditSitePage({
@@ -40,20 +41,7 @@ export default async function EditSitePage({
           </Link>
           <span className="font-medium">{site.name}</span>
         </div>
-        {site.status === "published" ? (
-          <a
-            href={`/s/${site.slug}`}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm text-neutral-600 underline"
-          >
-            Voir le site publié ↗
-          </a>
-        ) : (
-          <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-xs text-neutral-600">
-            Brouillon — publication disponible bientôt
-          </span>
-        )}
+        <PublishButton siteId={site.id} slug={site.slug} initialStatus={site.status} />
       </header>
       <div className="flex-1 p-6">
         <Editor
