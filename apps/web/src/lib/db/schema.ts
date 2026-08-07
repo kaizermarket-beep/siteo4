@@ -1,5 +1,6 @@
 import {
   boolean,
+  index,
   integer,
   jsonb,
   pgTable,
@@ -156,3 +157,17 @@ export const subscriptions = pgTable("subscription", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
+
+// One row per rate-limited attempt (signup, login...). DB-backed rather
+// than in-memory because Server Actions don't reliably share module state
+// across invocations (confirmed even in local dev under Turbopack, and true
+// by construction on serverless in production).
+export const rateLimitHits = pgTable(
+  "rate_limit_hit",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    key: text("key").notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [index("rate_limit_hit_key_created_idx").on(table.key, table.createdAt)]
+);

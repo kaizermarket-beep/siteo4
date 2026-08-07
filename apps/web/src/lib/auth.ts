@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { db } from "./db";
 import { users } from "./db/schema";
+import { rateLimit } from "./rate-limit";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: DrizzleAdapter(db),
@@ -23,6 +24,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = credentials?.email as string | undefined;
         const password = credentials?.password as string | undefined;
         if (!email || !password) return null;
+
+        // Slow down brute-forcing a single account's password.
+        const { allowed } = await rateLimit(`login:${email.toLowerCase()}`, 10, 10 * 60 * 1000);
+        if (!allowed) return null;
 
         const [user] = await db.select().from(users).where(eq(users.email, email));
         if (!user?.passwordHash) return null;
