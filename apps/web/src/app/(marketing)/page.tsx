@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { templateCategories } from "@/templates/types";
-import { BackgroundPaths } from "@/components/ui/background-paths";
+import { AuroraHero } from "@/components/ui/aurora-hero";
 
 const testimonials = [
   {
@@ -28,7 +28,7 @@ export default function LandingPage() {
     <main className="flex flex-1 flex-col">
       {/* Hero */}
       <section className="relative">
-        <BackgroundPaths
+        <AuroraHero
           title="Créez votre site"
           subtitle="En 3 clics, avec des modèles pensés pour votre métier. Essai gratuit de 7 jours, sans carte bancaire."
           ctaLabel="Créer mon site"

@@ -128,3 +128,41 @@
     @apply font-sans;
   }
 }
+
+/* Plain-CSS entrance fade-up, used instead of Framer Motion's initial/animate
+   mount transitions for hero content — those turned out unreliable in this
+   Next.js 16 + Turbopack + React 19 setup (elements got stuck at their
+   `initial` state instead of transitioning), while CSS animations always
+   play on load since they don't depend on JS mount-detection timing. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
+
+/* Aurora hero background blobs (src/components/ui/aurora-hero.tsx) */
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(40px, 30px); }
+  66% { transform: translate(-20px, -20px); }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(-40px, -20px); }
+  66% { transform: translate(20px, 30px); }
+}
+
+@keyframes aurora-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.15); }
+}
