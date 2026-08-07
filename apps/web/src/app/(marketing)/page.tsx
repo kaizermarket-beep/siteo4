@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { templateCategories } from "@/templates/types";
+import { BackgroundPaths } from "@/components/ui/background-paths";
 
 const testimonials = [
   {
@@ -26,29 +27,20 @@ export default function LandingPage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero */}
-      <section className="flex flex-col items-center gap-6 px-6 py-24 text-center">
-        <span className="text-sm font-medium tracking-wide text-neutral-500">SITEO</span>
-        <h1 className="max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
-          Créez votre site professionnel en 3 clics
-        </h1>
-        <p className="max-w-xl text-lg text-neutral-600">
-          Des modèles pensés pour votre métier, un résultat qui donne confiance. Essai gratuit
-          de 7 jours, sans carte bancaire.
-        </p>
-        <div className="flex gap-4">
-          <Link
-            href="#metiers"
-            className="rounded-md bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-neutral-800"
-          >
-            Créer mon site
-          </Link>
-          <Link
-            href="/login"
-            className="rounded-md border border-neutral-300 px-5 py-2.5 text-sm font-medium hover:bg-neutral-50"
-          >
+      <section className="relative">
+        <BackgroundPaths
+          title="Créez votre site"
+          subtitle="En 3 clics, avec des modèles pensés pour votre métier. Essai gratuit de 7 jours, sans carte bancaire."
+          ctaLabel="Créer mon site"
+          ctaHref="#metiers"
+          minHeight="min-h-[85vh]"
+        />
+        <p className="absolute bottom-8 left-0 right-0 text-center text-sm text-neutral-500">
+          Déjà un compte ?{" "}
+          <Link href="/login" className="underline">
             Se connecter
           </Link>
-        </div>
+        </p>
       </section>
 
       {/* Testimonials */}
