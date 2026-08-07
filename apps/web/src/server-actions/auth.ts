@@ -2,11 +2,11 @@
 
 import bcrypt from "bcryptjs";
 import { eq } from "drizzle-orm";
-import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { rateLimit } from "@/lib/rate-limit";
+import { signIn } from "@/lib/auth";
 
 export type SignupState = { error?: string } | undefined;
 
@@ -20,6 +20,7 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
   const email = String(formData.get("email") ?? "").trim().toLowerCase();
   const password = String(formData.get("password") ?? "");
   const name = String(formData.get("name") ?? "").trim();
+  const template = String(formData.get("template") ?? "").trim();
 
   if (!email || !password) {
     return { error: "Email et mot de passe requis." };
@@ -42,5 +43,9 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
     return { error: "Un compte existe déjà avec cet email." };
   }
 
-  redirect("/login?signup=success");
+  // Sign the user in immediately — no separate login step right after
+  // creating an account. Send them straight into creating their first site,
+  // pre-selecting the template they came from (métier browse page) if any.
+  const redirectTo = template ? `/app/sites/new?template=${template}` : "/app";
+  await signIn("credentials", { email, password, redirectTo });
 }

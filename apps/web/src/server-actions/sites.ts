@@ -34,8 +34,12 @@ export async function createSite(
 
   const entitlements = await getUserEntitlements(session.user.id);
 
+  if (!entitlements.allowsPublish && entitlements.planKey === "expired") {
+    return { error: "Votre essai gratuit est terminé. Passez à un abonnement pour créer un nouveau site." };
+  }
+
   if (template.isPremium && !entitlements.allowsPremiumTemplates) {
-    return { error: "Ce modèle est réservé au plan Pro." };
+    return { error: "Ce modèle est réservé au plan Premium." };
   }
 
   const [{ count: currentSiteCount }] = await db
@@ -84,5 +88,5 @@ export async function createSite(
     });
   }
 
-  redirect("/app");
+  redirect(`/app/sites/${site.id}/edit`);
 }

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sites } from "@/lib/db/schema";
+import { getUserEntitlements } from "@/lib/entitlements";
 
 async function getOwnedSite(siteId: string) {
   const session = await auth();
@@ -21,6 +22,17 @@ async function getOwnedSite(siteId: string) {
 
 export async function publishSite(siteId: string) {
   const site = await getOwnedSite(siteId);
+
+  const entitlements = await getUserEntitlements(site.userId);
+  if (!entitlements.allowsPublish) {
+    return {
+      ok: false as const,
+      error:
+        entitlements.planKey === "expired"
+          ? "Votre essai gratuit est terminé. Passez à un abonnement pour republier votre site."
+          : "Votre offre actuelle ne permet pas de publier.",
+    };
+  }
 
   await db
     .update(sites)

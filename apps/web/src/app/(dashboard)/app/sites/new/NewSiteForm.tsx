@@ -14,12 +14,18 @@ type TemplateOption = {
 export function NewSiteForm({
   templates,
   allowsPremiumTemplates,
+  preselectedTemplate,
 }: {
   templates: TemplateOption[];
   allowsPremiumTemplates: boolean;
+  preselectedTemplate?: string;
 }) {
   const [state, formAction, pending] = useActionState(createSite, undefined);
-  const firstAvailable = templates.find((t) => allowsPremiumTemplates || !t.isPremium);
+  const preselected =
+    preselectedTemplate && templates.some((t) => t.slug === preselectedTemplate)
+      ? templates.find((t) => t.slug === preselectedTemplate)
+      : undefined;
+  const firstAvailable = preselected ?? templates.find((t) => allowsPremiumTemplates || !t.isPremium);
   const [selectedTemplate, setSelectedTemplate] = useState(firstAvailable?.slug ?? "");
   const [name, setName] = useState("");
   const [slugEdited, setSlugEdited] = useState(false);
@@ -64,7 +70,7 @@ export function NewSiteForm({
                   <span className="font-medium text-neutral-900">{template.name}</span>
                   {template.isPremium && (
                     <span className="rounded-full bg-neutral-900 px-2 py-0.5 text-xs text-white">
-                      {locked ? "Premium — plan Pro requis" : "Premium"}
+                      {locked ? "Premium — offre Premium requise" : "Premium"}
                     </span>
                   )}
                 </div>

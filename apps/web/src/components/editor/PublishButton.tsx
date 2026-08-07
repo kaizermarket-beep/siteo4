@@ -17,24 +17,31 @@ export function PublishButton({
   initialStatus: SiteStatus;
 }) {
   const [status, setStatus] = useState(initialStatus);
+  const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
   const publicUrl = `${PROTOCOL}://${slug}.${ROOT_DOMAIN}`;
 
   function handleToggle() {
+    setError(null);
     startTransition(async () => {
       if (status === "published") {
         await unpublishSite(siteId);
         setStatus("draft");
       } else {
-        await publishSite(siteId);
-        setStatus("published");
+        const result = await publishSite(siteId);
+        if (result.ok) {
+          setStatus("published");
+        } else {
+          setError(result.error);
+        }
       }
     });
   }
 
   return (
     <div className="flex items-center gap-3">
+      {error && <p className="text-sm text-red-600">{error}</p>}
       {status === "published" && (
         <a href={publicUrl} target="_blank" rel="noreferrer" className="text-sm text-neutral-600 underline">
           {slug}.{ROOT_DOMAIN} ↗

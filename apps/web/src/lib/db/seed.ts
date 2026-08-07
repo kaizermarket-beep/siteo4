@@ -22,6 +22,7 @@ async function main() {
         .set({
           name: def.name,
           description: def.description,
+          category: def.category,
           isPremium: def.isPremium,
           schema: def.schema,
         })
@@ -35,6 +36,7 @@ async function main() {
           slug: def.slug,
           name: def.name,
           description: def.description,
+          category: def.category,
           isPremium: def.isPremium,
           schema: def.schema,
         })
@@ -44,10 +46,25 @@ async function main() {
     }
   }
 
-  // 2. Plans (Stripe price IDs stay null until Stripe checkout is wired — M6)
+  // 2. Plans — 7-day free trial (no card), then Eco or Premium.
+  // Stripe price IDs stay null until real API keys are wired up.
   const planDefs = [
-    { key: "free", stripePriceId: null, maxSites: 1, allowsPremiumTemplates: false, allowsPublish: true },
-    { key: "pro", stripePriceId: null, maxSites: 5, allowsPremiumTemplates: true, allowsPublish: true },
+    {
+      key: "eco",
+      priceEuros: 5,
+      stripePriceId: null,
+      maxSites: 1,
+      allowsPremiumTemplates: false,
+      allowsPublish: true,
+    },
+    {
+      key: "premium",
+      priceEuros: 18,
+      stripePriceId: null,
+      maxSites: 5,
+      allowsPremiumTemplates: true,
+      allowsPublish: true,
+    },
   ];
   for (const def of planDefs) {
     const [existing] = await db.select().from(schema.plans).where(eq(schema.plans.key, def.key));
@@ -72,18 +89,18 @@ async function main() {
     console.log(`Created demo user: ${demoEmail} / demo12345`);
   }
 
-  // 4. Fixture published site using the "agence" template
+  // 4. Fixture published site using the "photographe" template
   const demoSlug = "demo";
   const [existingSite] = await db.select().from(schema.sites).where(eq(schema.sites.slug, demoSlug));
   if (!existingSite) {
-    const agenceTemplate = templateDefs.find((t) => t.slug === "agence")!;
-    const agenceTemplateId = templateIds.get("agence")!;
+    const demoTemplate = templateDefs.find((t) => t.slug === "photographe")!;
+    const demoTemplateId = templateIds.get("photographe")!;
 
     const [site] = await db
       .insert(schema.sites)
       .values({
         userId: demoUser.id,
-        templateId: agenceTemplateId,
+        templateId: demoTemplateId,
         slug: demoSlug,
         name: "Site de démonstration",
         status: "published",
@@ -92,7 +109,7 @@ async function main() {
       })
       .returning();
 
-    for (const block of agenceTemplate.schema.defaultBlocks) {
+    for (const block of demoTemplate.schema.defaultBlocks) {
       await db.insert(schema.siteBlocks).values({
         siteId: site.id,
         blockType: block.type,
@@ -100,7 +117,7 @@ async function main() {
         content: block.content,
       });
     }
-    console.log(`Created fixture site: ${demoSlug} (${agenceTemplate.name})`);
+    console.log(`Created fixture site: ${demoSlug} (${demoTemplate.name})`);
   } else {
     console.log(`Fixture site already exists: ${demoSlug}`);
   }

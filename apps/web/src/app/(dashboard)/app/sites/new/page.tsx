@@ -4,7 +4,12 @@ import { auth } from "@/lib/auth";
 import { getUserEntitlements } from "@/lib/entitlements";
 import { NewSiteForm } from "./NewSiteForm";
 
-export default async function NewSitePage() {
+export default async function NewSitePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ template?: string }>;
+}) {
+  const { template } = await searchParams;
   const session = await auth();
   const [allTemplates, entitlements] = await Promise.all([
     db.select().from(templates),
@@ -22,6 +27,7 @@ export default async function NewSitePage() {
           isPremium: t.isPremium,
         }))}
         allowsPremiumTemplates={entitlements.allowsPremiumTemplates}
+        preselectedTemplate={template}
       />
     </div>
   );
