@@ -114,7 +114,12 @@ export function BlockList({ siteId }: { siteId: string }) {
         <h2 className="text-sm font-medium text-neutral-700">Sections</h2>
         {savingOrder && <span className="text-xs text-neutral-400">Enregistrement…</span>}
       </div>
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        id="block-list-dnd"
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
         <SortableContext items={sorted.map((b) => b.id)} strategy={verticalListSortingStrategy}>
           <ul className="flex flex-col gap-1">
             {sorted.map((block) => (
