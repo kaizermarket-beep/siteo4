@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { templateCategories } from "@/templates/types";
-import { AuroraHero } from "@/components/ui/aurora-hero";
+import { SparklesHero } from "@/components/ui/sparkles-hero";
 
 const testimonials = [
   {
@@ -28,14 +28,14 @@ export default function LandingPage() {
     <main className="flex flex-1 flex-col">
       {/* Hero */}
       <section className="relative">
-        <AuroraHero
+        <SparklesHero
           title="Créez votre site"
           subtitle="En 3 clics, avec des modèles pensés pour votre métier. Essai gratuit de 7 jours, sans carte bancaire."
           ctaLabel="Créer mon site"
           ctaHref="#metiers"
           minHeight="min-h-[85vh]"
         />
-        <p className="absolute bottom-8 left-0 right-0 text-center text-sm text-neutral-500">
+        <p className="absolute bottom-8 left-0 right-0 text-center text-sm text-neutral-400">
           Déjà un compte ?{" "}
           <Link href="/login" className="underline">
             Se connecter
