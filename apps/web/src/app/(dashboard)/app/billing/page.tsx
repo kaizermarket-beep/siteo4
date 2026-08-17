@@ -30,7 +30,7 @@ export default async function BillingPage() {
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:max-w-2xl">
         <div className="flex flex-col gap-3 rounded-xl border border-neutral-200 p-6">
-          <h2 className="font-medium text-neutral-900">Eco — 5€/mois</h2>
+          <h2 className="font-medium text-neutral-900">Eco — 10€/mois</h2>
           <p className="text-sm text-neutral-600">1 site, tous les modèles de base.</p>
           <button
             type="button"
@@ -42,7 +42,7 @@ export default async function BillingPage() {
           </button>
         </div>
         <div className="flex flex-col gap-3 rounded-xl border border-neutral-900 p-6">
-          <h2 className="font-medium text-neutral-900">Premium — 18€/mois</h2>
+          <h2 className="font-medium text-neutral-900">Premium — 25€/mois</h2>
           <p className="text-sm text-neutral-600">Jusqu&apos;à 5 sites, modèles premium.</p>
           <button
             type="button"

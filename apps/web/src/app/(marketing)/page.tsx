@@ -11,7 +11,7 @@ const pricingPlans = [
   {
     name: "Eco",
     info: "Pour démarrer en solo",
-    price: { monthly: 5, yearly: 50 },
+    price: { monthly: 10, yearly: 100 },
     features: [
       { text: "1 site" },
       { text: "Tous les modèles de base" },
@@ -25,7 +25,7 @@ const pricingPlans = [
   {
     name: "Premium",
     info: "Pour les indépendants qui grandissent",
-    price: { monthly: 18, yearly: 180 },
+    price: { monthly: 25, yearly: 250 },
     features: [
       { text: "Jusqu'à 5 sites" },
       { text: "Modèles premium" },

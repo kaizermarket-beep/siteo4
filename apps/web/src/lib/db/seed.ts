@@ -51,7 +51,7 @@ async function main() {
   const planDefs = [
     {
       key: "eco",
-      priceEuros: 5,
+      priceEuros: 10,
       stripePriceId: null,
       maxSites: 1,
       allowsPremiumTemplates: false,
@@ -59,7 +59,7 @@ async function main() {
     },
     {
       key: "premium",
-      priceEuros: 18,
+      priceEuros: 25,
       stripePriceId: null,
       maxSites: 5,
       allowsPremiumTemplates: true,
