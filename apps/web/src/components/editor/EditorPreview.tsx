@@ -4,7 +4,13 @@ import { useState } from "react";
 import { useEditorStore } from "./editor-context";
 import { BlockRenderer } from "@/components/blocks";
 
-export function EditorPreview({ primaryColor }: { primaryColor?: string }) {
+export function EditorPreview({
+  primaryColor,
+  mode,
+}: {
+  primaryColor?: string;
+  mode?: "light" | "dark";
+}) {
   const blocks = useEditorStore((s) => s.blocks);
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
 
@@ -28,9 +34,9 @@ export function EditorPreview({ primaryColor }: { primaryColor?: string }) {
           Mobile
         </button>
       </div>
-      <div className="flex justify-center overflow-hidden rounded-lg border border-neutral-200 bg-white">
+      <div className="flex justify-center overflow-hidden rounded-lg border border-neutral-200 bg-white dark:border-neutral-800">
         <div
-          className="w-full overflow-y-auto"
+          className={`w-full overflow-y-auto ${mode === "dark" ? "dark bg-neutral-950" : "bg-white"}`}
           style={{
             maxWidth: device === "mobile" ? 390 : "100%",
             height: "calc(100vh - 220px)",

@@ -8,6 +8,7 @@ import { useAutosave } from "../use-autosave";
 import { updateBlockContent } from "@/server-actions/blocks";
 import { useEditorStore } from "../editor-context";
 import { Field, inputClass, SaveIndicator } from "./shared";
+import { ImageField } from "./ImageField";
 
 // react-hook-form is typed against the schema's *input* shape (fields with
 // .default() are optional pre-parse) — the resolver parses up to the
@@ -17,7 +18,7 @@ type HeroFormValues = z.input<typeof heroContentSchema>;
 
 export function HeroForm({ blockId, defaultValues }: { blockId: string; defaultValues: HeroContent }) {
   const setBlockContent = useEditorStore((s) => s.setBlockContent);
-  const { register, watch } = useForm<HeroFormValues>({
+  const { register, control, watch } = useForm<HeroFormValues>({
     resolver: zodResolver(heroContentSchema),
     defaultValues: {
       ...defaultValues,
@@ -50,9 +51,7 @@ export function HeroForm({ blockId, defaultValues }: { blockId: string; defaultV
       <Field label="Lien du bouton">
         <input {...register("ctaLink.href")} placeholder="#contact" className={inputClass} />
       </Field>
-      <Field label="Image de fond (URL)">
-        <input {...register("backgroundImage.url")} placeholder="https://…" className={inputClass} />
-      </Field>
+      <ImageField control={control} name="backgroundImage.url" label="Image de fond" />
       <SaveIndicator status={status} />
     </div>
   );

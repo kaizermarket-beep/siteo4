@@ -37,10 +37,13 @@ export default async function PublicSitePage({
     .where(and(eq(siteBlocks.siteId, site.id), eq(siteBlocks.isVisible, true)))
     .orderBy(asc(siteBlocks.position));
 
-  const theme = site.theme as { primaryColor?: string } | null;
+  const theme = site.theme as { primaryColor?: string; mode?: "light" | "dark" } | null;
 
   return (
-    <div style={theme?.primaryColor ? ({ "--site-accent": theme.primaryColor } as React.CSSProperties) : undefined}>
+    <div
+      className={theme?.mode === "dark" ? "dark bg-neutral-950" : "bg-white"}
+      style={theme?.primaryColor ? ({ "--site-accent": theme.primaryColor } as React.CSSProperties) : undefined}
+    >
       {blocks.map((block) => (
         <BlockRenderer key={block.id} blockType={block.blockType} content={block.content} />
       ))}

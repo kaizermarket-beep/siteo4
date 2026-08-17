@@ -5,6 +5,8 @@ import { HeroForm } from "./forms/HeroForm";
 import { FeaturesForm } from "./forms/FeaturesForm";
 import { PricingForm } from "./forms/PricingForm";
 import { GalleryForm } from "./forms/GalleryForm";
+import { BeforeAfterForm } from "./forms/BeforeAfterForm";
+import { MenuForm } from "./forms/MenuForm";
 import { ContactForm } from "./forms/ContactForm";
 import { FooterForm } from "./forms/FooterForm";
 import type {
@@ -12,6 +14,8 @@ import type {
   FeaturesContent,
   PricingContent,
   GalleryContent,
+  BeforeAfterContent,
+  MenuContent,
   ContactContent,
   FooterContent,
 } from "@/validation/blocks";
@@ -46,6 +50,16 @@ export function BlockEditorPanel() {
       return (
         <GalleryForm key={block.id} blockId={block.id} defaultValues={block.content as GalleryContent} />
       );
+    case "beforeAfter":
+      return (
+        <BeforeAfterForm
+          key={block.id}
+          blockId={block.id}
+          defaultValues={block.content as BeforeAfterContent}
+        />
+      );
+    case "menu":
+      return <MenuForm key={block.id} blockId={block.id} defaultValues={block.content as MenuContent} />;
     case "contact":
       return (
         <ContactForm key={block.id} blockId={block.id} defaultValues={block.content as ContactContent} />

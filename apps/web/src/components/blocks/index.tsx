@@ -3,6 +3,8 @@ import { HeroBlock } from "./HeroBlock";
 import { FeaturesBlock } from "./FeaturesBlock";
 import { PricingBlock } from "./PricingBlock";
 import { GalleryBlock } from "./GalleryBlock";
+import { BeforeAfterBlock } from "./BeforeAfterBlock";
+import { MenuBlock } from "./MenuBlock";
 import { ContactBlock } from "./ContactBlock";
 import { FooterBlock } from "./FooterBlock";
 
@@ -11,6 +13,8 @@ const blockComponents = {
   features: FeaturesBlock,
   pricing: PricingBlock,
   gallery: GalleryBlock,
+  beforeAfter: BeforeAfterBlock,
+  menu: MenuBlock,
   contact: ContactBlock,
   footer: FooterBlock,
 } as const;

@@ -105,7 +105,7 @@ async function main() {
         name: "Site de démonstration",
         status: "published",
         publishedAt: new Date(),
-        theme: { primaryColor: "#171717" },
+        theme: { primaryColor: demoTemplate.schema.accentColor ?? "#171717" },
       })
       .returning();
 

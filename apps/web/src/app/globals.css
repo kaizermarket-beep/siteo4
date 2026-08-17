@@ -166,3 +166,51 @@
   0%, 100% { transform: translateX(-50%) scale(1); }
   50% { transform: translateX(-50%) scale(1.15); }
 }
+
+/* Hero background variants (src/components/blocks/HeroBlock.tsx) */
+@keyframes grid-scroll {
+  from { background-position-y: 0; }
+  to { background-position-y: 64px; }
+}
+
+@keyframes beams-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes float-rise {
+  0% { transform: translateY(0) scale(1); opacity: 0; }
+  15% { opacity: var(--float-opacity, 0.5); }
+  85% { opacity: var(--float-opacity, 0.5); }
+  100% { transform: translateY(-85vh) scale(1.4); opacity: 0; }
+}
+
+/* Vertical testimonials marquee (src/components/marketing/TestimonialsMarquee.tsx).
+   Each column's content is duplicated once, so translateY(-50%) loops seamlessly. */
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical linear infinite;
+}
+
+.pause-on-hover:hover .animate-marquee-vertical {
+  animation-play-state: paused;
+}
+
+/* Horizontal ticker (src/components/marketing/HighlightsMarquee.tsx).
+   Content is duplicated once, so translateX(-50%) loops seamlessly. */
+@keyframes marquee-horizontal {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-marquee-horizontal {
+  animation: marquee-horizontal linear infinite;
+}
+
+.pause-on-hover:hover .animate-marquee-horizontal {
+  animation-play-state: paused;
+}

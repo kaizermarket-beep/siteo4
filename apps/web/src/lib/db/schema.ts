@@ -25,6 +25,12 @@ export const users = pgTable("user", {
   // "tokens" top-up). Actual purchase needs Stripe (not wired yet); the
   // balance is modeled now so entitlements.ts has somewhere to read it from.
   extraSiteCredits: integer("extra_site_credits").notNull().default(0),
+  // A placeholder account created the moment an anonymous visitor starts
+  // customizing a template, before they've created a real account — see
+  // src/lib/identity.ts. Upgraded in place (email/passwordHash set,
+  // isGuest flipped false) at real signup, never re-created, so the site
+  // and blocks they already built stay attached to the same row.
+  isGuest: boolean("is_guest").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

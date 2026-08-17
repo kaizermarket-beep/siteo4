@@ -2,27 +2,30 @@
 
 import { and, eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { sites } from "@/lib/db/schema";
+import { sites, templates } from "@/lib/db/schema";
 import { getUserEntitlements } from "@/lib/entitlements";
+import { resolveIdentity } from "@/lib/identity";
 
 async function getOwnedSite(siteId: string) {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Non authentifié.");
+  const identity = await resolveIdentity();
+  if (!identity) throw new Error("Non authentifié.");
 
   const [site] = await db
     .select()
     .from(sites)
-    .where(and(eq(sites.id, siteId), eq(sites.userId, session.user.id)));
+    .where(and(eq(sites.id, siteId), eq(sites.userId, identity.userId)));
 
   if (!site) throw new Error("Site introuvable.");
   return site;
 }
 
-export async function publishSite(siteId: string) {
-  const site = await getOwnedSite(siteId);
-
+// Shared by publishSite (already-signed-in owner) and the guest
+// claim-and-publish action (upgrade-and-publish.ts) — both resolve
+// ownership differently but publish the same way once they have the site
+// row. Guests skip the premium-template gate at creation time (see
+// guest-site.ts), so it's enforced here instead, for every caller.
+export async function publishOwnedSite(site: typeof sites.$inferSelect) {
   const entitlements = await getUserEntitlements(site.userId);
   if (!entitlements.allowsPublish) {
     return {
@@ -34,6 +37,14 @@ export async function publishSite(siteId: string) {
     };
   }
 
+  const [template] = await db.select().from(templates).where(eq(templates.id, site.templateId));
+  if (template?.isPremium && !entitlements.allowsPremiumTemplates) {
+    return {
+      ok: false as const,
+      error: "Ce modèle est réservé au plan Premium. Passez à un abonnement pour le publier.",
+    };
+  }
+
   await db
     .update(sites)
     .set({ status: "published", publishedAt: new Date(), updatedAt: new Date() })
@@ -41,6 +52,11 @@ export async function publishSite(siteId: string) {
 
   revalidatePath(`/s/${site.slug}`);
   return { ok: true as const, slug: site.slug };
+}
+
+export async function publishSite(siteId: string) {
+  const site = await getOwnedSite(siteId);
+  return publishOwnedSite(site);
 }
 
 export async function unpublishSite(siteId: string) {

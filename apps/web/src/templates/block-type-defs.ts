@@ -75,12 +75,77 @@ export const blockTypeDefs: BlockTypeDef[] = [
     ],
   },
   {
+    type: "beforeAfter",
+    label: "Avant / Après",
+    fields: [
+      { key: "title", kind: "text", label: "Titre", maxLength: 60 },
+      { key: "description", kind: "richtext", label: "Description", maxLength: 200 },
+      {
+        key: "items",
+        kind: "repeatable",
+        label: "Transformations",
+        minItems: 1,
+        maxItems: 6,
+        itemFields: [
+          { key: "beforeImage", kind: "image", label: "Photo avant" },
+          { key: "afterImage", kind: "image", label: "Photo après" },
+          { key: "label", kind: "text", label: "Légende", maxLength: 60 },
+        ],
+      },
+    ],
+  },
+  {
+    type: "menu",
+    label: "Carte / Menu",
+    fields: [
+      { key: "title", kind: "text", label: "Titre", maxLength: 60 },
+      { key: "description", kind: "richtext", label: "Description", maxLength: 200 },
+      {
+        key: "categories",
+        kind: "repeatable",
+        label: "Catégories",
+        minItems: 1,
+        maxItems: 6,
+        itemFields: [
+          { key: "name", kind: "text", label: "Nom de la catégorie", maxLength: 40 },
+          {
+            key: "items",
+            kind: "repeatable",
+            label: "Plats",
+            minItems: 1,
+            maxItems: 12,
+            itemFields: [
+              { key: "name", kind: "text", label: "Nom du plat", maxLength: 60 },
+              { key: "description", kind: "richtext", label: "Description", maxLength: 160 },
+              { key: "price", kind: "text", label: "Prix", maxLength: 20 },
+            ],
+          },
+        ],
+      },
+      { key: "orderEnabled", kind: "boolean", label: "Activer la commande WhatsApp" },
+      { key: "orderPhone", kind: "text", label: "Numéro WhatsApp pour les commandes" },
+    ],
+  },
+  {
     type: "contact",
     label: "Contact",
     fields: [
       { key: "title", kind: "text", label: "Titre", maxLength: 60 },
       { key: "description", kind: "richtext", label: "Description", maxLength: 200 },
       { key: "email", kind: "text", label: "Email" },
+      { key: "phone", kind: "text", label: "Téléphone" },
+      { key: "address", kind: "text", label: "Adresse" },
+      { key: "hours", kind: "richtext", label: "Horaires", maxLength: 300 },
+      {
+        key: "socialLinks",
+        kind: "repeatable",
+        label: "Réseaux sociaux",
+        maxItems: 5,
+        itemFields: [
+          { key: "platform", kind: "text", label: "Réseau", maxLength: 30 },
+          { key: "href", kind: "link", label: "Lien" },
+        ],
+      },
       { key: "showForm", kind: "boolean", label: "Afficher le formulaire" },
     ],
   },

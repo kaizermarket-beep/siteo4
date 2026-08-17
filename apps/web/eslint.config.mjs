@@ -13,6 +13,19 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    // Vendored react-three-fiber component: driving a WebGL/shader scene
+    // imperatively (mutating materials in effects, reading a per-frame ref
+    // during render) is the idiomatic r3f pattern, not a correctness bug —
+    // the React Compiler purity rules below assume ordinary DOM components.
+    files: ["src/components/ui/3d-gallery-photography.tsx"],
+    rules: {
+      "react-hooks/immutability": "off",
+      "react-hooks/purity": "off",
+      "react-hooks/refs": "off",
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

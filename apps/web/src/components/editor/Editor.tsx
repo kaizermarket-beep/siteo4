@@ -11,10 +11,12 @@ export function Editor({
   siteId,
   initialBlocks,
   primaryColor,
+  mode,
 }: {
   siteId: string;
   initialBlocks: EditorBlock[];
   primaryColor?: string;
+  mode?: "light" | "dark";
 }) {
   const [store] = useState(() => createEditorStore(initialBlocks));
 
@@ -25,7 +27,7 @@ export function Editor({
         <div className="rounded-lg border border-neutral-200 p-4">
           <BlockEditorPanel />
         </div>
-        <EditorPreview primaryColor={primaryColor} />
+        <EditorPreview primaryColor={primaryColor} mode={mode} />
       </div>
     </EditorStoreProvider>
   );
