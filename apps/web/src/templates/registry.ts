@@ -537,11 +537,12 @@ export const templates: TemplateDefinition[] = [
           type: "features",
           position: 20,
           content: {
-            title: "Notre restaurant",
+            title: "Notre maison",
             items: [
-              { icon: "🍳", title: "Cuisine maison", description: "Tout est préparé sur place, chaque jour." },
-              { icon: "🌱", title: "Produits locaux", description: "Une sélection de producteurs de la région." },
-              { icon: "🕯️", title: "Cadre convivial", description: "Une salle chaleureuse pour vos repas entre proches." },
+              { icon: "🍳", title: "Fait maison", description: "Tout est préparé sur place le matin même, sans surgelé." },
+              { icon: "🌱", title: "Producteurs locaux", description: "Viandes, légumes et fromages sourcés à moins de 100 km." },
+              { icon: "📅", title: "Carte de saison", description: "Une ardoise renouvelée chaque semaine selon le marché." },
+              { icon: "🕯️", title: "Cadre convivial", description: "Une salle chaleureuse, pensée pour prendre son temps." },
             ],
           },
         },
@@ -549,11 +550,12 @@ export const templates: TemplateDefinition[] = [
           type: "gallery",
           position: 30,
           content: {
-            title: "Nos plats",
+            title: "À notre table",
             images: [
-              { image: { url: "https://placehold.co/600x600?text=Plat+1", alt: "Plat 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600?text=Plat+2", alt: "Plat 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600?text=Plat+3", alt: "Plat 3" }, caption: "" },
+              { image: { url: "https://images.unsplash.com/photo-1750943082452-c714763f73b2?w=900&auto=format&fit=crop&q=60", alt: "Assiette dressée par le chef" }, caption: "Le dressage, chaque service" },
+              { image: { url: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=900&auto=format&fit=crop&q=60", alt: "Le chef en cuisine" }, caption: "En cuisine, tout est fait sur place" },
+              { image: { url: "https://images.unsplash.com/photo-1536236502598-7dd171f8e852?w=900&auto=format&fit=crop&q=60", alt: "Plats à partager" }, caption: "Des plats pensés pour partager" },
+              { image: { url: "https://images.unsplash.com/photo-1646473315764-c6cd47fe74c3?w=900&auto=format&fit=crop&q=60", alt: "Table dressée en salle" }, caption: "La salle, avant le service" },
             ],
           },
         },
@@ -562,31 +564,31 @@ export const templates: TemplateDefinition[] = [
           position: 40,
           content: {
             title: "Notre carte",
-            description: "Une cuisine du marché, renouvelée selon les saisons.",
+            description: "Une cuisine du marché, renouvelée selon les saisons. Menu du midi à 19€ (entrée + plat ou plat + dessert), du mardi au vendredi.",
             categories: [
               {
                 name: "Entrées",
                 items: [
-                  { name: "Soupe du jour", description: "Selon l'arrivage du marché.", price: "7€" },
-                  { name: "Salade de chèvre chaud", description: "Miel, noix, mesclun.", price: "9€" },
-                  { name: "Terrine maison", description: "Pain grillé, cornichons.", price: "8€" },
+                  { name: "Soupe du jour", description: "Selon l'arrivage du marché, croûtons maison.", price: "7€" },
+                  { name: "Salade de chèvre chaud", description: "Chèvre fermier, miel de châtaignier, noix, mesclun.", price: "9€" },
+                  { name: "Terrine maison", description: "Préparée par nos soins, pain grillé et cornichons.", price: "8€" },
                 ],
               },
               {
                 name: "Plats",
                 items: [
-                  { name: "Pavé de saumon", description: "Légumes de saison, beurre blanc.", price: "18€" },
-                  { name: "Entrecôte grillée", description: "Frites maison, sauce au poivre.", price: "22€" },
-                  { name: "Risotto aux champignons", description: "Parmesan, huile de truffe.", price: "16€" },
-                  { name: "Poulet fermier rôti", description: "Purée maison, jus corsé.", price: "17€" },
+                  { name: "Pavé de saumon", description: "Légumes de saison rôtis, beurre blanc citronné.", price: "18€" },
+                  { name: "Entrecôte grillée", description: "Race à viande, frites maison, sauce au poivre.", price: "22€" },
+                  { name: "Risotto aux champignons", description: "Riz carnaroli, parmesan 24 mois, huile de truffe.", price: "16€" },
+                  { name: "Poulet fermier rôti", description: "Élevé en plein air, purée maison au beurre, jus corsé.", price: "17€" },
                 ],
               },
               {
                 name: "Desserts",
                 items: [
-                  { name: "Tarte tatin", description: "Crème fraîche.", price: "7€" },
-                  { name: "Mousse au chocolat", description: "Chocolat noir 70%.", price: "6€" },
-                  { name: "Fromage affiné", description: "Sélection du fromager.", price: "6€" },
+                  { name: "Tarte tatin", description: "Pommes caramélisées, crème fraîche d'Isigny.", price: "7€" },
+                  { name: "Mousse au chocolat", description: "Chocolat noir 70%, préparée le matin même.", price: "6€" },
+                  { name: "Fromage affiné", description: "Trois fromages, sélection de notre affineur.", price: "6€" },
                 ],
               },
             ],
@@ -1530,9 +1532,44 @@ export const templates: TemplateDefinition[] = [
           content: {
             title: "Nos interventions",
             items: [
-              { icon: "🛠️", title: "Installation", description: "Pose et mise en service de vos équipements." },
-              { icon: "🚨", title: "Dépannage", description: "Une intervention rapide en cas d'urgence." },
-              { icon: "🏠", title: "Rénovation", description: "Accompagnement de vos projets de A à Z." },
+              { icon: "🛠️", title: "Installation", description: "Pose et mise en service de vos équipements, aux normes en vigueur." },
+              { icon: "🚨", title: "Dépannage", description: "Intervention en urgence, 7j/7, devis annoncé avant de commencer." },
+              { icon: "🏠", title: "Rénovation", description: "Accompagnement de votre projet de A à Z, un seul interlocuteur." },
+              { icon: "🛡️", title: "Assurance décennale", description: "Travaux couverts 10 ans, attestation fournie à chaque chantier." },
+              { icon: "📋", title: "Devis détaillé", description: "Chaque poste chiffré ligne par ligne, gratuit et sans engagement." },
+              { icon: "🤝", title: "Artisan de confiance", description: "Entreprise déclarée, SIRET et garanties communiqués sur demande." },
+            ],
+          },
+        },
+        {
+          type: "gallery",
+          position: 25,
+          content: {
+            title: "Nos chantiers",
+            images: [
+              { image: { url: "https://images.unsplash.com/photo-1601058268499-e52658b8bb88?w=900&auto=format&fit=crop&q=60", alt: "Artisan au travail" }, caption: "Le travail bien fait, sans raccourci" },
+              { image: { url: "https://images.unsplash.com/photo-1779031242515-205111711b23?w=900&auto=format&fit=crop&q=60", alt: "Intervention en cours" }, caption: "Chantier préparé et protégé" },
+              { image: { url: "https://images.unsplash.com/photo-1680798790180-540f147976d7?w=900&auto=format&fit=crop&q=60", alt: "Outillage professionnel" }, caption: "Un outillage professionnel" },
+            ],
+          },
+        },
+        {
+          type: "beforeAfter",
+          position: 28,
+          content: {
+            title: "Avant / Après",
+            description: "Glissez le curseur pour voir la transformation.",
+            items: [
+              {
+                beforeImage: { url: "https://placehold.co/600x750/E7E5E4/EA580C?text=Avant", alt: "Avant la rénovation" },
+                afterImage: { url: "https://placehold.co/600x750/EA580C/FFFFFF?text=Apr%C3%A8s", alt: "Après la rénovation" },
+                label: "Rénovation complète",
+              },
+              {
+                beforeImage: { url: "https://placehold.co/600x750/E7E5E4/EA580C?text=Avant", alt: "Avant l'installation" },
+                afterImage: { url: "https://placehold.co/600x750/EA580C/FFFFFF?text=Apr%C3%A8s", alt: "Après l'installation" },
+                label: "Mise aux normes",
+              },
             ],
           },
         },
@@ -1542,9 +1579,9 @@ export const templates: TemplateDefinition[] = [
           content: {
             title: "Nos tarifs",
             plans: [
-              { name: "Devis", price: "Gratuit", period: "", features: ["Sans engagement"], ctaLabel: "Demander un devis", highlighted: true },
-              { name: "Dépannage urgent", price: "Sur devis", period: "", features: ["Intervention sous 24h"], ctaLabel: "Nous contacter", highlighted: false },
-              { name: "Rénovation", price: "Sur devis", period: "", features: ["Projet clé en main"], ctaLabel: "Nous contacter", highlighted: false },
+              { name: "Devis", price: "Gratuit", period: "", features: ["Déplacement offert", "Chiffrage détaillé", "Sans engagement"], ctaLabel: "Demander un devis", highlighted: true },
+              { name: "Dépannage urgent", price: "Dès 80€", period: " / intervention", features: ["Intervention sous 24h", "Tarif annoncé avant travaux", "Pièces garanties"], ctaLabel: "Nous appeler", highlighted: false },
+              { name: "Rénovation", price: "Sur devis", period: "", features: ["Projet clé en main", "Planning communiqué", "Garantie décennale"], ctaLabel: "Décrire mon projet", highlighted: false },
             ],
           },
         },
@@ -1553,11 +1590,11 @@ export const templates: TemplateDefinition[] = [
           position: 40,
           content: {
             title: "Demander un devis",
-            description: "Décrivez votre projet, on vous recontacte rapidement.",
+            description: "Décrivez votre projet en quelques lignes — réponse sous 24h, déplacement et chiffrage gratuits.",
             email: "contact@exemple.fr",
             phone: "06 12 34 56 78",
             address: "Intervention dans un rayon de 30 km autour de Lille",
-            hours: "Lun-Ven : 8h-19h\nUrgences : 7j/7",
+            hours: "Lun-Ven : 8h-19h\nSam : 9h-12h\nUrgences : 7j/7",
             socialLinks: [{ platform: "Facebook", href: "https://facebook.com" }],
             showForm: true,
           },
@@ -1614,9 +1651,9 @@ export const templates: TemplateDefinition[] = [
           content: {
             title: "Nos réalisations",
             images: [
-              { image: { url: "https://placehold.co/600x600?text=Bois+1", alt: "Réalisation 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600?text=Bois+2", alt: "Réalisation 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600?text=Bois+3", alt: "Réalisation 3" }, caption: "" },
+              { image: { url: "https://images.unsplash.com/photo-1601058268499-e52658b8bb88?w=900&auto=format&fit=crop&q=60", alt: "Menuisier au travail" }, caption: "Chaque pièce façonnée à la main" },
+              { image: { url: "https://images.unsplash.com/photo-1779031242515-205111711b23?w=900&auto=format&fit=crop&q=60", alt: "Travail du bois" }, caption: "Essences choisies une à une" },
+              { image: { url: "https://images.unsplash.com/photo-1680798790180-540f147976d7?w=900&auto=format&fit=crop&q=60", alt: "L'établi de l'atelier" }, caption: "L'établi, où tout commence" },
             ],
           },
         },
