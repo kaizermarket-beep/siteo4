@@ -23,3 +23,16 @@ yarn-debug.log*
 
 # vercel
 .vercel
+
+# MCP server config — holds a live 21st.dev API key in plain text.
+# Kept out of the repo so it can't be committed by accident; move the key
+# to an env var if this ever needs to be shared.
+.mcp.json
+
+# graphify skill output (AST dumps and cache, regenerated on demand)
+graphify-out/
+
+# Stray lockfile: pnpm workspaces resolve from the root pnpm-lock.yaml,
+# so a second one under apps/* means `pnpm install` was run in the wrong
+# directory and will drift from the real dependency graph.
+apps/*/pnpm-lock.yaml
