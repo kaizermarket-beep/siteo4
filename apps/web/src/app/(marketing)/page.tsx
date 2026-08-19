@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { templateCategories } from "@/templates/types";
-import { SparklesHero } from "@/components/ui/sparkles-hero";
+import { BuilderHero } from "@/components/marketing/BuilderHero";
 import { PricingSection } from "@/components/ui/pricing";
 import { TestimonialsMarquee } from "@/components/marketing/TestimonialsMarquee";
 import { HighlightsMarquee } from "@/components/marketing/HighlightsMarquee";
@@ -43,21 +42,7 @@ export default function LandingPage() {
   return (
     <main className="flex flex-1 flex-col bg-stone-200">
       {/* Hero */}
-      <section className="relative">
-        <SparklesHero
-          title="Créez votre site"
-          subtitle="En 3 clics, avec des modèles pensés pour votre métier. Essai gratuit de 7 jours, sans carte bancaire."
-          ctaLabel="Créer mon site"
-          ctaHref="#metiers"
-          minHeight="min-h-[85vh]"
-        />
-        <p className="absolute bottom-8 left-0 right-0 text-center text-sm text-neutral-400">
-          Déjà un compte ?{" "}
-          <Link href="/login" className="underline">
-            Se connecter
-          </Link>
-        </p>
-      </section>
+      <BuilderHero ctaLabel="Créer mon site" ctaHref="#metiers" />
 
       <HighlightsMarquee />
 

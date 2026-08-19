@@ -214,3 +214,28 @@
 .pause-on-hover:hover .animate-marquee-horizontal {
   animation-play-state: paused;
 }
+
+/* Landing hero: rows of site thumbnails drifting across the 3D plane
+   (src/components/marketing/BuilderHero.tsx). Each row is duplicated once,
+   so translateX(-50%) loops seamlessly. */
+@keyframes drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.animate-drift {
+  animation: drift linear infinite;
+}
+
+.animate-drift-reverse {
+  animation: drift linear infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-drift,
+  .animate-drift-reverse,
+  .animate-marquee-horizontal,
+  .animate-marquee-vertical {
+    animation: none;
+  }
+}
