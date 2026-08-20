@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { auth } from "@/lib/auth";
+import { requireUserId } from "@/lib/require-user";
 import { db } from "@/lib/db";
 import { plans, subscriptions } from "@/lib/db/schema";
 import { getUserEntitlements } from "@/lib/entitlements";
@@ -29,8 +29,7 @@ export default async function BillingPage({
   searchParams: Promise<{ checkout?: string }>;
 }) {
   const { checkout } = await searchParams;
-  const session = await auth();
-  const userId = session!.user!.id!;
+  const userId = await requireUserId();
 
   const [entitlements, allPlans, [current]] = await Promise.all([
     getUserEntitlements(userId),

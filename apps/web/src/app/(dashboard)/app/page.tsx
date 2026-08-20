@@ -1,12 +1,12 @@
 import { eq } from "drizzle-orm";
+import { requireUserId } from "@/lib/require-user";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { sites } from "@/lib/db/schema";
 
 export default async function SitesPage() {
-  const session = await auth();
-  const userSites = await db.select().from(sites).where(eq(sites.userId, session!.user!.id!));
+  const userId = await requireUserId();
+  const userSites = await db.select().from(sites).where(eq(sites.userId, userId));
 
   return (
     <div className="flex flex-col gap-6">

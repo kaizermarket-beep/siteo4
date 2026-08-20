@@ -1,9 +1,9 @@
 import { eq, sql } from "drizzle-orm";
+import { requireUserId } from "@/lib/require-user";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { sites, templates } from "@/lib/db/schema";
-import { auth } from "@/lib/auth";
 import { getUserEntitlements } from "@/lib/entitlements";
 import { createSiteForUser } from "@/server-actions/sites";
 import { templateCategories } from "@/templates/types";
@@ -16,8 +16,7 @@ export default async function NewSitePage({
   searchParams: Promise<{ template?: string }>;
 }) {
   const { template } = await searchParams;
-  const session = await auth();
-  const userId = session!.user!.id!;
+  const userId = await requireUserId();
   const [allTemplates, entitlements, [{ count: currentSiteCount }]] = await Promise.all([
     db.select().from(templates),
     getUserEntitlements(userId),
