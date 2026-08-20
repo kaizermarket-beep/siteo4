@@ -1,6 +1,6 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { sites, templates } from "@/lib/db/schema";
@@ -14,25 +14,44 @@ import { insertSiteFromTemplate, generateUniqueSlug } from "@/lib/site-creation"
 // upgrade-and-publish.ts) — this action never checks entitlements or the
 // premium-template gate on purpose, a brand-new guest always has full trial
 // access anyway (see entitlements.ts), and premium is enforced at publish.
+// A guest can try several templates, but not spawn drafts without limit.
+const MAX_GUEST_DRAFTS = 5;
+
 export async function startGuestSite(formData: FormData) {
   const templateSlug = String(formData.get("templateSlug") ?? "");
+
+  const [template] = await db.select().from(templates).where(eq(templates.slug, templateSlug));
+  if (!template) {
+    throw new Error("Modèle introuvable.");
+  }
 
   let identity = await resolveIdentity();
 
   if (identity?.isGuest) {
-    const [existingSite] = await db.select().from(sites).where(eq(sites.userId, identity.userId));
-    if (existingSite) {
-      redirect(`/app/sites/${existingSite.id}/edit`);
+    // Reopen only a draft built from *this* template, so clicking the same
+    // card twice keeps the edits already made. Matching on the user alone
+    // sent every later click back to whichever template they picked first,
+    // which made the other cards look broken.
+    const [sameTemplate] = await db
+      .select()
+      .from(sites)
+      .where(and(eq(sites.userId, identity.userId), eq(sites.templateId, template.id)));
+
+    if (sameTemplate) {
+      redirect(`/app/sites/${sameTemplate.id}/edit`);
+    }
+
+    const drafts = await db.select().from(sites).where(eq(sites.userId, identity.userId));
+    if (drafts.length >= MAX_GUEST_DRAFTS) {
+      // Send them back to the most recent draft rather than failing: the
+      // point of the guest flow is to keep momentum toward publishing.
+      const latest = drafts.reduce((a, b) => (a.createdAt > b.createdAt ? a : b));
+      redirect(`/app/sites/${latest.id}/edit`);
     }
   }
 
   if (!identity) {
     identity = await createGuestIdentity();
-  }
-
-  const [template] = await db.select().from(templates).where(eq(templates.slug, templateSlug));
-  if (!template) {
-    throw new Error("Modèle introuvable.");
   }
 
   const slug = await generateUniqueSlug(template.name);
