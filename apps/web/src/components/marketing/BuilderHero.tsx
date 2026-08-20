@@ -183,11 +183,14 @@ export function BuilderHero({
             {ctaLabel}
             <span aria-hidden>→</span>
           </Link>
+          {/* Secondary CTA needs its own destination: the primary already
+              goes to #metiers, and there is no public "all templates" page —
+              browsing starts by trade. */}
           <Link
-            href="/metiers/coiffeur"
+            href="#comment-ca-marche"
             className="inline-flex items-center rounded-full border border-stone-300 bg-white/70 px-7 py-3.5 text-base font-medium text-stone-700 backdrop-blur-sm transition-colors hover:bg-white"
           >
-            Voir les modèles
+            Comment ça marche
           </Link>
         </div>
 

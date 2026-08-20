@@ -94,7 +94,7 @@ export function HowItWorks() {
   const [activeCount, setActiveCount] = useState(0);
 
   return (
-    <section className="relative overflow-hidden bg-neutral-950 px-6 py-24">
+    <section id="comment-ca-marche" className="relative overflow-hidden bg-neutral-950 px-6 py-24">
       <div className="mx-auto mb-16 max-w-xl text-center">
         <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Comment ça marche</h2>
         <p className="mt-3 text-neutral-400">De l&apos;idée au site en ligne, en quatre étapes simples.</p>
