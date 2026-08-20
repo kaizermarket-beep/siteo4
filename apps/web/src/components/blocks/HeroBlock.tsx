@@ -306,6 +306,66 @@ function PhotoGallery3DGlow({ images }: { images: { url: string; alt: string }[]
   );
 }
 
+// Barbershop lounge: one warm pool of light breathing over near-black, with
+// a fine grain so the gradient reads as a lit room rather than a CSS blur.
+// Pure CSS on purpose — only the flagship carries the WebGL silk, so a page
+// listing every template doesn't spin up a canvas per card.
+function VelvetGlow() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#0b0908]">
+      <div
+        className="absolute left-1/2 top-1/2 h-[120vh] w-[120vh] animate-[velvet-breathe_14s_ease-in-out_infinite] rounded-full blur-[100px]"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in srgb, var(--site-accent, #ffffff) 55%, transparent) 0%, transparent 62%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.18] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E\")",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.75) 100%)" }}
+      />
+    </div>
+  );
+}
+
+// The light-mode counterpart: a pale ground, a whisper of woven texture, and
+// two wide washes drifting at different speeds. Deliberately almost still —
+// the restraint is the point for a salon that sells calm.
+function LinenGlow() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#f6f5f2]">
+      <div
+        className="absolute -left-1/4 top-[-20%] h-[90vh] w-[90vh] animate-[linen-wash-1_22s_ease-in-out_infinite] rounded-full blur-[110px]"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in srgb, var(--site-accent, #999999) 38%, transparent) 0%, transparent 65%)",
+        }}
+      />
+      <div
+        className="absolute -right-1/4 bottom-[-25%] h-[80vh] w-[80vh] animate-[linen-wash-2_28s_ease-in-out_infinite] rounded-full blur-[110px]"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in srgb, var(--site-accent, #999999) 22%, #ffffff 30%) 0%, transparent 68%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 opacity-[0.5]"
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(90deg, rgba(120,120,110,0.05) 0 1px, transparent 1px 4px), repeating-linear-gradient(0deg, rgba(120,120,110,0.05) 0 1px, transparent 1px 4px)",
+        }}
+      />
+    </div>
+  );
+}
+
 // Full-bleed silk weave; the shader reads --site-accent itself, so the
 // same variant suits a gold salon and a plum one without extra config.
 function SilkGlow() {
@@ -331,6 +391,7 @@ const immersiveVariants = new Set([
   "embers",
   "photoGallery3d",
   "silk",
+  "velvet",
 ]);
 
 export function HeroBlock({ content }: { content: HeroContent }) {
@@ -368,6 +429,8 @@ export function HeroBlock({ content }: { content: HeroContent }) {
       {!hasBackgroundImage && variant === "mesh" && <MeshGlow />}
       {!hasBackgroundImage && variant === "bokeh" && <BokehGlow />}
       {!hasBackgroundImage && variant === "embers" && <EmbersGlow />}
+      {!hasBackgroundImage && variant === "velvet" && <VelvetGlow />}
+      {!hasBackgroundImage && variant === "linen" && <LinenGlow />}
       {!hasBackgroundImage && variant === "silk" && <SilkGlow />}
       {!hasBackgroundImage && variant === "photoGallery3d" && hasHeroImages && (
         <PhotoGallery3DGlow images={content.heroImages!} />

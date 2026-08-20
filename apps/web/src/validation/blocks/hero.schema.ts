@@ -23,6 +23,10 @@ export const heroVariants = [
   // A GPU silk-weave shader tinted with the template accent — the
   // "quiet luxury" opener, for salons and other premium services.
   "silk",
+  // Dark: one warm pool of light breathing over near-black, plus grain.
+  "velvet",
+  // Light: pale ground, faint weave, two slow washes — velvet's daylight twin.
+  "linen",
 ] as const;
 
 export const heroContentSchema = z.object({
