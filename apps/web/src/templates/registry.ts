@@ -124,7 +124,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Un salon haut de gamme où chaque détail est pensé pour sublimer votre image.",
             ctaLabel: "Réserver mon rendez-vous",
             ctaLink: { href: "#contact", label: "Réserver mon rendez-vous" },
-            heroVariant: "sparkles",
+            heroVariant: "silk",
           },
         },
         {
@@ -331,7 +331,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Coupe, taille de barbe, rasage traditionnel — un rituel pour l'homme moderne.",
             ctaLabel: "Prendre rendez-vous",
             ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
-            heroVariant: "spotlight",
+            heroVariant: "silk",
           },
         },
         {
@@ -431,7 +431,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Coiffure et bien-être, dans une ambiance calme et minimaliste.",
             ctaLabel: "Prendre rendez-vous",
             ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
-            heroVariant: "blobs",
+            heroVariant: "silk",
           },
         },
         {

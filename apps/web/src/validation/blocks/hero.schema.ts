@@ -20,6 +20,9 @@ export const heroVariants = [
   // GalleryBlock's "gallery3d") — needs `heroImages` below, several real
   // photos rather than a solid color, for a "walk through the work" opener.
   "photoGallery3d",
+  // A GPU silk-weave shader tinted with the template accent — the
+  // "quiet luxury" opener, for salons and other premium services.
+  "silk",
 ] as const;
 
 export const heroContentSchema = z.object({

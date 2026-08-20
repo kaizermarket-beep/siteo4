@@ -1,6 +1,7 @@
 import type { HeroContent } from "@/validation/blocks";
 import { SparklesCore } from "@/components/ui/sparkles";
 import InfiniteGallery from "@/components/ui/3d-gallery-photography";
+import { SilkBackground } from "@/components/ui/silk-background";
 
 // Accent-colored blurred blobs + dot grid, animated with the same drift
 // keyframes as the marketing aurora hero (globals.css) — pure CSS, no JS, so
@@ -305,6 +306,20 @@ function PhotoGallery3DGlow({ images }: { images: { url: string; alt: string }[]
   );
 }
 
+// Full-bleed silk weave; the shader reads --site-accent itself, so the
+// same variant suits a gold salon and a plum one without extra config.
+function SilkGlow() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-neutral-950">
+      <SilkBackground className="h-full w-full" />
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.55) 100%)" }}
+      />
+    </div>
+  );
+}
+
 const immersiveVariants = new Set([
   "sparkles",
   "aurora",
@@ -315,6 +330,7 @@ const immersiveVariants = new Set([
   "bokeh",
   "embers",
   "photoGallery3d",
+  "silk",
 ]);
 
 export function HeroBlock({ content }: { content: HeroContent }) {
@@ -352,6 +368,7 @@ export function HeroBlock({ content }: { content: HeroContent }) {
       {!hasBackgroundImage && variant === "mesh" && <MeshGlow />}
       {!hasBackgroundImage && variant === "bokeh" && <BokehGlow />}
       {!hasBackgroundImage && variant === "embers" && <EmbersGlow />}
+      {!hasBackgroundImage && variant === "silk" && <SilkGlow />}
       {!hasBackgroundImage && variant === "photoGallery3d" && hasHeroImages && (
         <PhotoGallery3DGlow images={content.heroImages!} />
       )}
