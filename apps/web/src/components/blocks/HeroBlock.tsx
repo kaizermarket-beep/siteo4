@@ -2,6 +2,7 @@ import type { HeroContent } from "@/validation/blocks";
 import { SparklesCore } from "@/components/ui/sparkles";
 import InfiniteGallery from "@/components/ui/3d-gallery-photography";
 import { SilkBackground } from "@/components/ui/silk-background";
+import { GodRays } from "@/components/ui/god-rays";
 
 // Accent-colored blurred blobs + dot grid, animated with the same drift
 // keyframes as the marketing aurora hero (globals.css) — pure CSS, no JS, so
@@ -306,6 +307,68 @@ function PhotoGallery3DGlow({ images }: { images: { url: string; alt: string }[]
   );
 }
 
+// Daylight through a salon window: soft blush shafts over warm off-white.
+// Light-mode, so it stays out of immersiveVariants and the hero text keeps
+// its dark colour — the "clair et souriant" read for a women's salon.
+function SunbeamGlow() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#fdf9f7]">
+      <GodRays
+        className="h-full w-full"
+        // near-white ground -> blush -> warm rose -> near-white light
+        colors={[
+          [0.992, 0.976, 0.969],
+          [0.965, 0.882, 0.886],
+          [0.925, 0.702, 0.749],
+          [1.0, 0.988, 0.976],
+        ]}
+        intensity={0.22}
+        paramA={0.5}
+        scale={1.05}
+        contrast={0.94}
+        saturation={0.9}
+        grain={0.018}
+        timeScale={0.32}
+        seed={4}
+      />
+      {/* keeps the dark headline legible over the brightest shafts */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse at center, rgba(253,249,247,0.82) 20%, rgba(253,249,247,0.25) 100%)" }}
+      />
+    </div>
+  );
+}
+
+// The same engine at the other end of the dial: a single warm shaft cutting
+// deep shadow, rotated off-axis and slower, so it reads as a lit barbershop
+// rather than the salon's daylight.
+function HaloGlow() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#080605]">
+      <GodRays
+        className="h-full w-full"
+        // near-black -> deep brown -> copper -> warm gold
+        colors={[
+          [0.031, 0.024, 0.020],
+          [0.180, 0.098, 0.055],
+          [0.706, 0.325, 0.035],
+          [0.976, 0.784, 0.463],
+        ]}
+        intensity={0.42}
+        paramA={0.2}
+        scale={1.35}
+        rotate={0.42}
+        contrast={1.08}
+        vignette={0.55}
+        grain={0.05}
+        timeScale={0.22}
+        seed={9}
+      />
+    </div>
+  );
+}
+
 // Barbershop lounge: one warm pool of light breathing over near-black, with
 // a fine grain so the gradient reads as a lit room rather than a CSS blur.
 // Pure CSS on purpose — only the flagship carries the WebGL silk, so a page
@@ -392,6 +455,7 @@ const immersiveVariants = new Set([
   "photoGallery3d",
   "silk",
   "velvet",
+  "halo",
 ]);
 
 export function HeroBlock({ content }: { content: HeroContent }) {
@@ -429,6 +493,8 @@ export function HeroBlock({ content }: { content: HeroContent }) {
       {!hasBackgroundImage && variant === "mesh" && <MeshGlow />}
       {!hasBackgroundImage && variant === "bokeh" && <BokehGlow />}
       {!hasBackgroundImage && variant === "embers" && <EmbersGlow />}
+      {!hasBackgroundImage && variant === "sunbeam" && <SunbeamGlow />}
+      {!hasBackgroundImage && variant === "halo" && <HaloGlow />}
       {!hasBackgroundImage && variant === "velvet" && <VelvetGlow />}
       {!hasBackgroundImage && variant === "linen" && <LinenGlow />}
       {!hasBackgroundImage && variant === "silk" && <SilkGlow />}

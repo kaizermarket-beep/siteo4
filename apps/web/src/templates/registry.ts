@@ -20,7 +20,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Coupe, couleur, soins — une équipe passionnée à votre écoute.",
             ctaLabel: "Prendre rendez-vous",
             ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
-            heroVariant: "mesh",
+            heroVariant: "sunbeam",
           },
         },
         {
@@ -331,7 +331,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Coupe, taille de barbe, rasage traditionnel — un rituel pour l'homme moderne.",
             ctaLabel: "Prendre rendez-vous",
             ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
-            heroVariant: "velvet",
+            heroVariant: "halo",
           },
         },
         {

@@ -27,6 +27,10 @@ export const heroVariants = [
   "velvet",
   // Light: pale ground, faint weave, two slow washes — velvet's daylight twin.
   "linen",
+  // WebGL light shafts. Light: daylight through a salon window.
+  "sunbeam",
+  // Same engine, dark: one warm shaft cutting a barbershop's shadow.
+  "halo",
 ] as const;
 
 export const heroContentSchema = z.object({
