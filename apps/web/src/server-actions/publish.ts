@@ -50,7 +50,7 @@ export async function publishOwnedSite(site: typeof sites.$inferSelect) {
     .set({ status: "published", publishedAt: new Date(), updatedAt: new Date() })
     .where(eq(sites.id, site.id));
 
-  revalidatePath(`/s/${site.slug}`);
+  revalidatePath(`/s/${site.slug}`, "layout");
   return { ok: true as const, slug: site.slug };
 }
 
@@ -67,6 +67,6 @@ export async function unpublishSite(siteId: string) {
     .set({ status: "draft", updatedAt: new Date() })
     .where(eq(sites.id, site.id));
 
-  revalidatePath(`/s/${site.slug}`);
+  revalidatePath(`/s/${site.slug}`, "layout");
   return { ok: true as const };
 }

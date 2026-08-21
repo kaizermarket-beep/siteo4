@@ -3,8 +3,9 @@ import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getTemplatesByCategory } from "@/templates/registry";
-import { templateCategories } from "@/templates/types";
+import { templateCategories, templatePages } from "@/templates/types";
 import { BlockRenderer } from "@/components/blocks";
+import { SiteNav } from "@/components/site/SiteNav";
 import { startGuestSite } from "@/server-actions/guest-site";
 
 const ctaClassName =
@@ -41,11 +42,19 @@ export default async function CategoryPage({
 
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-10">
         {categoryTemplates.map((template) => {
+          const pages = templatePages(template.schema);
           return (
             <div key={template.slug} className="overflow-hidden rounded-xl border border-neutral-200">
               <div className="flex items-center justify-between border-b border-neutral-200 px-6 py-4">
                 <div>
-                  <h2 className="text-lg font-medium text-neutral-900">{template.name}</h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-lg font-medium text-neutral-900">{template.name}</h2>
+                    {pages.length > 1 && (
+                      <span className="rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-medium text-neutral-600">
+                        {pages.length} pages
+                      </span>
+                    )}
+                  </div>
                   <p className="text-sm text-neutral-600">{template.description}</p>
                 </div>
                 {session?.user ? (
@@ -71,6 +80,12 @@ export default async function CategoryPage({
                     : undefined
                 }
               >
+                <SiteNav
+                  siteName={template.name}
+                  pages={pages.map((p) => ({ slug: p.slug, title: p.title }))}
+                  activeSlug=""
+                  preview
+                />
                 {template.schema.defaultBlocks.map((block, i) => (
                   <BlockRenderer key={i} blockType={block.type} content={block.content} />
                 ))}

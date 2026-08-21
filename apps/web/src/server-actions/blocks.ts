@@ -37,7 +37,7 @@ export async function updateBlockContent(blockId: string, content: unknown) {
     .where(eq(siteBlocks.id, blockId));
 
   if (site.status === "published") {
-    revalidatePath(`/s/${site.slug}`);
+    revalidatePath(`/s/${site.slug}`, "layout");
   }
 
   return { ok: true as const };
@@ -52,7 +52,7 @@ export async function toggleBlockVisibility(blockId: string, isVisible: boolean)
     .where(eq(siteBlocks.id, blockId));
 
   if (site.status === "published") {
-    revalidatePath(`/s/${site.slug}`);
+    revalidatePath(`/s/${site.slug}`, "layout");
   }
 }
 
@@ -66,14 +66,26 @@ export async function reorderBlocks(siteId: string, orderedBlockIds: string[]) {
     .where(and(eq(sites.id, siteId), eq(sites.userId, identity.userId)));
   if (!site) throw new Error("Site introuvable.");
 
-  for (let i = 0; i < orderedBlockIds.length; i++) {
-    await db
-      .update(siteBlocks)
-      .set({ position: (i + 1) * 10, updatedAt: new Date() })
-      .where(and(eq(siteBlocks.id, orderedBlockIds[i]), eq(siteBlocks.siteId, siteId)));
-  }
+  // Two passes, because (page_id, position) is unique: assigning the final
+  // positions directly collides as soon as a block takes a slot another one
+  // has not vacated yet. Negative positions are a scratch space no real
+  // block ever occupies.
+  await db.transaction(async (tx) => {
+    for (let i = 0; i < orderedBlockIds.length; i++) {
+      await tx
+        .update(siteBlocks)
+        .set({ position: -(i + 1) })
+        .where(and(eq(siteBlocks.id, orderedBlockIds[i]), eq(siteBlocks.siteId, siteId)));
+    }
+    for (let i = 0; i < orderedBlockIds.length; i++) {
+      await tx
+        .update(siteBlocks)
+        .set({ position: (i + 1) * 10, updatedAt: new Date() })
+        .where(and(eq(siteBlocks.id, orderedBlockIds[i]), eq(siteBlocks.siteId, siteId)));
+    }
+  });
 
   if (site.status === "published") {
-    revalidatePath(`/s/${site.slug}`);
+    revalidatePath(`/s/${site.slug}`, "layout");
   }
 }

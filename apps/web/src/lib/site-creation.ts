@@ -1,8 +1,9 @@
 import { randomBytes } from "crypto";
 import { eq } from "drizzle-orm";
 import { db } from "./db";
-import { sites, siteBlocks, type templates } from "./db/schema";
+import { sites, siteBlocks, sitePages, type templates } from "./db/schema";
 import { slugify } from "./slug";
+import { templatePages, type TemplateSchema } from "@/templates/types";
 
 type TemplateRow = typeof templates.$inferSelect;
 
@@ -24,8 +25,9 @@ export async function generateUniqueSlug(base: string): Promise<string> {
 }
 
 // Shared by createSite (signed-in flow) and the guest flow — inserts the
-// site row plus its default blocks from the template's schema. Caller is
-// responsible for entitlement checks and for producing a unique slug.
+// site row plus one page per template page, each with its own blocks.
+// Caller is responsible for entitlement checks and for producing a unique
+// slug.
 export async function insertSiteFromTemplate({
   userId,
   template,
@@ -37,12 +39,7 @@ export async function insertSiteFromTemplate({
   name: string;
   slug: string;
 }) {
-  const templateSchema = template.schema as {
-    defaultBlocks: { type: string; position: number; content: unknown }[];
-    accentColor?: string;
-    mode?: "light" | "dark";
-  };
-  const defaultBlocks = templateSchema.defaultBlocks;
+  const templateSchema = template.schema as TemplateSchema;
 
   const [site] = await db
     .insert(sites)
@@ -59,13 +56,26 @@ export async function insertSiteFromTemplate({
     })
     .returning();
 
-  for (const block of defaultBlocks) {
-    await db.insert(siteBlocks).values({
-      siteId: site.id,
-      blockType: block.type,
-      position: block.position,
-      content: block.content,
-    });
+  for (const page of templatePages(templateSchema)) {
+    const [pageRow] = await db
+      .insert(sitePages)
+      .values({
+        siteId: site.id,
+        slug: page.slug,
+        title: page.title,
+        position: page.position,
+      })
+      .returning();
+
+    for (const block of page.blocks) {
+      await db.insert(siteBlocks).values({
+        siteId: site.id,
+        pageId: pageRow.id,
+        blockType: block.type,
+        position: block.position,
+        content: block.content,
+      });
+    }
   }
 
   return site;

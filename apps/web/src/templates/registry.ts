@@ -107,7 +107,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "salon-prestige",
     name: "Salon Prestige",
-    description: "Une mise en page éditoriale sur photo pleine page, typographie serif, pour un salon haut de gamme.",
+    description: "Quatre pages éditoriales sur photo pleine page, typographie serif, pour un salon haut de gamme.",
     category: "coiffeur",
     isPremium: true,
     featured: true,
@@ -123,7 +123,7 @@ export const templates: TemplateDefinition[] = [
             headline: "Coiffeur coloriste, avenue des Champs, depuis 2009",
             subheadline: "Un seul rendez-vous par créneau. Diagnostic, coupe et couleur avec la même personne, du début à la fin.",
             ctaLabel: "Prendre rendez-vous",
-            ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
+            ctaLink: { href: "/contact", label: "Prendre rendez-vous" },
             heroVariant: "editorial",
             backgroundImage: {
               url: "https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=1600&auto=format&fit=crop&q=70",
@@ -144,72 +144,129 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "L'expérience Prestige",
-            variant: "gallery3d",
-            images: [
-              { image: { url: "https://images.unsplash.com/photo-1781450090585-1a511b7066d9?w=900&auto=format&fit=crop&q=60", alt: "Le salon Prestige" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1746723375184-5f537d2e6f31?w=900&auto=format&fit=crop&q=60", alt: "Un rituel signature" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1623171678074-1b04ff0e694f?w=900&auto=format&fit=crop&q=60", alt: "L'espace coiffure" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1760862652442-e8ff7ebdd2f8?w=900&auto=format&fit=crop&q=60", alt: "Nos produits premium" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "beforeAfter",
-          position: 35,
-          content: {
-            title: "Avant / Après",
-            description: "Glissez le curseur pour voir la transformation.",
-            items: [
-              {
-                beforeImage: { url: "https://placehold.co/600x750/111111/D4AF37?text=Avant", alt: "Avant le balayage" },
-                afterImage: { url: "https://placehold.co/600x750/D4AF37/111111?text=Apr%C3%A8s", alt: "Après le balayage" },
-                label: "Balayage sur-mesure",
-              },
-              {
-                beforeImage: { url: "https://placehold.co/600x750/111111/D4AF37?text=Avant", alt: "Avant le rituel complet" },
-                afterImage: { url: "https://placehold.co/600x750/D4AF37/111111?text=Apr%C3%A8s", alt: "Après le rituel complet" },
-                label: "Rituel Complet",
-              },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Nos formules signature",
-            plans: [
-              { name: "Coupe Signature", price: "55€", period: "", features: ["Diagnostic capillaire offert", "Brushing inclus"], ctaLabel: "Réserver", highlighted: false },
-              { name: "Coloration Prestige", price: "120€", period: "", features: ["Produits premium", "Soin réparateur inclus"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Rituel Complet", price: "180€", period: "", features: ["Coupe + couleur + soin", "2h30 d'exception"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Prendre rendez-vous",
-            description: "Un conseiller vous accueille pour définir votre projet capillaire.",
-            email: "contact@exemple.fr",
-            phone: "01 23 45 67 89",
-            address: "24 avenue des Champs, 75008 Paris",
-            hours: "Mar-Sam : 10h-19h\nDim-Lun : Fermé",
-            socialLinks: [
-              { platform: "Instagram", href: "https://instagram.com" },
-              { platform: "Facebook", href: "https://facebook.com" },
-            ],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "Chaque prestation commence par un diagnostic. Le prix annoncé est celui que vous réglez en partant.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "beforeAfter",
+              position: 20,
+              content: {
+                title: "Avant / Après",
+                description: "Glissez le curseur pour voir la transformation.",
+                items: [
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/111111/D4AF37?text=Avant", alt: "Avant le balayage" },
+                    afterImage: { url: "https://placehold.co/600x750/D4AF37/111111?text=Apr%C3%A8s", alt: "Après le balayage" },
+                    label: "Balayage sur-mesure",
+                  },
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/111111/D4AF37?text=Avant", alt: "Avant le rituel complet" },
+                    afterImage: { url: "https://placehold.co/600x750/D4AF37/111111?text=Apr%C3%A8s", alt: "Après le rituel complet" },
+                    label: "Rituel Complet",
+                  },
+                ],
+              },
+            },
+            {
+              type: "pricing",
+              position: 30,
+              content: {
+                ctaHref: "/contact",
+                title: "Nos formules signature",
+                plans: [
+                  { name: "Coupe Signature", price: "55€", period: "", features: ["Diagnostic capillaire offert", "Brushing inclus"], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Coloration Prestige", price: "120€", period: "", features: ["Produits premium", "Soin réparateur inclus"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Rituel Complet", price: "180€", period: "", features: ["Coupe + couleur + soin", "2h30 d'exception"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "galerie",
+          title: "Galerie",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Le salon",
+                subheadline: "Quatre postes, la lumière du jour et le calme qu'il faut pour réussir une couleur.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "L'expérience Prestige",
+                variant: "gallery3d",
+                images: [
+                  { image: { url: "https://images.unsplash.com/photo-1781450090585-1a511b7066d9?w=900&auto=format&fit=crop&q=60", alt: "Le salon Prestige" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1746723375184-5f537d2e6f31?w=900&auto=format&fit=crop&q=60", alt: "Un rituel signature" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1623171678074-1b04ff0e694f?w=900&auto=format&fit=crop&q=60", alt: "L'espace coiffure" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1760862652442-e8ff7ebdd2f8?w=900&auto=format&fit=crop&q=60", alt: "Nos produits premium" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prendre rendez-vous",
+                subheadline: "Un seul rendez-vous par créneau : écrivez-nous et nous vous rappelons dans la journée.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Prendre rendez-vous",
+                description: "Un conseiller vous accueille pour définir votre projet capillaire.",
+                email: "contact@exemple.fr",
+                phone: "01 23 45 67 89",
+                address: "24 avenue des Champs, 75008 Paris",
+                hours: "Mar-Sam : 10h-19h\nDim-Lun : Fermé",
+                socialLinks: [
+                  { platform: "Instagram", href: "https://instagram.com" },
+                  { platform: "Facebook", href: "https://facebook.com" },
+                ],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -319,7 +376,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "barber-club",
     name: "Barber Club",
-    description: "Un univers sombre et masculin, avec un jeu de lumière animé, pensé pour les barbershops modernes.",
+    description: "Quatre pages sombres et masculines, avec un vrai barber pole en 3D, pour les barbershops.",
     category: "coiffeur",
     isPremium: true,
     schema: {
@@ -334,7 +391,7 @@ export const templates: TemplateDefinition[] = [
             headline: "L'art de la barbe et du rasoir",
             subheadline: "Coupe, taille de barbe, rasage traditionnel — un rituel pour l'homme moderne.",
             ctaLabel: "Prendre rendez-vous",
-            ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
+            ctaLink: { href: "/contact", label: "Prendre rendez-vous" },
             heroVariant: "barberPole",
           },
         },
@@ -351,68 +408,125 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Le Club",
-            images: [
-              { image: { url: "https://images.unsplash.com/photo-1759134248487-e8baaf31e33e?w=900&auto=format&fit=crop&q=60", alt: "L'intérieur du Club" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1605497788116-1f20ad55ea7f?w=900&auto=format&fit=crop&q=60", alt: "Un client sur le fauteuil" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1568292184286-466342737dc6?w=900&auto=format&fit=crop&q=60", alt: "Séance de coupe" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1746723375184-5f537d2e6f31?w=900&auto=format&fit=crop&q=60", alt: "Précision du geste" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "beforeAfter",
-          position: 35,
-          content: {
-            title: "Avant / Après",
-            description: "Glissez le curseur pour voir la transformation.",
-            items: [
-              {
-                beforeImage: { url: "https://placehold.co/600x750/111111/B45309?text=Avant", alt: "Avant la coupe" },
-                afterImage: { url: "https://placehold.co/600x750/B45309/111111?text=Apr%C3%A8s", alt: "Après la coupe" },
-                label: "Rituel Barber",
-              },
-              {
-                beforeImage: { url: "https://placehold.co/600x750/111111/B45309?text=Avant", alt: "Avant la taille de barbe" },
-                afterImage: { url: "https://placehold.co/600x750/B45309/111111?text=Apr%C3%A8s", alt: "Après la taille de barbe" },
-                label: "Taille de barbe",
-              },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Nos forfaits",
-            plans: [
-              { name: "Coupe classique", price: "28€", period: "", features: ["Shampoing + coiffage"], ctaLabel: "Réserver", highlighted: false },
-              { name: "Rituel Barber", price: "55€", period: "", features: ["Coupe + barbe + rasage chaud"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Taille de barbe", price: "20€", period: "", features: ["Tracé précis"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Réserver au Club",
-            description: "Sur rendez-vous, dans une ambiance feutrée.",
-            email: "contact@exemple.fr",
-            phone: "01 44 55 66 77",
-            address: "9 rue du Faubourg Saint-Antoine, 75011 Paris",
-            hours: "Lun-Sam : 9h-20h\nDim : Fermé",
-            socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "Coupe, barbe, rasage : trois gestes, une même exigence — et le temps qu'il faut pour les faire bien.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "beforeAfter",
+              position: 20,
+              content: {
+                title: "Avant / Après",
+                description: "Glissez le curseur pour voir la transformation.",
+                items: [
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/111111/B45309?text=Avant", alt: "Avant la coupe" },
+                    afterImage: { url: "https://placehold.co/600x750/B45309/111111?text=Apr%C3%A8s", alt: "Après la coupe" },
+                    label: "Rituel Barber",
+                  },
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/111111/B45309?text=Avant", alt: "Avant la taille de barbe" },
+                    afterImage: { url: "https://placehold.co/600x750/B45309/111111?text=Apr%C3%A8s", alt: "Après la taille de barbe" },
+                    label: "Taille de barbe",
+                  },
+                ],
+              },
+            },
+            {
+              type: "pricing",
+              position: 30,
+              content: {
+                ctaHref: "/contact",
+                title: "Nos forfaits",
+                plans: [
+                  { name: "Coupe classique", price: "28€", period: "", features: ["Shampoing + coiffage"], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Rituel Barber", price: "55€", period: "", features: ["Coupe + barbe + rasage chaud"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Taille de barbe", price: "20€", period: "", features: ["Tracé précis"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "galerie",
+          title: "Galerie",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Le Club",
+                subheadline: "Cuir, laiton et lumière basse. L'endroit où l'on prend son temps.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "Le Club",
+                images: [
+                  { image: { url: "https://images.unsplash.com/photo-1759134248487-e8baaf31e33e?w=900&auto=format&fit=crop&q=60", alt: "L'intérieur du Club" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1605497788116-1f20ad55ea7f?w=900&auto=format&fit=crop&q=60", alt: "Un client sur le fauteuil" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1568292184286-466342737dc6?w=900&auto=format&fit=crop&q=60", alt: "Séance de coupe" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1746723375184-5f537d2e6f31?w=900&auto=format&fit=crop&q=60", alt: "Précision du geste" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Réserver au Club",
+                subheadline: "Sur rendez-vous, du lundi au samedi. Le dimanche, le Club dort.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Réserver au Club",
+                description: "Sur rendez-vous, dans une ambiance feutrée.",
+                email: "contact@exemple.fr",
+                phone: "01 44 55 66 77",
+                address: "9 rue du Faubourg Saint-Antoine, 75011 Paris",
+                hours: "Lun-Sam : 9h-20h\nDim : Fermé",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -628,7 +742,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "bistrot-chic",
     name: "Bistrot Chic",
-    description: "Un design sombre et élégant, animé, pour une adresse gastronomique qui inspire confiance.",
+    description: "Quatre pages élégantes — accueil, carte, salle, réservation — pour un restaurant gastronomique.",
     category: "restauration",
     isPremium: true,
     featured: true,
@@ -644,7 +758,7 @@ export const templates: TemplateDefinition[] = [
             headline: "Une cuisine d'exception, un service irréprochable",
             subheadline: "Une expérience gastronomique raffinée, dans un cadre élégant et intimiste.",
             ctaLabel: "Réserver une table",
-            ctaLink: { href: "#contact", label: "Réserver une table" },
+            ctaLink: { href: "/contact", label: "Réserver une table" },
             heroVariant: "embers",
           },
         },
@@ -661,71 +775,127 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Nos créations",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+1", alt: "Création 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+2", alt: "Création 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+3", alt: "Création 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+4", alt: "Création 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "menu",
-          position: 40,
-          content: {
-            title: "Notre carte",
-            description: "Une cuisine de saison, sublimée par notre chef.",
-            categories: [
-              {
-                name: "Entrées",
-                items: [
-                  { name: "Foie gras mi-cuit", description: "Chutney de figue, brioche toastée.", price: "16€" },
-                  { name: "Velouté de saison", description: "Selon l'arrivage, crème montée.", price: "11€" },
-                  { name: "Carpaccio de Saint-Jacques", description: "Agrumes, huile d'olive.", price: "18€" },
-                ],
-              },
-              {
-                name: "Plats",
-                items: [
-                  { name: "Filet de bœuf Rossini", description: "Foie gras poêlé, jus corsé.", price: "34€" },
-                  { name: "Bar en croûte de sel", description: "Beurre blanc, légumes de saison.", price: "29€" },
-                  { name: "Risotto à la truffe", description: "Parmesan 24 mois.", price: "26€" },
-                ],
-              },
-              {
-                name: "Desserts",
-                items: [
-                  { name: "Soufflé au Grand Marnier", description: "Préparation 20 min.", price: "12€" },
-                  { name: "Assiette de fromages affinés", description: "Sélection de notre fromager.", price: "10€" },
-                ],
-              },
-            ],
-            orderEnabled: false,
-            orderPhone: "",
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Réserver votre table",
-            description: "Une équipe attentionnée vous accueille chaque soir.",
-            email: "contact@exemple.fr",
-            phone: "01 42 60 11 22",
-            address: "3 place Vendôme, 75001 Paris",
-            hours: "Mar-Sam : 19h-23h\nDim-Lun : Fermé",
-            socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "carte",
+          title: "La carte",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Notre carte",
+                subheadline: "Elle change avec les saisons et les arrivages. Voici celle de ce mois-ci.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "menu",
+              position: 20,
+              content: {
+                title: "Notre carte",
+                description: "Une cuisine de saison, sublimée par notre chef.",
+                categories: [
+                  {
+                    name: "Entrées",
+                    items: [
+                      { name: "Foie gras mi-cuit", description: "Chutney de figue, brioche toastée.", price: "16€" },
+                      { name: "Velouté de saison", description: "Selon l'arrivage, crème montée.", price: "11€" },
+                      { name: "Carpaccio de Saint-Jacques", description: "Agrumes, huile d'olive.", price: "18€" },
+                    ],
+                  },
+                  {
+                    name: "Plats",
+                    items: [
+                      { name: "Filet de bœuf Rossini", description: "Foie gras poêlé, jus corsé.", price: "34€" },
+                      { name: "Bar en croûte de sel", description: "Beurre blanc, légumes de saison.", price: "29€" },
+                      { name: "Risotto à la truffe", description: "Parmesan 24 mois.", price: "26€" },
+                    ],
+                  },
+                  {
+                    name: "Desserts",
+                    items: [
+                      { name: "Soufflé au Grand Marnier", description: "Préparation 20 min.", price: "12€" },
+                      { name: "Assiette de fromages affinés", description: "Sélection de notre fromager.", price: "10€" },
+                    ],
+                  },
+                ],
+                orderEnabled: false,
+                orderPhone: "",
+              },
+            },
+          ],
+        },
+        {
+          slug: "le-lieu",
+          title: "Le lieu",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "La salle",
+                subheadline: "Vingt-six couverts, des nappes blanches et une lumière basse. On y parle à voix normale.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "Nos créations",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+1", alt: "Création 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+2", alt: "Création 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+3", alt: "Création 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/9A3412?text=Bistrot+4", alt: "Création 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Réserver votre table",
+                subheadline: "Réservation conseillée, surtout le week-end. Nous confirmons chaque table par téléphone.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Réserver votre table",
+                description: "Une équipe attentionnée vous accueille chaque soir.",
+                email: "contact@exemple.fr",
+                phone: "01 42 60 11 22",
+                address: "3 place Vendôme, 75001 Paris",
+                hours: "Mar-Sam : 19h-23h\nDim-Lun : Fermé",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -851,7 +1021,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "comptoir-nocturne",
     name: "Le Comptoir Nocturne",
-    description: "Une ambiance sombre et feutrée, animée, pour un bar-restaurant qui vit la nuit.",
+    description: "Quatre pages nocturnes — accueil, carte de nuit, ambiance, réservation — pour un bar-restaurant.",
     category: "restauration",
     isPremium: true,
     schema: {
@@ -866,7 +1036,7 @@ export const templates: TemplateDefinition[] = [
             headline: "Là où la nuit prend goût",
             subheadline: "Cuisine de bar, cocktails signature, ouvert tard pour les gourmands noctambules.",
             ctaLabel: "Réserver ma place",
-            ctaLink: { href: "#contact", label: "Réserver ma place" },
+            ctaLink: { href: "/contact", label: "Réserver ma place" },
             heroVariant: "beams",
           },
         },
@@ -883,72 +1053,128 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "L'ambiance",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+1", alt: "Ambiance 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+2", alt: "Ambiance 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+3", alt: "Ambiance 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+4", alt: "Ambiance 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "menu",
-          position: 40,
-          content: {
-            title: "Notre carte de nuit",
-            description: "Cuisine de bar et cocktails signature, jusqu'au bout de la nuit.",
-            categories: [
-              {
-                name: "À partager",
-                items: [
-                  { name: "Planche charcuterie & fromages", description: "Pour 2 personnes.", price: "24€" },
-                  { name: "Nachos maison", description: "Guacamole, cheddar fondu.", price: "14€" },
-                  { name: "Tapas du moment", description: "Selon l'humeur du chef.", price: "16€" },
-                ],
-              },
-              {
-                name: "Plats du bar",
-                items: [
-                  { name: "Burger signature", description: "Bœuf, cheddar, sauce maison.", price: "18€" },
-                  { name: "Tartare de bœuf", description: "Coupé au couteau, frites.", price: "19€" },
-                  { name: "Croque monsieur revisité", description: "Béchamel truffée.", price: "14€" },
-                ],
-              },
-              {
-                name: "Cocktails signature",
-                items: [
-                  { name: "Old Fashioned maison", description: "Bourbon, angostura.", price: "12€" },
-                  { name: "Spritz du Comptoir", description: "Recette maison.", price: "11€" },
-                  { name: "Mocktail du moment", description: "Sans alcool.", price: "9€" },
-                ],
-              },
-            ],
-            orderEnabled: true,
-            orderPhone: "01 47 58 69 70",
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Réserver ma place",
-            description: "Ouvert jusqu'à 2h du matin, jeudi à samedi.",
-            email: "contact@exemple.fr",
-            phone: "01 47 58 69 70",
-            address: "58 rue Oberkampf, 75011 Paris",
-            hours: "Jeu-Sam : 19h-2h\nDim-Mer : Fermé",
-            socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "carte",
+          title: "La carte",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "La carte de nuit",
+                subheadline: "Cuisine servie jusqu'à minuit, cocktails jusqu'à la fermeture.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "menu",
+              position: 20,
+              content: {
+                title: "Notre carte de nuit",
+                description: "Cuisine de bar et cocktails signature, jusqu'au bout de la nuit.",
+                categories: [
+                  {
+                    name: "À partager",
+                    items: [
+                      { name: "Planche charcuterie & fromages", description: "Pour 2 personnes.", price: "24€" },
+                      { name: "Nachos maison", description: "Guacamole, cheddar fondu.", price: "14€" },
+                      { name: "Tapas du moment", description: "Selon l'humeur du chef.", price: "16€" },
+                    ],
+                  },
+                  {
+                    name: "Plats du bar",
+                    items: [
+                      { name: "Burger signature", description: "Bœuf, cheddar, sauce maison.", price: "18€" },
+                      { name: "Tartare de bœuf", description: "Coupé au couteau, frites.", price: "19€" },
+                      { name: "Croque monsieur revisité", description: "Béchamel truffée.", price: "14€" },
+                    ],
+                  },
+                  {
+                    name: "Cocktails signature",
+                    items: [
+                      { name: "Old Fashioned maison", description: "Bourbon, angostura.", price: "12€" },
+                      { name: "Spritz du Comptoir", description: "Recette maison.", price: "11€" },
+                      { name: "Mocktail du moment", description: "Sans alcool.", price: "9€" },
+                    ],
+                  },
+                ],
+                orderEnabled: true,
+                orderPhone: "01 47 58 69 70",
+              },
+            },
+          ],
+        },
+        {
+          slug: "ambiance",
+          title: "Ambiance",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "L'ambiance",
+                subheadline: "Bois sombre, néons discrets et un DJ certains soirs. On vient pour rester.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "L'ambiance",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+1", alt: "Ambiance 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+2", alt: "Ambiance 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+3", alt: "Ambiance 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/991B1B?text=Comptoir+4", alt: "Ambiance 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Réserver ma place",
+                subheadline: "Au comptoir ou en salle — dites-nous ce que vous préférez, on garde la place.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Réserver ma place",
+                description: "Ouvert jusqu'à 2h du matin, jeudi à samedi.",
+                email: "contact@exemple.fr",
+                phone: "01 47 58 69 70",
+                address: "58 rue Oberkampf, 75011 Paris",
+                hours: "Jeu-Sam : 19h-2h\nDim-Mer : Fermé",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -1147,7 +1373,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "garage-premium-auto",
     name: "Garage Premium Auto",
-    description: "Un design sombre et animé, pour un garage haut de gamme qui inspire confiance.",
+    description: "Quatre pages premium — accueil, prestations, réalisations, rendez-vous — pour un garage haut de gamme.",
     category: "automobile",
     isPremium: true,
     featured: true,
@@ -1163,7 +1389,7 @@ export const templates: TemplateDefinition[] = [
             headline: "L'excellence automobile, à votre service",
             subheadline: "Un garage premium pour l'entretien et la personnalisation de votre véhicule.",
             ctaLabel: "Prendre rendez-vous",
-            ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
+            ctaLink: { href: "/contact", label: "Prendre rendez-vous" },
             heroVariant: "grid3d",
           },
         },
@@ -1181,63 +1407,120 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Notre atelier",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+1", alt: "Atelier 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+2", alt: "Atelier 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+3", alt: "Atelier 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+4", alt: "Atelier 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "beforeAfter",
-          position: 35,
-          content: {
-            title: "L'effet du detailing",
-            description: "Glissez le curseur pour voir la différence après notre protection céramique.",
-            items: [
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/DC2626?text=Avant", alt: "Carrosserie avant detailing" },
-                afterImage: { url: "https://placehold.co/600x750/DC2626/0a0a0a?text=Apr%C3%A8s", alt: "Carrosserie après detailing" },
-                label: "Detailing Complet",
-              },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Nos forfaits premium",
-            plans: [
-              { name: "Révision Premium", price: "199€", period: "", features: ["Contrôle 50 points", "Produits constructeur"], ctaLabel: "Réserver", highlighted: false },
-              { name: "Detailing Complet", price: "349€", period: "", features: ["Intérieur + extérieur", "Protection céramique"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Diagnostic Expert", price: "59€", period: "", features: ["Lecture + rapport détaillé"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Prendre rendez-vous",
-            description: "Un accueil personnalisé, sur rendez-vous uniquement.",
-            email: "contact@exemple.fr",
-            phone: "01 45 67 89 10",
-            address: "78 avenue Foch, 75116 Paris",
-            hours: "Lun-Ven : 8h-19h\nSam : 9h-17h",
-            socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "Detailing, mécanique, protection : chaque intervention est garantie deux ans, pièces comprises.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "beforeAfter",
+              position: 20,
+              content: {
+                title: "L'effet du detailing",
+                description: "Glissez le curseur pour voir la différence après notre protection céramique.",
+                items: [
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/DC2626?text=Avant", alt: "Carrosserie avant detailing" },
+                    afterImage: { url: "https://placehold.co/600x750/DC2626/0a0a0a?text=Apr%C3%A8s", alt: "Carrosserie après detailing" },
+                    label: "Detailing Complet",
+                  },
+                ],
+              },
+            },
+            {
+              type: "pricing",
+              position: 30,
+              content: {
+                ctaHref: "/contact",
+                title: "Nos forfaits premium",
+                plans: [
+                  { name: "Révision Premium", price: "199€", period: "", features: ["Contrôle 50 points", "Produits constructeur"], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Detailing Complet", price: "349€", period: "", features: ["Intérieur + extérieur", "Protection céramique"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Diagnostic Expert", price: "59€", period: "", features: ["Lecture + rapport détaillé"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "realisations",
+          title: "Réalisations",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Réalisations",
+                subheadline: "L'atelier, les véhicules qui y passent et le résultat, sans retouche.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "Notre atelier",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+1", alt: "Atelier 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+2", alt: "Atelier 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+3", alt: "Atelier 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/DC2626?text=Premium+4", alt: "Atelier 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prendre rendez-vous",
+                subheadline: "Décrivez-nous votre véhicule et ce dont il a besoin : nous vous rappelons sous 24 heures.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Prendre rendez-vous",
+                description: "Un accueil personnalisé, sur rendez-vous uniquement.",
+                email: "contact@exemple.fr",
+                phone: "01 45 67 89 10",
+                address: "78 avenue Foch, 75116 Paris",
+                hours: "Lun-Ven : 8h-19h\nSam : 9h-17h",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -1335,7 +1618,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "atelier-classic-cars",
     name: "Atelier Classic Cars",
-    description: "Un univers sombre et feutré, animé, pour la restauration de véhicules de collection.",
+    description: "Quatre pages pour un atelier de collection : accueil, prestations, restaurations, contact.",
     category: "automobile",
     isPremium: true,
     schema: {
@@ -1350,7 +1633,7 @@ export const templates: TemplateDefinition[] = [
             headline: "La passion des voitures d'exception",
             subheadline: "Restauration et entretien de véhicules de collection, dans les règles de l'art.",
             ctaLabel: "Nous confier votre véhicule",
-            ctaLink: { href: "#contact", label: "Nous confier votre véhicule" },
+            ctaLink: { href: "/contact", label: "Nous confier votre véhicule" },
             heroVariant: "spotlight",
           },
         },
@@ -1368,63 +1651,120 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Nos restaurations",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+1", alt: "Restauration 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+2", alt: "Restauration 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+3", alt: "Restauration 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+4", alt: "Restauration 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "beforeAfter",
-          position: 35,
-          content: {
-            title: "Le temps d'une restauration",
-            description: "Glissez le curseur pour voir le véhicule avant et après son passage à l'atelier.",
-            items: [
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/14532D?text=Avant", alt: "Véhicule avant restauration" },
-                afterImage: { url: "https://placehold.co/600x750/14532D/0a0a0a?text=Apr%C3%A8s", alt: "Véhicule après restauration" },
-                label: "Restauration complète",
-              },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Nos prestations",
-            plans: [
-              { name: "Diagnostic complet", price: "120€", period: "", features: ["Rapport détaillé"], ctaLabel: "Nous contacter", highlighted: false },
-              { name: "Restauration sur-mesure", price: "Sur devis", period: "", features: ["Projet clé en main"], ctaLabel: "Nous contacter", highlighted: true },
-              { name: "Entretien annuel", price: "450€", period: "", features: ["Suivi personnalisé"], ctaLabel: "Nous contacter", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Nous confier votre véhicule",
-            description: "Chaque projet est unique, parlons-en.",
-            email: "contact@exemple.fr",
-            phone: "01 23 45 67 89",
-            address: "5 chemin des Artisans, 69110 Sainte-Foy-lès-Lyon",
-            hours: "Lun-Ven : 9h-18h, sur rendez-vous",
-            socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "De l'expertise avant achat à la restauration complète, châssis compris.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "beforeAfter",
+              position: 20,
+              content: {
+                title: "Le temps d'une restauration",
+                description: "Glissez le curseur pour voir le véhicule avant et après son passage à l'atelier.",
+                items: [
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/14532D?text=Avant", alt: "Véhicule avant restauration" },
+                    afterImage: { url: "https://placehold.co/600x750/14532D/0a0a0a?text=Apr%C3%A8s", alt: "Véhicule après restauration" },
+                    label: "Restauration complète",
+                  },
+                ],
+              },
+            },
+            {
+              type: "pricing",
+              position: 30,
+              content: {
+                ctaHref: "/contact",
+                title: "Nos prestations",
+                plans: [
+                  { name: "Diagnostic complet", price: "120€", period: "", features: ["Rapport détaillé"], ctaLabel: "Nous contacter", highlighted: false },
+                  { name: "Restauration sur-mesure", price: "Sur devis", period: "", features: ["Projet clé en main"], ctaLabel: "Nous contacter", highlighted: true },
+                  { name: "Entretien annuel", price: "450€", period: "", features: ["Suivi personnalisé"], ctaLabel: "Nous contacter", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "restaurations",
+          title: "Restaurations",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Nos restaurations",
+                subheadline: "Chaque voiture repart avec son dossier photo, étape par étape.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "Nos restaurations",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+1", alt: "Restauration 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+2", alt: "Restauration 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+3", alt: "Restauration 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/14532D?text=Classic+4", alt: "Restauration 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Nous confier votre véhicule",
+                subheadline: "Parlez-nous du modèle, de son état et de ce que vous voulez en faire.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Nous confier votre véhicule",
+                description: "Chaque projet est unique, parlons-en.",
+                email: "contact@exemple.fr",
+                phone: "01 23 45 67 89",
+                address: "5 chemin des Artisans, 69110 Sainte-Foy-lès-Lyon",
+                hours: "Lun-Ven : 9h-18h, sur rendez-vous",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -1698,7 +2038,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "maitre-artisan",
     name: "Maître Artisan",
-    description: "Un design sombre et animé, pour un artisan d'excellence qui inspire confiance.",
+    description: "Quatre pages sobres — accueil, prestations, réalisations, contact — pour un artisan d'excellence.",
     category: "artisan",
     isPremium: true,
     featured: true,
@@ -1714,7 +2054,7 @@ export const templates: TemplateDefinition[] = [
             headline: "L'excellence artisanale, transmise depuis trois générations",
             subheadline: "Un savoir-faire d'exception au service de vos projets les plus exigeants.",
             ctaLabel: "Prendre contact",
-            ctaLink: { href: "#contact", label: "Prendre contact" },
+            ctaLink: { href: "/contact", label: "Prendre contact" },
             heroVariant: "mesh",
           },
         },
@@ -1731,51 +2071,108 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Nos réalisations d'exception",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+1", alt: "Réalisation 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+2", alt: "Réalisation 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+3", alt: "Réalisation 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+4", alt: "Réalisation 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Nos prestations",
-            plans: [
-              { name: "Étude de projet", price: "Offerte", period: "", features: ["Sans engagement"], ctaLabel: "Prendre contact", highlighted: false },
-              { name: "Réalisation sur-mesure", price: "Sur devis", period: "", features: ["Accompagnement complet"], ctaLabel: "Prendre contact", highlighted: true },
-              { name: "Suivi & entretien", price: "Sur devis", period: "", features: ["Contrat annuel disponible"], ctaLabel: "Prendre contact", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Prendre contact",
-            description: "Un rendez-vous à votre domicile ou en atelier.",
-            email: "contact@exemple.fr",
-            phone: "06 98 76 54 32",
-            address: "Île-de-France et grand Paris",
-            hours: "Lun-Sam : 8h-19h, sur rendez-vous",
-            socialLinks: [
-              { platform: "Instagram", href: "https://instagram.com" },
-              { platform: "LinkedIn", href: "https://linkedin.com" },
-            ],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "L'étude de votre projet est offerte et sans engagement. Le devis suit sous huit jours.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "pricing",
+              position: 20,
+              content: {
+                ctaHref: "/contact",
+                title: "Nos prestations",
+                plans: [
+                  { name: "Étude de projet", price: "Offerte", period: "", features: ["Sans engagement"], ctaLabel: "Prendre contact", highlighted: false },
+                  { name: "Réalisation sur-mesure", price: "Sur devis", period: "", features: ["Accompagnement complet"], ctaLabel: "Prendre contact", highlighted: true },
+                  { name: "Suivi & entretien", price: "Sur devis", period: "", features: ["Contrat annuel disponible"], ctaLabel: "Prendre contact", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "realisations",
+          title: "Réalisations",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Nos réalisations",
+                subheadline: "Des chantiers récents, photographiés une fois terminés et les lieux remis en état.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "Nos réalisations d'exception",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+1", alt: "Réalisation 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+2", alt: "Réalisation 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+3", alt: "Réalisation 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/B8860B?text=Maitre+4", alt: "Réalisation 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prendre contact",
+                subheadline: "Décrivez votre projet en quelques lignes : nous vous rappelons pour en parler.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Prendre contact",
+                description: "Un rendez-vous à votre domicile ou en atelier.",
+                email: "contact@exemple.fr",
+                phone: "06 98 76 54 32",
+                address: "Île-de-France et grand Paris",
+                hours: "Lun-Sam : 8h-19h, sur rendez-vous",
+                socialLinks: [
+                  { platform: "Instagram", href: "https://instagram.com" },
+                  { platform: "LinkedIn", href: "https://linkedin.com" },
+                ],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -1783,7 +2180,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "renovation-excellence",
     name: "Rénovation Excellence",
-    description: "Un univers sombre et sobre, animé, pour une entreprise de rénovation de confiance.",
+    description: "Quatre pages pour une entreprise de rénovation : accueil, prestations, chantiers, devis.",
     category: "artisan",
     isPremium: true,
     schema: {
@@ -1798,7 +2195,7 @@ export const templates: TemplateDefinition[] = [
             headline: "Vos projets de rénovation, entre expertes mains",
             subheadline: "Gros œuvre, second œuvre, rénovation complète — un seul interlocuteur, du début à la fin.",
             ctaLabel: "Demander une étude gratuite",
-            ctaLink: { href: "#contact", label: "Demander une étude gratuite" },
+            ctaLink: { href: "/contact", label: "Demander une étude gratuite" },
             heroVariant: "beams",
           },
         },
@@ -1815,68 +2212,125 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Chantiers réalisés",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+1", alt: "Chantier 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+2", alt: "Chantier 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+3", alt: "Chantier 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+4", alt: "Chantier 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "beforeAfter",
-          position: 35,
-          content: {
-            title: "Avant / Après",
-            description: "Glissez le curseur pour voir la transformation de nos chantiers.",
-            items: [
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/1E3A8A?text=Avant", alt: "Pièce avant rénovation" },
-                afterImage: { url: "https://placehold.co/600x750/1E3A8A/0a0a0a?text=Apr%C3%A8s", alt: "Pièce après rénovation" },
-                label: "Rénovation complète",
-              },
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/1E3A8A?text=Avant", alt: "Cuisine avant rénovation" },
-                afterImage: { url: "https://placehold.co/600x750/1E3A8A/0a0a0a?text=Apr%C3%A8s", alt: "Cuisine après rénovation" },
-                label: "Rénovation cuisine",
-              },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Nos accompagnements",
-            plans: [
-              { name: "Étude gratuite", price: "Offerte", period: "", features: ["Visite + devis détaillé"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Rénovation partielle", price: "Sur devis", period: "", features: ["Cuisine, salle de bain..."], ctaLabel: "Réserver", highlighted: false },
-              { name: "Rénovation complète", price: "Sur devis", period: "", features: ["Suivi de chantier inclus"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Demander une étude gratuite",
-            description: "Un conseiller vous rappelle sous 24h.",
-            email: "contact@exemple.fr",
-            phone: "01 56 78 90 12",
-            address: "Intervention en Île-de-France",
-            hours: "Lun-Ven : 8h-19h",
-            socialLinks: [{ platform: "LinkedIn", href: "https://linkedin.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "Un seul interlocuteur, du premier rendez-vous à la réception du chantier.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "beforeAfter",
+              position: 20,
+              content: {
+                title: "Avant / Après",
+                description: "Glissez le curseur pour voir la transformation de nos chantiers.",
+                items: [
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/1E3A8A?text=Avant", alt: "Pièce avant rénovation" },
+                    afterImage: { url: "https://placehold.co/600x750/1E3A8A/0a0a0a?text=Apr%C3%A8s", alt: "Pièce après rénovation" },
+                    label: "Rénovation complète",
+                  },
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/1E3A8A?text=Avant", alt: "Cuisine avant rénovation" },
+                    afterImage: { url: "https://placehold.co/600x750/1E3A8A/0a0a0a?text=Apr%C3%A8s", alt: "Cuisine après rénovation" },
+                    label: "Rénovation cuisine",
+                  },
+                ],
+              },
+            },
+            {
+              type: "pricing",
+              position: 30,
+              content: {
+                ctaHref: "/contact",
+                title: "Nos accompagnements",
+                plans: [
+                  { name: "Étude gratuite", price: "Offerte", period: "", features: ["Visite + devis détaillé"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Rénovation partielle", price: "Sur devis", period: "", features: ["Cuisine, salle de bain..."], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Rénovation complète", price: "Sur devis", period: "", features: ["Suivi de chantier inclus"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "chantiers",
+          title: "Chantiers",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Nos chantiers",
+                subheadline: "Avant, pendant, après — les photos viennent de nos chantiers, pas d'une banque d'images.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "Chantiers réalisés",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+1", alt: "Chantier 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+2", alt: "Chantier 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+3", alt: "Chantier 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/1E3A8A?text=Renovation+4", alt: "Chantier 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Demander un devis",
+                subheadline: "Envoyez-nous vos plans ou quelques photos : le devis est gratuit et détaillé.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Demander une étude gratuite",
+                description: "Un conseiller vous rappelle sous 24h.",
+                email: "contact@exemple.fr",
+                phone: "01 56 78 90 12",
+                address: "Intervention en Île-de-France",
+                hours: "Lun-Ven : 8h-19h",
+                socialLinks: [{ platform: "LinkedIn", href: "https://linkedin.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -2073,7 +2527,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "coach-elite",
     name: "Coach Elite",
-    description: "Un design sombre et animé, pour un coaching haute performance qui inspire confiance.",
+    description: "Quatre pages haute performance : accueil, programmes, résultats, contact.",
     category: "coach-sportif",
     isPremium: true,
     featured: true,
@@ -2089,7 +2543,7 @@ export const templates: TemplateDefinition[] = [
             headline: "Dépassez vos limites, révélez votre potentiel",
             subheadline: "Un coaching haute performance, pour des résultats mesurables et durables.",
             ctaLabel: "Réserver un bilan gratuit",
-            ctaLink: { href: "#contact", label: "Réserver un bilan gratuit" },
+            ctaLink: { href: "/contact", label: "Réserver un bilan gratuit" },
             heroVariant: "grid3d",
           },
         },
@@ -2106,68 +2560,125 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "En pleine action",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+1", alt: "Séance 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+2", alt: "Séance 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+3", alt: "Séance 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+4", alt: "Séance 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "beforeAfter",
-          position: 35,
-          content: {
-            title: "La performance, mesurée",
-            description: "Glissez le curseur pour voir la transformation de nos athlètes.",
-            items: [
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/06B6D4?text=Avant", alt: "Avant le programme Elite" },
-                afterImage: { url: "https://placehold.co/600x750/06B6D4/0a0a0a?text=Apr%C3%A8s", alt: "Après le programme Elite" },
-                label: "Coaching Elite — 8 séances",
-              },
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/06B6D4?text=Avant", alt: "Avant le suivi mensuel" },
-                afterImage: { url: "https://placehold.co/600x750/06B6D4/0a0a0a?text=Apr%C3%A8s", alt: "Après le suivi mensuel" },
-                label: "Suivi mensuel illimité",
-              },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Mes formules élite",
-            plans: [
-              { name: "Bilan complet", price: "Offert", period: "", features: ["1h de diagnostic"], ctaLabel: "Réserver", highlighted: false },
-              { name: "Coaching Elite", price: "280€", period: "", features: ["8 séances + suivi nutrition"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Suivi mensuel illimité", price: "450€", period: "/mois", features: ["Accès prioritaire"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Réserver un bilan gratuit",
-            description: "Premier échange offert, sans engagement.",
-            email: "contact@exemple.fr",
-            phone: "06 11 22 33 44",
-            address: "Studio privé — Paris 8e",
-            hours: "Lun-Sam : 6h-21h sur rendez-vous",
-            socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "programmes",
+          title: "Programmes",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Programmes",
+                subheadline: "Chaque programme démarre par un bilan d'une heure, offert et sans engagement.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "pricing",
+              position: 20,
+              content: {
+                ctaHref: "/contact",
+                title: "Mes formules élite",
+                plans: [
+                  { name: "Bilan complet", price: "Offert", period: "", features: ["1h de diagnostic"], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Coaching Elite", price: "280€", period: "", features: ["8 séances + suivi nutrition"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Suivi mensuel illimité", price: "450€", period: "/mois", features: ["Accès prioritaire"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "resultats",
+          title: "Résultats",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Résultats",
+                subheadline: "Des transformations mesurées, sur des personnes qui n'avaient pas plus de temps que vous.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "beforeAfter",
+              position: 20,
+              content: {
+                title: "La performance, mesurée",
+                description: "Glissez le curseur pour voir la transformation de nos athlètes.",
+                items: [
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/06B6D4?text=Avant", alt: "Avant le programme Elite" },
+                    afterImage: { url: "https://placehold.co/600x750/06B6D4/0a0a0a?text=Apr%C3%A8s", alt: "Après le programme Elite" },
+                    label: "Coaching Elite — 8 séances",
+                  },
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/06B6D4?text=Avant", alt: "Avant le suivi mensuel" },
+                    afterImage: { url: "https://placehold.co/600x750/06B6D4/0a0a0a?text=Apr%C3%A8s", alt: "Après le suivi mensuel" },
+                    label: "Suivi mensuel illimité",
+                  },
+                ],
+              },
+            },
+            {
+              type: "gallery",
+              position: 30,
+              content: {
+                title: "En pleine action",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+1", alt: "Séance 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+2", alt: "Séance 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+3", alt: "Séance 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+4", alt: "Séance 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "On commence quand ?",
+                subheadline: "Dites-moi votre objectif et vos disponibilités — je réponds sous 24 heures.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Réserver un bilan gratuit",
+                description: "Premier échange offert, sans engagement.",
+                email: "contact@exemple.fr",
+                phone: "06 11 22 33 44",
+                address: "Studio privé — Paris 8e",
+                hours: "Lun-Sam : 6h-21h sur rendez-vous",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -2272,7 +2783,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "performance-lab",
     name: "Performance Lab",
-    description: "Un univers sombre et intense, animé, pour un entraînement sans compromis.",
+    description: "Quatre pages futuristes : accueil, programmes, résultats, contact.",
     category: "coach-sportif",
     isPremium: true,
     schema: {
@@ -2287,7 +2798,7 @@ export const templates: TemplateDefinition[] = [
             headline: "L'entraînement sans compromis",
             subheadline: "Un laboratoire de performance pour athlètes exigeants et sportifs déterminés.",
             ctaLabel: "Démarrer mon programme",
-            ctaLink: { href: "#contact", label: "Démarrer mon programme" },
+            ctaLink: { href: "/contact", label: "Démarrer mon programme" },
             heroVariant: "telemetry",
           },
         },
@@ -2304,68 +2815,125 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Le Lab",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+1", alt: "Séance 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+2", alt: "Séance 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+3", alt: "Séance 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+4", alt: "Séance 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "beforeAfter",
-          position: 35,
-          content: {
-            title: "Les résultats du Lab",
-            description: "Glissez le curseur pour voir la progression après un cycle complet.",
-            items: [
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/EA580C?text=Avant", alt: "Avant le programme Performance" },
-                afterImage: { url: "https://placehold.co/600x750/EA580C/0a0a0a?text=Apr%C3%A8s", alt: "Après le programme Performance" },
-                label: "Programme Performance — 12 séances",
-              },
-              {
-                beforeImage: { url: "https://placehold.co/600x750/0a0a0a/EA580C?text=Avant", alt: "Avant la préparation compétition" },
-                afterImage: { url: "https://placehold.co/600x750/EA580C/0a0a0a?text=Apr%C3%A8s", alt: "Après la préparation compétition" },
-                label: "Prépa compétition",
-              },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Mes programmes",
-            plans: [
-              { name: "Évaluation physique", price: "39€", period: "", features: ["Tests + rapport"], ctaLabel: "Réserver", highlighted: false },
-              { name: "Programme Performance", price: "320€", period: "", features: ["12 séances + suivi nutrition"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Prépa compétition", price: "Sur devis", period: "", features: ["Accompagnement complet"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Démarrer mon programme",
-            description: "Réservé aux sportifs motivés — premier contact obligatoire.",
-            email: "contact@exemple.fr",
-            phone: "06 33 44 55 66",
-            address: "Salle privée — Lyon 3e",
-            hours: "Lun-Sam : 6h-22h sur rendez-vous",
-            socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "programmes",
+          title: "Programmes",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Programmes",
+                subheadline: "Force, préparation physique, nutrition : trois axes, un seul plan.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "pricing",
+              position: 20,
+              content: {
+                ctaHref: "/contact",
+                title: "Mes programmes",
+                plans: [
+                  { name: "Évaluation physique", price: "39€", period: "", features: ["Tests + rapport"], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Programme Performance", price: "320€", period: "", features: ["12 séances + suivi nutrition"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Prépa compétition", price: "Sur devis", period: "", features: ["Accompagnement complet"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "resultats",
+          title: "Résultats",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Les résultats du Lab",
+                subheadline: "Chiffres avant, chiffres après. Rien d'autre.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "beforeAfter",
+              position: 20,
+              content: {
+                title: "Les résultats du Lab",
+                description: "Glissez le curseur pour voir la progression après un cycle complet.",
+                items: [
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/EA580C?text=Avant", alt: "Avant le programme Performance" },
+                    afterImage: { url: "https://placehold.co/600x750/EA580C/0a0a0a?text=Apr%C3%A8s", alt: "Après le programme Performance" },
+                    label: "Programme Performance — 12 séances",
+                  },
+                  {
+                    beforeImage: { url: "https://placehold.co/600x750/0a0a0a/EA580C?text=Avant", alt: "Avant la préparation compétition" },
+                    afterImage: { url: "https://placehold.co/600x750/EA580C/0a0a0a?text=Apr%C3%A8s", alt: "Après la préparation compétition" },
+                    label: "Prépa compétition",
+                  },
+                ],
+              },
+            },
+            {
+              type: "gallery",
+              position: 30,
+              content: {
+                title: "Le Lab",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+1", alt: "Séance 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+2", alt: "Séance 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+3", alt: "Séance 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/EA580C?text=Lab+4", alt: "Séance 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Rejoindre le Lab",
+                subheadline: "Une évaluation physique d'abord, un programme ensuite.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Démarrer mon programme",
+                description: "Réservé aux sportifs motivés — premier contact obligatoire.",
+                email: "contact@exemple.fr",
+                phone: "06 33 44 55 66",
+                address: "Salle privée — Lyon 3e",
+                hours: "Lun-Sam : 6h-22h sur rendez-vous",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -2553,7 +3121,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "photographe-studio",
     name: "Photographe — Studio noir",
-    description: "Un design sombre et immersif, pensé pour mettre le travail en valeur.",
+    description: "Quatre pages sombres et immersives : accueil, prestations, portfolio, contact.",
     category: "photographe",
     isPremium: true,
     featured: true,
@@ -2569,7 +3137,7 @@ export const templates: TemplateDefinition[] = [
             headline: "L'émotion, capturée avec précision",
             subheadline: "Photographe indépendant — mariage, portrait, corporate. Un regard singulier sur chaque histoire.",
             ctaLabel: "Voir le portfolio",
-            ctaLink: { href: "#contact", label: "Voir le portfolio" },
+            ctaLink: { href: "/portfolio", label: "Voir le portfolio" },
             heroVariant: "spotlight",
           },
         },
@@ -2577,11 +3145,11 @@ export const templates: TemplateDefinition[] = [
           type: "features",
           position: 20,
           content: {
-            title: "Mes prestations",
+            title: "Trois façons de travailler ensemble",
             items: [
-              { icon: "💍", title: "Mariage", description: "Un reportage discret et complet de votre journée." },
-              { icon: "📸", title: "Portrait", description: "Séances en studio ou en lumière naturelle." },
-              { icon: "🏢", title: "Corporate", description: "Une image professionnelle et soignée pour votre marque." },
+              { icon: "💍", title: "Mariage", description: "Un reportage discret et complet, de la préparation à la dernière danse." },
+              { icon: "📸", title: "Portrait", description: "En studio ou en lumière naturelle, une séance à votre rythme." },
+              { icon: "🏢", title: "Corporate", description: "Une image professionnelle et cohérente pour toute votre équipe." },
             ],
           },
         },
@@ -2589,53 +3157,137 @@ export const templates: TemplateDefinition[] = [
           type: "gallery",
           position: 30,
           content: {
-            title: "Portfolio",
-            variant: "gallery3d",
+            title: "Un aperçu",
+            variant: "grid",
             images: [
-              { image: { url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=900&auto=format&fit=crop&q=60", alt: "Portrait studio" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=900&auto=format&fit=crop&q=60", alt: "Portrait lumière naturelle" }, caption: "" },
+              { image: { url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=900&auto=format&fit=crop&q=60", alt: "Mariage" }, caption: "" },
+              { image: { url: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=900&auto=format&fit=crop&q=60", alt: "Portrait en lumière naturelle" }, caption: "" },
               { image: { url: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=900&auto=format&fit=crop&q=60", alt: "Portrait noir et blanc" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=900&auto=format&fit=crop&q=60", alt: "Portrait extérieur" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&auto=format&fit=crop&q=60", alt: "Mariage" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=900&auto=format&fit=crop&q=60", alt: "Mariage détail" }, caption: "" },
               { image: { url: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=900&auto=format&fit=crop&q=60", alt: "Portrait corporate" }, caption: "" },
-              { image: { url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&auto=format&fit=crop&q=60", alt: "Portrait studio 2" }, caption: "" },
             ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Mes formules",
-            plans: [
-              { name: "Séance portrait", price: "180€", period: "", features: ["1h30 de séance", "25 photos retouchées"], ctaLabel: "Réserver", highlighted: false },
-              { name: "Reportage mariage", price: "1500€", period: "", features: ["Journée complète", "Galerie en ligne privée"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Shooting corporate", price: "350€", period: "", features: ["Équipe jusqu'à 10 personnes"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Me contacter",
-            description: "Parlez-moi de votre projet, je réponds sous 48h.",
-            email: "contact@exemple.fr",
-            phone: "06 45 67 89 01",
-            address: "Studio à Nantes — déplacements possibles",
-            hours: "Sur rendez-vous, 7j/7",
-            socialLinks: [
-              { platform: "Instagram", href: "https://instagram.com" },
-              { platform: "LinkedIn", href: "https://linkedin.com" },
-            ],
-            showForm: true,
           },
         },
         {
           type: "footer",
-          position: 60,
+          position: 40,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "Chaque projet commence par un échange : je vous propose ensuite la formule qui correspond vraiment à votre besoin.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "features",
+              position: 20,
+              content: {
+                title: "Ce que je photographie",
+                items: [
+                  { icon: "💍", title: "Mariage", description: "Reportage complet ou demi-journée, avec repérage du lieu la veille si besoin." },
+                  { icon: "📸", title: "Portrait", description: "Portrait individuel, famille ou book professionnel, en studio ou en extérieur." },
+                  { icon: "🏢", title: "Corporate", description: "Portraits d'équipe, reportage d'entreprise et images pour votre communication." },
+                ],
+              },
+            },
+            {
+              type: "pricing",
+              position: 30,
+              content: {
+                ctaHref: "/contact",
+                title: "Mes formules",
+                plans: [
+                  { name: "Séance portrait", price: "180€", period: "", features: ["1h30 de séance", "25 photos retouchées", "Galerie privée en ligne"], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Reportage mariage", price: "1500€", period: "", features: ["Journée complète", "Repérage du lieu offert", "Galerie privée en ligne", "300 photos minimum"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Shooting corporate", price: "350€", period: "", features: ["Équipe jusqu'à 10 personnes", "Retouches incluses", "Livraison sous 5 jours"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "portfolio",
+          title: "Portfolio",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Portfolio",
+                subheadline: "Une sélection de séances récentes.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+                backgroundImage: { url: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1600&auto=format&fit=crop&q=60", alt: "" },
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "",
+                variant: "gallery3d",
+                images: [
+                  { image: { url: "https://images.unsplash.com/photo-1519741497674-611481863552?w=900&auto=format&fit=crop&q=60", alt: "Portrait studio" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=900&auto=format&fit=crop&q=60", alt: "Portrait lumière naturelle" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=900&auto=format&fit=crop&q=60", alt: "Portrait noir et blanc" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=900&auto=format&fit=crop&q=60", alt: "Portrait extérieur" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&auto=format&fit=crop&q=60", alt: "Mariage" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=900&auto=format&fit=crop&q=60", alt: "Mariage détail" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=900&auto=format&fit=crop&q=60", alt: "Portrait corporate" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=900&auto=format&fit=crop&q=60", alt: "Portrait studio 2" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Parlons de votre projet",
+                subheadline: "Dites-moi la date, le lieu et ce que vous avez en tête — je réponds sous 48h.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Me contacter",
+                description: "Parlez-moi de votre projet, je réponds sous 48h.",
+                email: "contact@exemple.fr",
+                phone: "06 45 67 89 01",
+                address: "Studio à Nantes — déplacements possibles",
+                hours: "Sur rendez-vous, 7j/7",
+                socialLinks: [
+                  { platform: "Instagram", href: "https://instagram.com" },
+                  { platform: "LinkedIn", href: "https://linkedin.com" },
+                ],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },
@@ -2728,7 +3380,7 @@ export const templates: TemplateDefinition[] = [
   {
     slug: "portrait-signature",
     name: "Portrait Signature",
-    description: "Un univers sombre et raffiné, animé, pour un photographe d'exception.",
+    description: "Quatre pages signature : accueil, prestations, portfolio, contact.",
     category: "photographe",
     isPremium: true,
     schema: {
@@ -2743,7 +3395,7 @@ export const templates: TemplateDefinition[] = [
             headline: "Un regard qui sublime chaque instant",
             subheadline: "Photographe d'exception — portraits d'art, éditorial, mariages haut de gamme.",
             ctaLabel: "Découvrir mon univers",
-            ctaLink: { href: "#contact", label: "Découvrir mon univers" },
+            ctaLink: { href: "/contact", label: "Découvrir mon univers" },
             heroVariant: "bokeh",
           },
         },
@@ -2760,51 +3412,108 @@ export const templates: TemplateDefinition[] = [
           },
         },
         {
-          type: "gallery",
-          position: 30,
-          content: {
-            title: "Galerie signature",
-            images: [
-              { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+1", alt: "Photo 1" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+2", alt: "Photo 2" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+3", alt: "Photo 3" }, caption: "" },
-              { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+4", alt: "Photo 4" }, caption: "" },
-            ],
-          },
-        },
-        {
-          type: "pricing",
-          position: 40,
-          content: {
-            title: "Mes formules signature",
-            plans: [
-              { name: "Séance Signature", price: "280€", period: "", features: ["2h", "30 photos retouchées haute couture"], ctaLabel: "Réserver", highlighted: false },
-              { name: "Mariage Prestige", price: "2200€", period: "", features: ["Journée complète", "Album photo inclus"], ctaLabel: "Réserver", highlighted: true },
-              { name: "Édition limitée", price: "Sur devis", period: "", features: ["Tirage encadré, pièce unique"], ctaLabel: "Réserver", highlighted: false },
-            ],
-          },
-        },
-        {
-          type: "contact",
-          position: 50,
-          content: {
-            title: "Découvrir mon univers",
-            description: "Un premier échange pour comprendre votre projet.",
-            email: "contact@exemple.fr",
-            phone: "06 66 77 88 99",
-            address: "Studio à Paris — déplacements sur toute la France",
-            hours: "Sur rendez-vous uniquement",
-            socialLinks: [
-              { platform: "Instagram", href: "https://instagram.com" },
-              { platform: "LinkedIn", href: "https://linkedin.com" },
-            ],
-            showForm: true,
-          },
-        },
-        {
           type: "footer",
-          position: 60,
+          position: 30,
           content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "prestations",
+          title: "Prestations",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Prestations",
+                subheadline: "Séance signature, mariage, tirage d'art — la direction artistique est comprise dans chaque formule.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "pricing",
+              position: 20,
+              content: {
+                ctaHref: "/contact",
+                title: "Mes formules signature",
+                plans: [
+                  { name: "Séance Signature", price: "280€", period: "", features: ["2h", "30 photos retouchées haute couture"], ctaLabel: "Réserver", highlighted: false },
+                  { name: "Mariage Prestige", price: "2200€", period: "", features: ["Journée complète", "Album photo inclus"], ctaLabel: "Réserver", highlighted: true },
+                  { name: "Édition limitée", price: "Sur devis", period: "", features: ["Tirage encadré, pièce unique"], ctaLabel: "Réserver", highlighted: false },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "portfolio",
+          title: "Portfolio",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Portfolio",
+                subheadline: "Une sélection de séances récentes, tirées en édition limitée.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "gallery",
+              position: 20,
+              content: {
+                title: "Galerie signature",
+                images: [
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+1", alt: "Photo 1" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+2", alt: "Photo 2" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+3", alt: "Photo 3" }, caption: "" },
+                  { image: { url: "https://placehold.co/600x600/0a0a0a/A21CAF?text=Signature+4", alt: "Photo 4" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "contact",
+          title: "Contact",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Écrivons votre histoire",
+                subheadline: "Parlez-moi de votre projet : la date, le lieu, l'ambiance que vous cherchez.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "contact",
+              position: 20,
+              content: {
+                title: "Découvrir mon univers",
+                description: "Un premier échange pour comprendre votre projet.",
+                email: "contact@exemple.fr",
+                phone: "06 66 77 88 99",
+                address: "Studio à Paris — déplacements sur toute la France",
+                hours: "Sur rendez-vous uniquement",
+                socialLinks: [
+                  { platform: "Instagram", href: "https://instagram.com" },
+                  { platform: "LinkedIn", href: "https://linkedin.com" },
+                ],
+                showForm: true,
+              },
+            },
+          ],
         },
       ],
     },

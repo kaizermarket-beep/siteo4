@@ -22,12 +22,45 @@ export type DefaultBlock = {
   content: Record<string, unknown>;
 };
 
+// An *extra* page, beyond the home page. The home page is always the
+// template's `defaultBlocks`, so every single-page template stays valid
+// without touching it and multi-page is purely additive.
+export type TemplatePage = {
+  /** URL segment under the site root. Never empty — that's the home page. */
+  slug: string;
+  /** Page title, and the label used in the site's navigation bar. */
+  title: string;
+  position: number;
+  blocks: DefaultBlock[];
+};
+
 export type TemplateSchema = {
   blockTypes: BlockTypeDef[];
+  /** Blocks of the home page. */
   defaultBlocks: DefaultBlock[];
+  /** Additional pages. Present on multi-page (premium) templates only. */
+  pages?: TemplatePage[];
+  /** Label of the home page in the navigation bar. @default "Accueil" */
+  homeTitle?: string;
   accentColor?: string;
   mode?: "light" | "dark";
 };
+
+/**
+ * The template's pages in nav order, home first — the shape site creation
+ * actually inserts. Single-page templates yield exactly one page, so callers
+ * never need to branch on whether a template is multi-page.
+ */
+export function templatePages(schema: TemplateSchema): TemplatePage[] {
+  const home: TemplatePage = {
+    slug: "",
+    title: schema.homeTitle ?? "Accueil",
+    position: 10,
+    blocks: schema.defaultBlocks,
+  };
+  const extras = [...(schema.pages ?? [])].sort((a, b) => a.position - b.position);
+  return [home, ...extras];
+}
 
 export type TemplateCategory =
   | "coiffeur"

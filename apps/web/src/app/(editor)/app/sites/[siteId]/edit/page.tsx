@@ -2,7 +2,7 @@ import { and, asc, eq } from "drizzle-orm";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { sites, siteBlocks } from "@/lib/db/schema";
+import { sites, siteBlocks, sitePages } from "@/lib/db/schema";
 import { resolveIdentity } from "@/lib/identity";
 import { Editor } from "@/components/editor/Editor";
 import { PublishButton } from "@/components/editor/PublishButton";
@@ -25,11 +25,18 @@ export default async function EditSitePage({
 
   if (!site) notFound();
 
-  const blocks = await db
-    .select()
-    .from(siteBlocks)
-    .where(eq(siteBlocks.siteId, siteId))
-    .orderBy(asc(siteBlocks.position));
+  const [pages, blocks] = await Promise.all([
+    db
+      .select()
+      .from(sitePages)
+      .where(eq(sitePages.siteId, siteId))
+      .orderBy(asc(sitePages.position)),
+    db
+      .select()
+      .from(siteBlocks)
+      .where(eq(siteBlocks.siteId, siteId))
+      .orderBy(asc(siteBlocks.position)),
+  ]);
 
   const theme = site.theme as { primaryColor?: string; mode?: "light" | "dark" } | null;
 
@@ -59,15 +66,29 @@ export default async function EditSitePage({
       <div className="flex-1 p-6">
         <Editor
           siteId={site.id}
+          siteName={site.name}
           primaryColor={theme?.primaryColor}
           mode={theme?.mode}
-          initialBlocks={blocks.map((b) => ({
-            id: b.id,
-            blockType: b.blockType as BlockType,
-            position: b.position,
-            isVisible: b.isVisible,
-            content: b.content as Record<string, unknown>,
+          initialPages={pages.map((p) => ({
+            id: p.id,
+            slug: p.slug,
+            title: p.title,
+            position: p.position,
           }))}
+          initialBlocks={blocks
+            // A block with no page predates multi-page support and renders
+            // nowhere; scripts/backfill-site-pages.ts adopts it into the
+            // home page. Skipping it here keeps the editor honest about
+            // what the published site actually shows.
+            .filter((b) => b.pageId !== null)
+            .map((b) => ({
+              id: b.id,
+              pageId: b.pageId!,
+              blockType: b.blockType as BlockType,
+              position: b.position,
+              isVisible: b.isVisible,
+              content: b.content as Record<string, unknown>,
+            }))}
         />
       </div>
     </div>

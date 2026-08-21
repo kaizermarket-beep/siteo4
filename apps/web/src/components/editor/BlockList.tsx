@@ -75,6 +75,7 @@ function SortableRow({
 
 export function BlockList({ siteId }: { siteId: string }) {
   const blocks = useEditorStore((s) => s.blocks);
+  const activePageId = useEditorStore((s) => s.activePageId);
   const selectedBlockId = useEditorStore((s) => s.selectedBlockId);
   const selectBlock = useEditorStore((s) => s.selectBlock);
   const setBlockOrder = useEditorStore((s) => s.setBlockOrder);
@@ -83,7 +84,11 @@ export function BlockList({ siteId }: { siteId: string }) {
 
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
-  const sorted = [...blocks].sort((a, b) => a.position - b.position);
+  // Only the active page's sections. Positions are numbered per page, so
+  // dragging here never disturbs another page's order.
+  const sorted = blocks
+    .filter((b) => b.pageId === activePageId)
+    .sort((a, b) => a.position - b.position);
 
   async function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;

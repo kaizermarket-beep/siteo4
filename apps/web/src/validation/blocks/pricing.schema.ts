@@ -12,6 +12,10 @@ export const pricingPlanSchema = z.object({
 export const pricingContentSchema = z.object({
   title: z.string().max(60).default(""),
   plans: z.array(pricingPlanSchema).min(1).max(4),
+  // Where every plan button points. Defaults to the "#contact" anchor,
+  // which is right for a single-page site; a multi-page template sets it
+  // to the address of its contact page, where that anchor does not exist.
+  ctaHref: z.string().max(2048).default(""),
 });
 
 export type PricingContent = z.infer<typeof pricingContentSchema>;

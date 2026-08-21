@@ -79,7 +79,7 @@ export function PricingBlock({ content }: { content: PricingContent }) {
                 ))}
               </ul>
               <a
-                href="#contact"
+                href={content.ctaHref || "#contact"}
                 className="relative mt-auto rounded-md px-4 py-2 text-center text-sm font-medium text-white"
                 style={{ backgroundColor: "var(--site-accent, #171717)" }}
               >

@@ -44,6 +44,10 @@ export const heroVariants = [
   "ridges",
   // Dark: a trace drawing itself across a measurement grid, for performance.
   "telemetry",
+  // Not an opener but a page title: a short band for the interior pages of a
+  // multi-page site, which must not compete with the home page's hero. Takes
+  // backgroundImage when one is set.
+  "pageHeader",
 ] as const;
 
 export const heroContentSchema = z.object({

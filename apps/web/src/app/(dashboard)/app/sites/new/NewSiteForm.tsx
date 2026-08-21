@@ -8,6 +8,7 @@ type TemplateOption = {
   name: string;
   description: string;
   isPremium: boolean;
+  pageCount: number;
   accentColor?: string;
   mode?: "light" | "dark";
   icon: string;
@@ -139,7 +140,18 @@ function TemplateCard({
       </div>
 
       <div className="flex flex-1 flex-col gap-1 p-4">
-        <span className={`font-medium ${dark ? "text-white" : "text-neutral-900"}`}>{template.name}</span>
+        <div className="flex items-center gap-2">
+          <span className={`font-medium ${dark ? "text-white" : "text-neutral-900"}`}>{template.name}</span>
+          {template.pageCount > 1 && (
+            <span
+              className={`rounded-full border px-1.5 py-0.5 text-[10px] font-medium ${
+                dark ? "border-white/25 text-neutral-300" : "border-neutral-300 text-neutral-600"
+              }`}
+            >
+              {template.pageCount} pages
+            </span>
+          )}
+        </div>
         <p className={`${dark ? "text-neutral-400" : "text-neutral-600"} flex-1`}>{template.description}</p>
         {submitting && <span className="mt-2 text-xs text-neutral-500">Création…</span>}
       </div>

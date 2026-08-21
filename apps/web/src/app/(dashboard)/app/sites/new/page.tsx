@@ -6,7 +6,7 @@ import { db } from "@/lib/db";
 import { sites, templates } from "@/lib/db/schema";
 import { getUserEntitlements } from "@/lib/entitlements";
 import { createSiteForUser } from "@/server-actions/sites";
-import { templateCategories } from "@/templates/types";
+import { templateCategories, templatePages, type TemplateSchema } from "@/templates/types";
 import { NewSiteForm } from "./NewSiteForm";
 import { TemplatePickerHero } from "./TemplatePickerHero";
 
@@ -71,12 +71,13 @@ export default async function NewSitePage({
       <TemplatePickerHero images={templateCategories.map((c) => ({ url: c.image, alt: c.label }))} />
       <NewSiteForm
         templates={allTemplates.map((t) => {
-          const schema = t.schema as { accentColor?: string; mode?: "light" | "dark" };
+          const schema = t.schema as TemplateSchema;
           return {
             slug: t.slug,
             name: t.name,
             description: t.description ?? "",
             isPremium: t.isPremium,
+            pageCount: templatePages(schema).length,
             accentColor: schema.accentColor,
             mode: schema.mode,
             icon: templateCategories.find((c) => c.key === t.category)?.icon ?? "✦",

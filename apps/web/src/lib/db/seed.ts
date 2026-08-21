@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "./schema";
 import { templates as templateDefs } from "../../templates/registry";
+import { templatePages } from "../../templates/types";
 
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is not set");
@@ -109,13 +110,26 @@ async function main() {
       })
       .returning();
 
-    for (const block of demoTemplate.schema.defaultBlocks) {
-      await db.insert(schema.siteBlocks).values({
-        siteId: site.id,
-        blockType: block.type,
-        position: block.position,
-        content: block.content,
-      });
+    for (const page of templatePages(demoTemplate.schema)) {
+      const [pageRow] = await db
+        .insert(schema.sitePages)
+        .values({
+          siteId: site.id,
+          slug: page.slug,
+          title: page.title,
+          position: page.position,
+        })
+        .returning();
+
+      for (const block of page.blocks) {
+        await db.insert(schema.siteBlocks).values({
+          siteId: site.id,
+          pageId: pageRow.id,
+          blockType: block.type,
+          position: block.position,
+          content: block.content,
+        });
+      }
     }
     console.log(`Created fixture site: ${demoSlug} (${demoTemplate.name})`);
   } else {

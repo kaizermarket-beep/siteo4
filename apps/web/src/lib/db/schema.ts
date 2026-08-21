@@ -127,6 +127,29 @@ export const sites = pgTable(
   (table) => [uniqueIndex("site_slug_idx").on(table.slug)]
 );
 
+// A site is a list of pages, even when it only has one. The home page is the
+// row with an empty slug — it's served at the site root, every other page at
+// `/{slug}`. `title` doubles as the label in the site's navigation bar, which
+// is derived from these rows rather than stored as a block: a nav that can
+// drift out of sync with the pages it links to is worse than no nav.
+export const sitePages = pgTable(
+  "site_page",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    siteId: uuid("site_id")
+      .notNull()
+      .references(() => sites.id, { onDelete: "cascade" }),
+    slug: text("slug").notNull(),
+    title: text("title").notNull(),
+    position: integer("position").notNull(),
+    showInNav: boolean("show_in_nav").notNull().default(true),
+    seoTitle: text("seo_title"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [uniqueIndex("site_page_site_slug_idx").on(table.siteId, table.slug)]
+);
+
 export const siteBlocks = pgTable(
   "site_block",
   {
@@ -134,6 +157,11 @@ export const siteBlocks = pgTable(
     siteId: uuid("site_id")
       .notNull()
       .references(() => sites.id, { onDelete: "cascade" }),
+    // Nullable only because `drizzle-kit push` cannot add a NOT NULL column
+    // to a table that already has rows and has no sensible default — the
+    // backfill in scripts/backfill-site-pages.ts fills it, and every code
+    // path that inserts a block sets it. Treat a null as a bug, not a case.
+    pageId: uuid("page_id").references(() => sitePages.id, { onDelete: "cascade" }),
     blockType: text("block_type").notNull(),
     position: integer("position").notNull(),
     isVisible: boolean("is_visible").notNull().default(true),
@@ -141,7 +169,9 @@ export const siteBlocks = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => [uniqueIndex("site_block_site_position_idx").on(table.siteId, table.position)]
+  // Positions are unique within a page, not within a site: two pages both
+  // opening with a hero at position 10 is the normal case.
+  (table) => [uniqueIndex("site_block_page_position_idx").on(table.pageId, table.position)]
 );
 
 export const plans = pgTable("plan", {

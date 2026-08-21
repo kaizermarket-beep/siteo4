@@ -669,6 +669,70 @@ function SilkGlow() {
   );
 }
 
+// The title band of an interior page. Deliberately quiet: on a multi-page
+// site the home hero is the one that gets to be spectacular, and repeating
+// that treatment on every page cheapens all of them. A hairline accent rule,
+// the title, one line of context — and the content starts immediately.
+function PageHeaderHero({
+  content,
+  hasBackgroundImage,
+}: {
+  content: HeroContent;
+  hasBackgroundImage: boolean;
+}) {
+  return (
+    <section
+      className={`relative isolate overflow-hidden px-6 ${
+        hasBackgroundImage
+          ? "py-24 sm:py-32"
+          : "border-b border-neutral-200/70 py-16 sm:py-20 dark:border-white/10"
+      }`}
+      style={
+        hasBackgroundImage
+          ? {
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${content.backgroundImage!.url})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
+          : undefined
+      }
+    >
+      <div className="mx-auto max-w-6xl">
+        <span
+          className="animate-fade-up block h-px w-12"
+          style={{ backgroundColor: "var(--site-accent, #171717)" }}
+        />
+        <h1
+          className={`animate-fade-up mt-6 max-w-3xl text-3xl font-semibold tracking-tight sm:text-5xl ${
+            hasBackgroundImage ? "text-white" : "text-neutral-900 dark:text-white"
+          }`}
+        >
+          {content.headline}
+        </h1>
+        {content.subheadline && (
+          <p
+            className={`animate-fade-up mt-4 max-w-xl text-base ${
+              hasBackgroundImage ? "text-white/85" : "text-neutral-600 dark:text-neutral-400"
+            }`}
+            style={{ animationDelay: "0.1s" }}
+          >
+            {content.subheadline}
+          </p>
+        )}
+        {content.ctaLabel && (
+          <a
+            href={content.ctaLink?.href ?? "#contact"}
+            className="animate-fade-up mt-7 inline-block rounded-md px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-105"
+            style={{ backgroundColor: "var(--site-accent, #171717)", animationDelay: "0.2s" }}
+          >
+            {content.ctaLabel}
+          </a>
+        )}
+      </div>
+    </section>
+  );
+}
+
 const immersiveVariants = new Set([
   "sparkles",
   "aurora",
@@ -696,6 +760,11 @@ export function HeroBlock({ content }: { content: HeroContent }) {
   // into "blobs", but editorial owns its whole layout and *wants* the photo.
   if (requestedVariant === "editorial") {
     return <EditorialFrame content={content} hasBackgroundImage={hasBackgroundImage} />;
+  }
+
+  // Same reason as editorial: it owns its layout and keeps its photo.
+  if (requestedVariant === "pageHeader") {
+    return <PageHeaderHero content={content} hasBackgroundImage={hasBackgroundImage} />;
   }
 
   const variant = hasBackgroundImage
