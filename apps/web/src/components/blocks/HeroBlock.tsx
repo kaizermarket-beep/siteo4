@@ -3,6 +3,7 @@ import { SparklesCore } from "@/components/ui/sparkles";
 import InfiniteGallery from "@/components/ui/3d-gallery-photography";
 import { SilkBackground } from "@/components/ui/silk-background";
 import { GodRays } from "@/components/ui/god-rays";
+import { BarberPole } from "@/components/ui/barber-pole";
 
 // Accent-colored blurred blobs + dot grid, animated with the same drift
 // keyframes as the marketing aurora hero (globals.css) — pure CSS, no JS, so
@@ -378,6 +379,38 @@ function EditorialFrame({
   );
 }
 
+// Barbershop: the pole itself, turning in a dark room, pushed to the right
+// so the headline keeps the left. An object rather than an effect — the
+// abstract variants all read as "a shader", which told a visitor nothing
+// about the trade.
+function BarberPoleGlow() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#0a0807]">
+      {/* warm pool behind the pole so it sits in a room, not in the void */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 70% at 80% 52%, color-mix(in srgb, var(--site-accent, #B45309) 22%, transparent) 0%, transparent 70%)",
+        }}
+      />
+      {/* Sized by the wrapper, not absolutely positioned itself: react-three
+          -fiber measures its host at mount, and an `absolute inset-0` host
+          reports 0 before layout settles, leaving the canvas stuck at its
+          300x150 default. */}
+      <BarberPole className="h-full w-full" />
+      {/* darkens the left so the headline always has ground to sit on */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(10,8,7,0.95) 0%, rgba(10,8,7,0.7) 40%, rgba(10,8,7,0) 78%)",
+        }}
+      />
+    </div>
+  );
+}
+
 // Daylight through a salon window: soft blush shafts over warm off-white.
 // Light-mode, so it stays out of immersiveVariants and the hero text keeps
 // its dark colour — the "clair et souriant" read for a women's salon.
@@ -527,6 +560,7 @@ const immersiveVariants = new Set([
   "silk",
   "velvet",
   "halo",
+  "barberPole",
 ]);
 
 export function HeroBlock({ content }: { content: HeroContent }) {
@@ -572,6 +606,7 @@ export function HeroBlock({ content }: { content: HeroContent }) {
       {!hasBackgroundImage && variant === "bokeh" && <BokehGlow />}
       {!hasBackgroundImage && variant === "embers" && <EmbersGlow />}
       {!hasBackgroundImage && variant === "sunbeam" && <SunbeamGlow />}
+      {!hasBackgroundImage && variant === "barberPole" && <BarberPoleGlow />}
       {!hasBackgroundImage && variant === "halo" && <HaloGlow />}
       {!hasBackgroundImage && variant === "velvet" && <VelvetGlow />}
       {!hasBackgroundImage && variant === "linen" && <LinenGlow />}

@@ -335,7 +335,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Coupe, taille de barbe, rasage traditionnel — un rituel pour l'homme moderne.",
             ctaLabel: "Prendre rendez-vous",
             ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
-            heroVariant: "halo",
+            heroVariant: "barberPole",
           },
         },
         {

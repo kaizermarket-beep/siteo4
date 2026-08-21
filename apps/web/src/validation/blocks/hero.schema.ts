@@ -34,6 +34,9 @@ export const heroVariants = [
   // Not a backdrop but a whole layout: full-bleed photo, asymmetric
   // lower-left type, hairline rule, display serif. Uses backgroundImage.
   "editorial",
+  // A real object rather than an abstraction: the turning pole, for
+  // barbershops. Reads --site-accent for its lighting.
+  "barberPole",
 ] as const;
 
 export const heroContentSchema = z.object({
