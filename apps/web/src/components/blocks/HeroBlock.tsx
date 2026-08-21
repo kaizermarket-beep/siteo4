@@ -308,17 +308,20 @@ function PhotoGallery3DGlow({ images }: { images: { url: string; alt: string }[]
 }
 
 // Editorial hero — the premium look, and the only variant that changes the
-// hero's *structure* rather than just its backdrop.
+// hero's *structure* rather than its backdrop.
 //
 // Every other variant is the same centred stack (headline, subheadline,
-// button) over a different background, which is exactly why they read as
-// one template recoloured. This one is asymmetric: a full-bleed photograph,
-// content anchored to the lower left, a hairline accent rule, and the
-// display serif. Restraint is the point — the accent appears once, as a
-// rule, not as a glow.
+// button) over a different background, which is why they read as one
+// template recoloured. This one splits the screen: a deep panel carrying
+// the type, a full-height photograph beside it. Two consequences worth the
+// choice — the type sits on solid ink instead of competing with a busy
+// image, and the layout is the one luxury houses actually use.
 //
-// Uses the existing backgroundImage field, so it needs no schema change and
-// the client swaps in a photo of their own room from the editor.
+// Restraint carries it: the accent is spent once, as a hairline rule, and
+// the CTA is an underlined caps link rather than a filled button.
+//
+// Uses the existing backgroundImage field, so no schema change is needed
+// and the client swaps in a photo of their own room from the editor.
 function EditorialFrame({
   content,
   hasBackgroundImage,
@@ -327,46 +330,44 @@ function EditorialFrame({
   hasBackgroundImage: boolean;
 }) {
   return (
-    <section className="relative isolate flex min-h-[86vh] w-full flex-col justify-end overflow-hidden bg-neutral-950 px-6 pb-16 sm:px-12 sm:pb-20">
+    <section className="relative isolate grid w-full grid-cols-1 overflow-hidden bg-[#0c0b0a] lg:min-h-[88vh] lg:grid-cols-[1fr_1.05fr]">
+      {/* Photo first on small screens: the room sells before the words do. */}
       {hasBackgroundImage && content.backgroundImage?.url && (
         <div
-          className="absolute inset-0 -z-20 bg-cover bg-center"
+          className="order-1 h-56 w-full bg-cover bg-center sm:h-72 lg:order-2 lg:h-full"
           style={{ backgroundImage: `url(${content.backgroundImage.url})` }}
+          role="img"
+          aria-label={content.backgroundImage.alt || ""}
         />
       )}
-      {/* Weighted to the bottom-left so the type sits on shadow, not on a face. */}
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.55) 38%, rgba(8,8,8,0.15) 70%, rgba(8,8,8,0.35) 100%)",
-        }}
-      />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-6">
+      <div className="order-2 flex flex-col justify-center gap-7 px-6 py-16 sm:px-12 sm:py-20 lg:order-1 lg:px-16 lg:py-24">
         <span
-          className="h-px w-16"
+          className="h-px w-14"
           style={{ background: "var(--site-accent, #ffffff)" }}
           aria-hidden
         />
+
         <h1
-          className="animate-fade-up max-w-2xl text-4xl leading-[1.05] font-light tracking-tight text-white sm:text-6xl"
+          className="animate-fade-up max-w-xl text-4xl leading-[1.08] font-light tracking-tight text-white text-balance sm:text-5xl lg:text-[3.4rem]"
           style={{ fontFamily: "var(--font-display-serif), Georgia, serif" }}
         >
           {content.headline}
         </h1>
+
         {content.subheadline && (
           <p
-            className="animate-fade-up max-w-md text-base leading-relaxed text-white/70"
+            className="animate-fade-up max-w-sm text-[0.95rem] leading-relaxed text-white/60"
             style={{ animationDelay: "0.1s" }}
           >
             {content.subheadline}
           </p>
         )}
+
         {content.ctaLabel && (
           <a
             href={content.ctaLink?.href ?? "#contact"}
-            className="animate-fade-up mt-2 w-fit border-b border-white/40 pb-1 text-sm tracking-[0.18em] text-white uppercase transition-colors hover:border-white"
+            className="animate-fade-up mt-1 w-fit border-b border-white/30 pb-1.5 text-[0.7rem] tracking-[0.22em] text-white uppercase transition-colors hover:border-white"
             style={{ animationDelay: "0.2s" }}
           >
             {content.ctaLabel}

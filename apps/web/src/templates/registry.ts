@@ -126,7 +126,7 @@ export const templates: TemplateDefinition[] = [
             ctaLink: { href: "#contact", label: "Prendre rendez-vous" },
             heroVariant: "editorial",
             backgroundImage: {
-              url: "https://images.unsplash.com/photo-1623171678074-1b04ff0e694f?w=1800&auto=format&fit=crop&q=70",
+              url: "https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=1600&auto=format&fit=crop&q=70",
               alt: "La salle du salon",
             },
           },
