@@ -31,6 +31,9 @@ export const heroVariants = [
   "sunbeam",
   // Same engine, dark: one warm shaft cutting a barbershop's shadow.
   "halo",
+  // Not a backdrop but a whole layout: full-bleed photo, asymmetric
+  // lower-left type, hairline rule, display serif. Uses backgroundImage.
+  "editorial",
 ] as const;
 
 export const heroContentSchema = z.object({

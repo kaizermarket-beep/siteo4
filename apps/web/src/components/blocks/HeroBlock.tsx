@@ -307,6 +307,76 @@ function PhotoGallery3DGlow({ images }: { images: { url: string; alt: string }[]
   );
 }
 
+// Editorial hero — the premium look, and the only variant that changes the
+// hero's *structure* rather than just its backdrop.
+//
+// Every other variant is the same centred stack (headline, subheadline,
+// button) over a different background, which is exactly why they read as
+// one template recoloured. This one is asymmetric: a full-bleed photograph,
+// content anchored to the lower left, a hairline accent rule, and the
+// display serif. Restraint is the point — the accent appears once, as a
+// rule, not as a glow.
+//
+// Uses the existing backgroundImage field, so it needs no schema change and
+// the client swaps in a photo of their own room from the editor.
+function EditorialFrame({
+  content,
+  hasBackgroundImage,
+}: {
+  content: HeroContent;
+  hasBackgroundImage: boolean;
+}) {
+  return (
+    <section className="relative isolate flex min-h-[86vh] w-full flex-col justify-end overflow-hidden bg-neutral-950 px-6 pb-16 sm:px-12 sm:pb-20">
+      {hasBackgroundImage && content.backgroundImage?.url && (
+        <div
+          className="absolute inset-0 -z-20 bg-cover bg-center"
+          style={{ backgroundImage: `url(${content.backgroundImage.url})` }}
+        />
+      )}
+      {/* Weighted to the bottom-left so the type sits on shadow, not on a face. */}
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(8,8,8,0.92) 0%, rgba(8,8,8,0.55) 38%, rgba(8,8,8,0.15) 70%, rgba(8,8,8,0.35) 100%)",
+        }}
+      />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-6">
+        <span
+          className="h-px w-16"
+          style={{ background: "var(--site-accent, #ffffff)" }}
+          aria-hidden
+        />
+        <h1
+          className="animate-fade-up max-w-2xl text-4xl leading-[1.05] font-light tracking-tight text-white sm:text-6xl"
+          style={{ fontFamily: "var(--font-display-serif), Georgia, serif" }}
+        >
+          {content.headline}
+        </h1>
+        {content.subheadline && (
+          <p
+            className="animate-fade-up max-w-md text-base leading-relaxed text-white/70"
+            style={{ animationDelay: "0.1s" }}
+          >
+            {content.subheadline}
+          </p>
+        )}
+        {content.ctaLabel && (
+          <a
+            href={content.ctaLink?.href ?? "#contact"}
+            className="animate-fade-up mt-2 w-fit border-b border-white/40 pb-1 text-sm tracking-[0.18em] text-white uppercase transition-colors hover:border-white"
+            style={{ animationDelay: "0.2s" }}
+          >
+            {content.ctaLabel}
+          </a>
+        )}
+      </div>
+    </section>
+  );
+}
+
 // Daylight through a salon window: soft blush shafts over warm off-white.
 // Light-mode, so it stays out of immersiveVariants and the hero text keeps
 // its dark colour — the "clair et souriant" read for a women's salon.
@@ -462,6 +532,13 @@ export function HeroBlock({ content }: { content: HeroContent }) {
   const hasBackgroundImage = !!content.backgroundImage?.url;
   const hasHeroImages = (content.heroImages?.length ?? 0) > 0;
   const requestedVariant = content.heroVariant ?? "blobs";
+
+  // Checked before the coercion below: that rule turns any image-backed hero
+  // into "blobs", but editorial owns its whole layout and *wants* the photo.
+  if (requestedVariant === "editorial") {
+    return <EditorialFrame content={content} hasBackgroundImage={hasBackgroundImage} />;
+  }
+
   const variant = hasBackgroundImage
     ? "blobs"
     : requestedVariant === "photoGallery3d" && !hasHeroImages
