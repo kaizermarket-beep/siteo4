@@ -37,6 +37,13 @@ export const heroVariants = [
   // A real object rather than an abstraction: the turning pole, for
   // barbershops. Reads --site-accent for its lighting.
   "barberPole",
+  // Photographs rushing out of the vanishing point. Needs heroImages,
+  // like photoGallery3d, but comes at the viewer instead of scrolling past.
+  "stream",
+  // Light: ridgelines drifting in parallax over a dawn sky, for outdoor work.
+  "ridges",
+  // Dark: a trace drawing itself across a measurement grid, for performance.
+  "telemetry",
 ] as const;
 
 export const heroContentSchema = z.object({

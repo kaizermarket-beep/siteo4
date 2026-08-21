@@ -1,9 +1,11 @@
+import type { CSSProperties } from "react";
 import type { HeroContent } from "@/validation/blocks";
 import { SparklesCore } from "@/components/ui/sparkles";
 import InfiniteGallery from "@/components/ui/3d-gallery-photography";
 import { SilkBackground } from "@/components/ui/silk-background";
 import { GodRays } from "@/components/ui/god-rays";
 import { BarberPole } from "@/components/ui/barber-pole";
+import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 
 // Accent-colored blurred blobs + dot grid, animated with the same drift
 // keyframes as the marketing aurora hero (globals.css) — pure CSS, no JS, so
@@ -379,6 +381,126 @@ function EditorialFrame({
   );
 }
 
+// Outdoor coaching: layered ridgelines drifting at different speeds over a
+// dawn sky. The depth is parallax — nearer ridges move faster — which is
+// also why it costs nothing: three SVG shapes, no shader, no canvas.
+function RidgeGlow() {
+  const ridges = [
+    { d: "M0,120 C120,70 220,140 360,100 C500,60 620,130 760,95 L760,220 L0,220 Z", speed: "70s", opacity: 0.28, y: "38%" },
+    { d: "M0,140 C140,95 240,165 380,125 C520,85 640,155 760,120 L760,220 L0,220 Z", speed: "48s", opacity: 0.45, y: "52%" },
+    { d: "M0,160 C110,125 250,185 390,150 C530,115 650,180 760,145 L760,220 L0,220 Z", speed: "32s", opacity: 0.7, y: "66%" },
+  ];
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#f2f5ec]">
+      {/* dawn wash */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, #fdfbf3 0%, color-mix(in srgb, var(--site-accent, #4D7C0F) 10%, #fdfbf3) 45%, color-mix(in srgb, var(--site-accent, #4D7C0F) 22%, #f2f5ec) 100%)",
+        }}
+      />
+      {ridges.map((r, i) => (
+        <div
+          key={i}
+          className="animate-ridge-drift absolute inset-x-0"
+          style={{
+            top: r.y,
+            height: "62%",
+            width: "200%",
+            ["--ridge-speed" as string]: r.speed,
+            opacity: r.opacity,
+          } as CSSProperties}
+        >
+          {/* duplicated side by side so translateX(-50%) loops seamlessly */}
+          <svg viewBox="0 0 1520 220" preserveAspectRatio="none" className="h-full w-full">
+            <path d={r.d} fill="var(--site-accent, #4D7C0F)" />
+            <path d={r.d} transform="translate(760,0)" fill="var(--site-accent, #4D7C0F)" />
+          </svg>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Performance lab: a trace drawing itself across a measurement grid, with a
+// scan passing over it. Reads as telemetry rather than as decoration, which
+// is the claim this template makes.
+function TelemetryGlow() {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#070809]">
+      {/* measurement grid */}
+      <div
+        className="absolute inset-0 opacity-[0.35]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, #1c2024 1px, transparent 1px), linear-gradient(to bottom, #1c2024 1px, transparent 1px)",
+          backgroundSize: "44px 44px",
+          maskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, #000 40%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 50%, #000 40%, transparent 100%)",
+        }}
+      />
+      {/* the trace */}
+      <svg
+        viewBox="0 0 1400 300"
+        preserveAspectRatio="none"
+        className="absolute inset-x-0 bottom-[18%] h-[42%] w-full"
+        aria-hidden
+      >
+        <path
+          d="M0,240 L180,238 L240,150 L300,246 L420,244 L470,96 L520,250 L660,246 L720,168 L780,250 L940,247 L1000,60 L1060,252 L1200,248 L1260,176 L1320,250 L1400,248"
+          fill="none"
+          stroke="var(--site-accent, #EA580C)"
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+          strokeDasharray="1400"
+          className="animate-trace-sweep"
+        />
+      </svg>
+      {/* scan sweep */}
+      <div
+        className="animate-trace-scan absolute inset-y-0 w-[14%]"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, color-mix(in srgb, var(--site-accent, #EA580C) 40%, transparent), transparent)",
+        }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(ellipse at center, transparent 30%, rgba(7,8,9,0.8) 100%)" }}
+      />
+    </div>
+  );
+}
+
+// Training photographs rushing out of the vanishing point. Answers the two
+// things a coach's opener has to do at once — show people actually training,
+// and move — without another WebGL context: this is CSS 3D.
+//
+// Distinct from photoGallery3d, which scrolls a flat wall of pictures
+// sideways; here the corridor comes at the viewer, which is the register
+// sport wants.
+function StreamGlow({ images }: { images: { url: string; alt: string }[] }) {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden bg-neutral-950">
+      <ImageStreamHero
+        images={images.map((i) => ({ src: i.url, alt: i.alt }))}
+        speed={22}
+        cards={9}
+        className="h-full w-full"
+      />
+      {/* the corridor is busiest at the edges, so clear the middle for type */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 48% 46% at 50% 48%, rgba(10,10,10,0.9) 35%, rgba(10,10,10,0.35) 100%)",
+        }}
+      />
+    </div>
+  );
+}
+
 // Barbershop: the pole itself, turning in a dark room, pushed to the right
 // so the headline keeps the left. An object rather than an effect — the
 // abstract variants all read as "a shader", which told a visitor nothing
@@ -561,6 +683,8 @@ const immersiveVariants = new Set([
   "velvet",
   "halo",
   "barberPole",
+  "stream",
+  "telemetry",
 ]);
 
 export function HeroBlock({ content }: { content: HeroContent }) {
@@ -576,7 +700,8 @@ export function HeroBlock({ content }: { content: HeroContent }) {
 
   const variant = hasBackgroundImage
     ? "blobs"
-    : requestedVariant === "photoGallery3d" && !hasHeroImages
+    : (requestedVariant === "photoGallery3d" || requestedVariant === "stream") &&
+        !hasHeroImages
       ? "blobs"
       : requestedVariant;
   const isImmersive = immersiveVariants.has(variant);
@@ -606,6 +731,11 @@ export function HeroBlock({ content }: { content: HeroContent }) {
       {!hasBackgroundImage && variant === "bokeh" && <BokehGlow />}
       {!hasBackgroundImage && variant === "embers" && <EmbersGlow />}
       {!hasBackgroundImage && variant === "sunbeam" && <SunbeamGlow />}
+      {!hasBackgroundImage && variant === "ridges" && <RidgeGlow />}
+      {!hasBackgroundImage && variant === "telemetry" && <TelemetryGlow />}
+      {!hasBackgroundImage && variant === "stream" && hasHeroImages && (
+        <StreamGlow images={content.heroImages!} />
+      )}
       {!hasBackgroundImage && variant === "barberPole" && <BarberPoleGlow />}
       {!hasBackgroundImage && variant === "halo" && <HaloGlow />}
       {!hasBackgroundImage && variant === "velvet" && <VelvetGlow />}

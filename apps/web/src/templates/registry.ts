@@ -1975,10 +1975,18 @@ export const templates: TemplateDefinition[] = [
           position: 10,
           content: {
             headline: "Atteignez vos objectifs, accompagné·e par un coach",
-            subheadline: "Un suivi personnalisé, en individuel ou en petit groupe.",
+            subheadline: "Un suivi personnalisé, en individuel ou en petit groupe. Première séance d'essai offerte.",
             ctaLabel: "Réserver une séance d'essai",
             ctaLink: { href: "#contact", label: "Réserver une séance d'essai" },
-            heroVariant: "mesh",
+            heroVariant: "stream",
+            heroImages: [
+              { url: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=900&auto=format&fit=crop&q=60", alt: "Travail à la barre" },
+              { url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&auto=format&fit=crop&q=60", alt: "Séance de coaching" },
+              { url: "https://images.unsplash.com/photo-1758875568671-9fa1829fe1e3?w=900&auto=format&fit=crop&q=60", alt: "Parade sur charge lourde" },
+              { url: "https://images.unsplash.com/photo-1520877745935-616158eb7fcc?w=900&auto=format&fit=crop&q=60", alt: "Étirement" },
+              { url: "https://images.unsplash.com/photo-1639660299469-9e9279364c97?w=900&auto=format&fit=crop&q=60", alt: "Soulevé en salle" },
+              { url: "https://images.unsplash.com/photo-1758599880788-e49f6ee77bc7?w=900&auto=format&fit=crop&q=60", alt: "Travail au sol" },
+            ],
           },
         },
         {
@@ -2182,12 +2190,10 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Coaching doux, yoga et respiration, pour progresser sans se brusquer.",
             ctaLabel: "Réserver une séance",
             ctaLink: { href: "#contact", label: "Réserver une séance" },
-            heroVariant: "photoGallery3d",
-            heroImages: [
-              { url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200&auto=format&fit=crop&q=60", alt: "Séance de coaching sportif" },
-              { url: "https://images.unsplash.com/photo-1520877745935-616158eb7fcc?w=1200&auto=format&fit=crop&q=60", alt: "Étirement en douceur" },
-              { url: "https://images.unsplash.com/photo-1758599880788-e49f6ee77bc7?w=1200&auto=format&fit=crop&q=60", alt: "Séance de yoga" },
-            ],
+            backgroundImage: {
+              url: "https://images.unsplash.com/photo-1761035190790-aa1a3472f7fc?w=1800&auto=format&fit=crop&q=70",
+              alt: "La salle, avant le cours",
+            },
           },
         },
         {
@@ -2282,7 +2288,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Un laboratoire de performance pour athlètes exigeants et sportifs déterminés.",
             ctaLabel: "Démarrer mon programme",
             ctaLink: { href: "#contact", label: "Démarrer mon programme" },
-            heroVariant: "spotlight",
+            heroVariant: "telemetry",
           },
         },
         {
@@ -2382,7 +2388,7 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Séances en extérieur, au contact du vivant, pour se reconnecter à l'essentiel.",
             ctaLabel: "Réserver une séance",
             ctaLink: { href: "#contact", label: "Réserver une séance" },
-            heroVariant: "blobs",
+            heroVariant: "ridges",
           },
         },
         {

@@ -197,6 +197,49 @@
   50%      { transform: translate(-5%, -2%) scale(1); }
 }
 
+/* Nature hero: layered ridges drifting at different speeds. Parallax, not
+   a shader — the depth comes from the speed difference, which is also what
+   makes it cheap. */
+@keyframes ridge-drift {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Performance hero: a trace sweeping left to right, like a treadmill
+   readout drawing itself. */
+@keyframes trace-sweep {
+  from { stroke-dashoffset: 1400; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes trace-scan {
+  0%, 100% { opacity: 0.15; transform: translateX(-8%); }
+  50%      { opacity: 0.4;  transform: translateX(108%); }
+}
+
+/* Animation lives on the class, not inline: an inline `animation` beats a
+   stylesheet rule, so the reduced-motion override below could never win.
+   Only the per-instance speed is passed in, as a custom property. */
+.animate-ridge-drift {
+  animation: ridge-drift var(--ridge-speed, 48s) linear infinite;
+}
+
+.animate-trace-sweep {
+  animation: trace-sweep 9s ease-in-out infinite;
+}
+
+.animate-trace-scan {
+  animation: trace-scan 7s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-ridge-drift,
+  .animate-trace-sweep,
+  .animate-trace-scan {
+    animation: none;
+  }
+}
+
 @keyframes float-rise {
   0% { transform: translateY(0) scale(1); opacity: 0; }
   15% { opacity: var(--float-opacity, 0.5); }
