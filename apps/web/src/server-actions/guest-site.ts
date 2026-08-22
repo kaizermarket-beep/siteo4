@@ -1,9 +1,9 @@
 "use server";
 
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq, sql } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { sites, templates } from "@/lib/db/schema";
+import { siteBlocks, sites, templates } from "@/lib/db/schema";
 import { resolveIdentity, createGuestIdentity } from "@/lib/identity";
 import { insertSiteFromTemplate, generateUniqueSlug } from "@/lib/site-creation";
 
@@ -15,7 +15,38 @@ import { insertSiteFromTemplate, generateUniqueSlug } from "@/lib/site-creation"
 // premium-template gate on purpose, a brand-new guest always has full trial
 // access anyway (see entitlements.ts), and premium is enforced at publish.
 // A guest can try several templates, but not spawn drafts without limit.
-const MAX_GUEST_DRAFTS = 5;
+// High enough that browsing the whole catalogue rarely reaches it — there are
+// six métiers, and comparing four or five templates is normal behaviour.
+const MAX_GUEST_DRAFTS = 10;
+
+// Frees one slot by dropping the draft the visitor has touched least
+// recently — last block edit, or creation if they never edited it.
+//
+// Reaching the cap used to send the visitor to their most recent draft
+// instead of creating the one they asked for, which meant clicking a
+// restaurant template opened whatever they had opened last. From the
+// outside that is indistinguishable from a broken link. Whatever else
+// happens, "Choisir ce modèle" has to open *that* model.
+async function recycleOldestDraft(userId: string) {
+  const lastTouched = sql`greatest(${sites.createdAt}, coalesce(max(${siteBlocks.updatedAt}), ${sites.createdAt}))`;
+
+  const [oldest] = await db
+    .select({ id: sites.id })
+    .from(sites)
+    .leftJoin(siteBlocks, eq(siteBlocks.siteId, sites.id))
+    // Published sites are never recycled. A guest cannot publish today
+    // (publishing is what turns them into a real account), but that is a
+    // property of another file, not something to rely on here.
+    .where(and(eq(sites.userId, userId), eq(sites.status, "draft")))
+    .groupBy(sites.id)
+    .orderBy(asc(lastTouched))
+    .limit(1);
+
+  if (oldest) {
+    // Pages and blocks cascade with the site (see schema.ts).
+    await db.delete(sites).where(eq(sites.id, oldest.id));
+  }
+}
 
 export async function startGuestSite(formData: FormData) {
   const templateSlug = String(formData.get("templateSlug") ?? "");
@@ -41,12 +72,13 @@ export async function startGuestSite(formData: FormData) {
       redirect(`/app/sites/${sameTemplate.id}/edit`);
     }
 
-    const drafts = await db.select().from(sites).where(eq(sites.userId, identity.userId));
-    if (drafts.length >= MAX_GUEST_DRAFTS) {
-      // Send them back to the most recent draft rather than failing: the
-      // point of the guest flow is to keep momentum toward publishing.
-      const latest = drafts.reduce((a, b) => (a.createdAt > b.createdAt ? a : b));
-      redirect(`/app/sites/${latest.id}/edit`);
+    const [{ count: draftCount }] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(sites)
+      .where(eq(sites.userId, identity.userId));
+
+    if (draftCount >= MAX_GUEST_DRAFTS) {
+      await recycleOldestDraft(identity.userId);
     }
   }
 
