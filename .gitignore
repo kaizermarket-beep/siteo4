@@ -36,3 +36,10 @@ graphify-out/
 # so a second one under apps/* means `pnpm install` was run in the wrong
 # directory and will drift from the real dependency graph.
 apps/*/pnpm-lock.yaml
+
+# Documents de travail commerciaux : liste de prospection nominative
+# (entreprises reelles, dont des independants dont le nom commercial est
+# leur nom de famille). Ce n'est pas du code, et l'historique git est
+# permanent : des donnees personnelles de tiers collectees pour du
+# demarchage n'ont pas a y figurer durablement.
+prospection/
