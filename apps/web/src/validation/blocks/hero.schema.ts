@@ -48,6 +48,10 @@ export const heroVariants = [
   // multi-page site, which must not compete with the home page's hero. Takes
   // backgroundImage when one is set.
   "pageHeader",
+  // Another whole layout: a centred statement over near-black, with a rail of
+  // programme cards running under it. Needs `heroCards` below. Built for
+  // coaching, where what is on offer has to be visible before any scrolling.
+  "programRail",
 ] as const;
 
 export const heroContentSchema = z.object({
@@ -58,6 +62,19 @@ export const heroContentSchema = z.object({
   backgroundImage: imageSchema.optional(),
   heroVariant: z.enum(heroVariants).default("blobs"),
   heroImages: z.array(imageSchema).max(10).optional(),
+  // Labelled cards for the "programRail" variant. Unlike heroImages these
+  // carry their own text, because the label is half of what a programme card
+  // communicates — a photo of someone training says nothing about the level.
+  heroCards: z
+    .array(
+      z.object({
+        image: imageSchema,
+        category: z.string().max(30).default(""),
+        title: z.string().max(60).default(""),
+      })
+    )
+    .max(8)
+    .optional(),
 });
 
 export type HeroContent = z.infer<typeof heroContentSchema>;

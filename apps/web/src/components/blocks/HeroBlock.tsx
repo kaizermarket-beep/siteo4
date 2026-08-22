@@ -6,6 +6,7 @@ import { SilkBackground } from "@/components/ui/silk-background";
 import { GodRays } from "@/components/ui/god-rays";
 import { BarberPole } from "@/components/ui/barber-pole";
 import { ImageStreamHero } from "@/components/ui/image-stream-hero";
+import { PulseFitHero } from "@/components/ui/pulse-fit-hero";
 
 // Accent-colored blurred blobs + dot grid, animated with the same drift
 // keyframes as the marketing aurora hero (globals.css) — pure CSS, no JS, so
@@ -765,6 +766,22 @@ export function HeroBlock({ content }: { content: HeroContent }) {
   // Same reason as editorial: it owns its layout and keeps its photo.
   if (requestedVariant === "pageHeader") {
     return <PageHeaderHero content={content} hasBackgroundImage={hasBackgroundImage} />;
+  }
+
+  if (requestedVariant === "programRail") {
+    return (
+      <PulseFitHero
+        title={content.headline}
+        subtitle={content.subheadline}
+        primaryAction={
+          content.ctaLabel
+            ? { label: content.ctaLabel, href: content.ctaLink?.href ?? "#contact" }
+            : undefined
+        }
+        programs={content.heroCards}
+        backgroundImage={content.backgroundImage}
+      />
+    );
   }
 
   const variant = hasBackgroundImage

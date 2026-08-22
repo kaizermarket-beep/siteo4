@@ -2544,7 +2544,14 @@ export const templates: TemplateDefinition[] = [
             subheadline: "Un coaching haute performance, pour des résultats mesurables et durables.",
             ctaLabel: "Réserver un bilan gratuit",
             ctaLink: { href: "/contact", label: "Réserver un bilan gratuit" },
-            heroVariant: "grid3d",
+            heroVariant: "programRail",
+            heroCards: [
+              { image: { url: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=700&h=950&fit=crop&auto=format&q=70", alt: "Séance de renforcement en salle" }, category: "Bilan", title: "Diagnostic complet" },
+              { image: { url: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=700&h=950&fit=crop&auto=format&q=70", alt: "Travail de force à la barre" }, category: "Force", title: "Cycle force, 8 semaines" },
+              { image: { url: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?w=700&h=950&fit=crop&auto=format&q=70", alt: "Course en extérieur" }, category: "Endurance", title: "Seuil et VMA" },
+              { image: { url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=700&h=950&fit=crop&auto=format&q=70", alt: "Séance collective en petit groupe" }, category: "Tous niveaux", title: "Renforcement intégral" },
+              { image: { url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=700&h=950&fit=crop&auto=format&q=70", alt: "Étirements et mobilité" }, category: "Récupération", title: "Mobilité et sommeil" },
+            ],
           },
         },
         {
@@ -2639,10 +2646,10 @@ export const templates: TemplateDefinition[] = [
               content: {
                 title: "En pleine action",
                 images: [
-                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+1", alt: "Séance 1" }, caption: "" },
-                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+2", alt: "Séance 2" }, caption: "" },
-                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+3", alt: "Séance 3" }, caption: "" },
-                  { image: { url: "https://placehold.co/600x600/0a0a0a/06B6D4?text=Elite+4", alt: "Séance 4" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&auto=format&fit=crop&q=60", alt: "Séance collective" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=900&auto=format&fit=crop&q=60", alt: "Travail de force" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=900&auto=format&fit=crop&q=60", alt: "Entraînement en salle" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=900&auto=format&fit=crop&q=60", alt: "Fin de séance" }, caption: "" },
                 ],
               },
             },
