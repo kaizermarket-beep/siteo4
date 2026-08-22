@@ -31,6 +31,12 @@ export const users = pgTable("user", {
   // isGuest flipped false) at real signup, never re-created, so the site
   // and blocks they already built stay attached to the same row.
   isGuest: boolean("is_guest").notNull().default(false),
+  // When this account accepted the CGV and the privacy policy. Null for the
+  // guest rows created before any signup, and for accounts created before
+  // the checkbox existed. Should carry a version identifier too once the
+  // legal pages are versioned — a timestamp alone does not say *what* was
+  // accepted.
+  termsAcceptedAt: timestamp("terms_accepted_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

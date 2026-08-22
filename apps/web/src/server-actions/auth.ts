@@ -11,6 +11,13 @@ import { BCRYPT_COST } from "@/lib/password";
 
 export type SignupState = { error?: string } | undefined;
 
+// The client-side `required` attribute is a convenience, not a control: a
+// form can be posted without it. This is where acceptance is actually
+// enforced.
+function hasAcceptedTerms(formData: FormData): boolean {
+  return formData.get("acceptTerms") === "on";
+}
+
 export async function signup(_prevState: SignupState, formData: FormData): Promise<SignupState> {
   const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
   const { allowed } = await rateLimit(`signup:${ip}`, 5, 10 * 60 * 1000);
@@ -29,6 +36,11 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
   if (password.length < 8) {
     return { error: "Le mot de passe doit contenir au moins 8 caractères." };
   }
+  if (!hasAcceptedTerms(formData)) {
+    return {
+      error: "Vous devez accepter les CGV et la politique de confidentialité pour créer un compte.",
+    };
+  }
 
   const [existing] = await db.select().from(users).where(eq(users.email, email));
   if (existing) {
@@ -37,7 +49,9 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
 
   const passwordHash = await bcrypt.hash(password, BCRYPT_COST);
   try {
-    await db.insert(users).values({ email, name: name || null, passwordHash });
+    await db
+      .insert(users)
+      .values({ email, name: name || null, passwordHash, termsAcceptedAt: new Date() });
   } catch {
     // Most likely a unique-constraint race with the check above (two
     // concurrent signups for the same email) — not a server crash.

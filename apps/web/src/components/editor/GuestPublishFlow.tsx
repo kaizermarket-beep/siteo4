@@ -3,6 +3,7 @@
 import { useActionState, useState } from "react";
 import { upgradeAndPublish } from "@/server-actions/upgrade-and-publish";
 import { slugify } from "@/lib/slug";
+import { TermsCheckbox } from "@/components/TermsCheckbox";
 
 const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
 
@@ -262,6 +263,7 @@ export function GuestPublishFlow({
               minLength={8}
               className="rounded-md border border-neutral-300 px-3 py-2 text-sm"
             />
+            <TermsCheckbox id="acceptTermsGuest" />
           </div>
         )}
 

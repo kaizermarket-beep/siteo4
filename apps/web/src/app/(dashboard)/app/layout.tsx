@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { auth, signOut } from "@/lib/auth";
+import { AppFooter } from "@/components/AppFooter";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
@@ -32,6 +33,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
       </header>
       <main className="flex-1 px-6 py-8">{children}</main>
+      <AppFooter />
     </div>
   );
 }

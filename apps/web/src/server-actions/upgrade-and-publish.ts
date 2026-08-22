@@ -56,6 +56,13 @@ export async function upgradeAndPublish(
   if (password.length < 8) {
     return { error: "Le mot de passe doit contenir au moins 8 caractères." };
   }
+  // Enforced here, not only by the checkbox's `required` attribute: this
+  // action is reachable by posting the form directly.
+  if (formData.get("acceptTerms") !== "on") {
+    return {
+      error: "Vous devez accepter les CGV et la politique de confidentialité pour publier.",
+    };
+  }
   if (!siteName) {
     return { error: "Le nom du site est requis." };
   }
@@ -82,7 +89,7 @@ export async function upgradeAndPublish(
   try {
     await db
       .update(users)
-      .set({ email, name: name || null, passwordHash, isGuest: false })
+      .set({ email, name: name || null, passwordHash, isGuest: false, termsAcceptedAt: new Date() })
       .where(eq(users.id, identity.userId));
   } catch {
     // Unique-email race, same as signup().

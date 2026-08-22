@@ -4,6 +4,7 @@ import { Suspense, useActionState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { signup } from "@/server-actions/auth";
+import { TermsCheckbox } from "@/components/TermsCheckbox";
 
 function SignupForm() {
   const [state, formAction, pending] = useActionState(signup, undefined);
@@ -34,6 +35,8 @@ function SignupForm() {
         minLength={8}
         className="rounded-md border border-neutral-300 px-3 py-2 text-sm"
       />
+
+      <TermsCheckbox />
 
       {state?.error && <p className="text-sm text-red-600">{state.error}</p>}
 
