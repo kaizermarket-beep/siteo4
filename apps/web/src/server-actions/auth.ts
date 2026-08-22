@@ -7,6 +7,7 @@ import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { rateLimit } from "@/lib/rate-limit";
 import { signIn } from "@/lib/auth";
+import { BCRYPT_COST } from "@/lib/password";
 
 export type SignupState = { error?: string } | undefined;
 
@@ -34,7 +35,7 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
     return { error: "Un compte existe déjà avec cet email." };
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await bcrypt.hash(password, BCRYPT_COST);
   try {
     await db.insert(users).values({ email, name: name || null, passwordHash });
   } catch {

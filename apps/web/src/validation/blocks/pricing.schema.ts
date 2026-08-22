@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { safeHrefSchema } from "./shared";
 
 export const pricingPlanSchema = z.object({
   name: z.string().min(1).max(40),
@@ -15,7 +16,7 @@ export const pricingContentSchema = z.object({
   // Where every plan button points. Defaults to the "#contact" anchor,
   // which is right for a single-page site; a multi-page template sets it
   // to the address of its contact page, where that anchor does not exist.
-  ctaHref: z.string().max(2048).default(""),
+  ctaHref: safeHrefSchema,
 });
 
 export type PricingContent = z.infer<typeof pricingContentSchema>;

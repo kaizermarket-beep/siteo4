@@ -5,3 +5,14 @@ allowBuilds:
   '@tsparticles/engine': false
   esbuild: true
   unrs-resolver: false
+
+# Forcer des versions corrigees sur des dependances transitives que
+# nous ne controlons pas directement (`pnpm audit`).
+overrides:
+  # GHSA-2v37-7h3g-55p8 (high) — arrive via next > postcss > nanoid.
+  # Correctif semver-compatible, postcss demande deja ^3.3.x.
+  nanoid: "^3.3.18"
+  # GHSA-67mh-4wv8-2f99 (moderate) — arrive via drizzle-kit >
+  # @esbuild-kit/* , des paquets abandonnes qui epinglent un esbuild ancien.
+  # Dev uniquement, mais l'override est sans risque en production.
+  esbuild: "^0.25.12"

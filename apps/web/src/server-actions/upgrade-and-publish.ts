@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { sites, users } from "@/lib/db/schema";
 import { rateLimit } from "@/lib/rate-limit";
 import { signIn } from "@/lib/auth";
+import { BCRYPT_COST } from "@/lib/password";
 import { resolveIdentity, clearGuestCookie } from "@/lib/identity";
 import { slugify, validateSlug } from "@/lib/slug";
 import { publishOwnedSite } from "./publish";
@@ -76,7 +77,7 @@ export async function upgradeAndPublish(
     }
   }
 
-  const passwordHash = await bcrypt.hash(password, 10);
+  const passwordHash = await bcrypt.hash(password, BCRYPT_COST);
 
   try {
     await db

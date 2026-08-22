@@ -1,8 +1,11 @@
 import { z } from "zod";
+import { safeHrefSchema } from "./shared";
 
 export const socialLinkSchema = z.object({
   platform: z.string().max(30).default(""),
-  href: z.string().max(2048).default(""),
+  // Rendered as <a href> in ContactBlock, so it needs the same scheme
+  // allowlist as linkSchema — it just never went through linkSchema.
+  href: safeHrefSchema,
 });
 
 export const contactContentSchema = z.object({

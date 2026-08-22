@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "./schema";
 import { templates as templateDefs } from "../../templates/registry";
+import { BCRYPT_COST } from "../password";
 import { templatePages } from "../../templates/types";
 
 async function main() {
@@ -82,7 +83,7 @@ async function main() {
   const demoEmail = "demo@siteo.dev";
   let [demoUser] = await db.select().from(schema.users).where(eq(schema.users.email, demoEmail));
   if (!demoUser) {
-    const passwordHash = await bcrypt.hash("demo12345", 10);
+    const passwordHash = await bcrypt.hash("demo12345", BCRYPT_COST);
     [demoUser] = await db
       .insert(schema.users)
       .values({ email: demoEmail, name: "Demo", passwordHash })
