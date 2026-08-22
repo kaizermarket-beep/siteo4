@@ -86,6 +86,12 @@ export async function openBillingPortal() {
     .from(subscriptions)
     .where(eq(subscriptions.userId, session.user.id));
 
+  if (row && row.stripeSubscriptionId === null) {
+    // Internal grant (scripts/grant-internal-access.ts): no Stripe customer
+    // exists behind it, so the portal would fail with an opaque Stripe error.
+    throw new Error("Cet accès est interne : il n'y a pas d'abonnement Stripe à gérer.");
+  }
+
   const [user] = await db.select().from(users).where(eq(users.id, session.user.id));
   const customerId = row?.stripeCustomerId ?? user?.stripeCustomerId;
   if (!customerId) throw new Error("Aucun compte de facturation à gérer.");

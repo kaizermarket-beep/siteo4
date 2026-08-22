@@ -39,6 +39,9 @@ export default async function BillingPage({
 
   const configured = isStripeConfigured();
   const hasLiveSub = current && current.status !== "canceled";
+  // Granted by scripts/grant-internal-access.ts rather than bought: there is
+  // no Stripe subscription behind it, so there is no portal to open either.
+  const isInternal = hasLiveSub && current.stripeSubscriptionId === null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -70,23 +73,32 @@ export default async function BillingPage({
               {STATUS_COPY[current.status] ?? current.status}
             </h2>
           </div>
+          {isInternal && (
+            <p className="text-sm text-neutral-600">
+              Accès interne — accordé sans paiement, sans échéance.
+            </p>
+          )}
           {current.currentPeriodEnd && (
             <p className="text-sm text-neutral-600">
               {current.cancelAtPeriodEnd ? "Se termine le " : "Prochain prélèvement le "}
               {current.currentPeriodEnd.toLocaleDateString("fr-FR")}.
             </p>
           )}
-          <form action={openBillingPortal}>
-            <button
-              type="submit"
-              className="mt-2 rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
-            >
-              Gérer mon abonnement
-            </button>
-          </form>
-          <p className="text-xs text-neutral-400">
-            Changer de formule, mettre à jour la carte ou résilier.
-          </p>
+          {!isInternal && (
+            <>
+              <form action={openBillingPortal}>
+                <button
+                  type="submit"
+                  className="mt-2 rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-800"
+                >
+                  Gérer mon abonnement
+                </button>
+              </form>
+              <p className="text-xs text-neutral-400">
+                Changer de formule, mettre à jour la carte ou résilier.
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <>
