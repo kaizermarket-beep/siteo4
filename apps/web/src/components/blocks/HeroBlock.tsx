@@ -1,12 +1,8 @@
 import type { CSSProperties } from "react";
 import type { HeroContent } from "@/validation/blocks";
-import { SparklesCore } from "@/components/ui/sparkles";
-import InfiniteGallery from "@/components/ui/3d-gallery-photography";
-import { SilkBackground } from "@/components/ui/silk-background";
-import { GodRays } from "@/components/ui/god-rays";
-import { BarberPole } from "@/components/ui/barber-pole";
-import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 import { PulseFitHero } from "@/components/ui/pulse-fit-hero";
+import { HeroBackdrop } from "./HeroBackdrop";
+import { lazyBackdropVariants } from "./hero-backdrops/lazy-variants";
 
 // Accent-colored blurred blobs + dot grid, animated with the same drift
 // keyframes as the marketing aurora hero (globals.css) — pure CSS, no JS, so
@@ -77,32 +73,6 @@ function SpotlightGlow() {
         }}
       />
       <div className="absolute inset-0 [background-image:radial-gradient(rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:26px_26px] [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_70%)]" />
-    </div>
-  );
-}
-
-// Drifting particles on a dark backdrop, same tsparticles setup as the
-// marketing landing page's hero — reserved for templates that want a
-// glamorous, glittering first impression.
-function SparklesGlow() {
-  return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-neutral-950">
-      <div className="absolute inset-0 h-full w-full">
-        <SparklesCore
-          id="hero-sparkles"
-          background="transparent"
-          minSize={0.5}
-          maxSize={1.3}
-          particleDensity={90}
-          className="h-full w-full"
-          particleColor="#ffffff"
-          speed={1}
-        />
-      </div>
-      <div
-        className="absolute inset-0"
-        style={{ background: "radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.55) 100%)" }}
-      />
     </div>
   );
 }
@@ -289,28 +259,6 @@ function EmbersGlow() {
   );
 }
 
-// A real WebGL photo scroller (same engine as GalleryBlock's "gallery3d")
-// as the hero backdrop itself — photos drift and curve in 3D space behind
-// the headline, with a dark vignette so the text stays legible. The
-// heaviest option on purpose: reserved for heroes built to say "look at
-// the work", not just "look at a nice color".
-function PhotoGallery3DGlow({ images }: { images: { url: string; alt: string }[] }) {
-  return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-neutral-950">
-      <InfiniteGallery
-        images={images.map((img) => ({ src: img.url, alt: img.alt }))}
-        speed={1}
-        visibleCount={Math.min(Math.max(images.length * 2, 6), 12)}
-        className="h-full w-full"
-      />
-      <div
-        className="absolute inset-0"
-        style={{ background: "radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.6) 100%)" }}
-      />
-    </div>
-  );
-}
-
 // Editorial hero — the premium look, and the only variant that changes the
 // hero's *structure* rather than its backdrop.
 //
@@ -474,128 +422,6 @@ function TelemetryGlow() {
   );
 }
 
-// Training photographs rushing out of the vanishing point. Answers the two
-// things a coach's opener has to do at once — show people actually training,
-// and move — without another WebGL context: this is CSS 3D.
-//
-// Distinct from photoGallery3d, which scrolls a flat wall of pictures
-// sideways; here the corridor comes at the viewer, which is the register
-// sport wants.
-function StreamGlow({ images }: { images: { url: string; alt: string }[] }) {
-  return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-neutral-950">
-      <ImageStreamHero
-        images={images.map((i) => ({ src: i.url, alt: i.alt }))}
-        speed={22}
-        cards={9}
-        className="h-full w-full"
-      />
-      {/* the corridor is busiest at the edges, so clear the middle for type */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 48% 46% at 50% 48%, rgba(10,10,10,0.9) 35%, rgba(10,10,10,0.35) 100%)",
-        }}
-      />
-    </div>
-  );
-}
-
-// Barbershop: the pole itself, turning in a dark room, pushed to the right
-// so the headline keeps the left. An object rather than an effect — the
-// abstract variants all read as "a shader", which told a visitor nothing
-// about the trade.
-function BarberPoleGlow() {
-  return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#0a0807]">
-      {/* warm pool behind the pole so it sits in a room, not in the void */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 55% 70% at 80% 52%, color-mix(in srgb, var(--site-accent, #B45309) 22%, transparent) 0%, transparent 70%)",
-        }}
-      />
-      {/* Sized by the wrapper, not absolutely positioned itself: react-three
-          -fiber measures its host at mount, and an `absolute inset-0` host
-          reports 0 before layout settles, leaving the canvas stuck at its
-          300x150 default. */}
-      <BarberPole className="h-full w-full" />
-      {/* darkens the left so the headline always has ground to sit on */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to right, rgba(10,8,7,0.95) 0%, rgba(10,8,7,0.7) 40%, rgba(10,8,7,0) 78%)",
-        }}
-      />
-    </div>
-  );
-}
-
-// Daylight through a salon window: soft blush shafts over warm off-white.
-// Light-mode, so it stays out of immersiveVariants and the hero text keeps
-// its dark colour — the "clair et souriant" read for a women's salon.
-function SunbeamGlow() {
-  return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#fdf9f7]">
-      <GodRays
-        className="h-full w-full"
-        // near-white ground -> blush -> warm rose -> near-white light
-        colors={[
-          [0.992, 0.976, 0.969],
-          [0.965, 0.882, 0.886],
-          [0.925, 0.702, 0.749],
-          [1.0, 0.988, 0.976],
-        ]}
-        intensity={0.22}
-        paramA={0.5}
-        scale={1.05}
-        contrast={0.94}
-        saturation={0.9}
-        grain={0.018}
-        timeScale={0.32}
-        seed={4}
-      />
-      {/* keeps the dark headline legible over the brightest shafts */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "radial-gradient(ellipse at center, rgba(253,249,247,0.82) 20%, rgba(253,249,247,0.25) 100%)" }}
-      />
-    </div>
-  );
-}
-
-// The same engine at the other end of the dial: a single warm shaft cutting
-// deep shadow, rotated off-axis and slower, so it reads as a lit barbershop
-// rather than the salon's daylight.
-function HaloGlow() {
-  return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-[#080605]">
-      <GodRays
-        className="h-full w-full"
-        // near-black -> deep brown -> copper -> warm gold
-        colors={[
-          [0.031, 0.024, 0.020],
-          [0.180, 0.098, 0.055],
-          [0.706, 0.325, 0.035],
-          [0.976, 0.784, 0.463],
-        ]}
-        intensity={0.42}
-        paramA={0.2}
-        scale={1.35}
-        rotate={0.42}
-        contrast={1.08}
-        vignette={0.55}
-        grain={0.05}
-        timeScale={0.22}
-        seed={9}
-      />
-    </div>
-  );
-}
-
 // Barbershop lounge: one warm pool of light breathing over near-black, with
 // a fine grain so the gradient reads as a lit room rather than a CSS blur.
 // Pure CSS on purpose — only the flagship carries the WebGL silk, so a page
@@ -651,20 +477,6 @@ function LinenGlow() {
           backgroundImage:
             "repeating-linear-gradient(90deg, rgba(120,120,110,0.05) 0 1px, transparent 1px 4px), repeating-linear-gradient(0deg, rgba(120,120,110,0.05) 0 1px, transparent 1px 4px)",
         }}
-      />
-    </div>
-  );
-}
-
-// Full-bleed silk weave; the shader reads --site-accent itself, so the
-// same variant suits a gold salon and a plum one without extra config.
-function SilkGlow() {
-  return (
-    <div className="absolute inset-0 -z-10 overflow-hidden bg-neutral-950">
-      <SilkBackground className="h-full w-full" />
-      <div
-        className="absolute inset-0"
-        style={{ background: "radial-gradient(ellipse at center, transparent 25%, rgba(0,0,0,0.55) 100%)" }}
       />
     </div>
   );
@@ -807,29 +619,24 @@ export function HeroBlock({ content }: { content: HeroContent }) {
           : undefined
       }
     >
+      {/* Backdrops that need a client-side library are fetched on demand,
+          one chunk per variant, so a template that uses none of them ships
+          none of them. See HeroBackdrop.tsx. */}
+      {!hasBackgroundImage && lazyBackdropVariants.has(variant) && (
+        <HeroBackdrop variant={variant} images={content.heroImages} />
+      )}
       {!hasBackgroundImage && variant === "blobs" && <HeroBlobs />}
       {!hasBackgroundImage && variant === "aurora" && <AuroraGlow />}
       {!hasBackgroundImage && variant === "spotlight" && <SpotlightGlow />}
-      {!hasBackgroundImage && variant === "sparkles" && <SparklesGlow />}
       {!hasBackgroundImage && variant === "grid3d" && <Grid3DGlow />}
       {!hasBackgroundImage && variant === "beams" && <BeamsGlow />}
       {!hasBackgroundImage && variant === "mesh" && <MeshGlow />}
       {!hasBackgroundImage && variant === "bokeh" && <BokehGlow />}
       {!hasBackgroundImage && variant === "embers" && <EmbersGlow />}
-      {!hasBackgroundImage && variant === "sunbeam" && <SunbeamGlow />}
       {!hasBackgroundImage && variant === "ridges" && <RidgeGlow />}
       {!hasBackgroundImage && variant === "telemetry" && <TelemetryGlow />}
-      {!hasBackgroundImage && variant === "stream" && hasHeroImages && (
-        <StreamGlow images={content.heroImages!} />
-      )}
-      {!hasBackgroundImage && variant === "barberPole" && <BarberPoleGlow />}
-      {!hasBackgroundImage && variant === "halo" && <HaloGlow />}
       {!hasBackgroundImage && variant === "velvet" && <VelvetGlow />}
       {!hasBackgroundImage && variant === "linen" && <LinenGlow />}
-      {!hasBackgroundImage && variant === "silk" && <SilkGlow />}
-      {!hasBackgroundImage && variant === "photoGallery3d" && hasHeroImages && (
-        <PhotoGallery3DGlow images={content.heroImages!} />
-      )}
       <h1
         className={`animate-fade-up relative z-10 max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl ${
           hasBackgroundImage || isImmersive ? "text-white" : "text-neutral-900 dark:text-white"
