@@ -1387,10 +1387,14 @@ export const templates: TemplateDefinition[] = [
           position: 10,
           content: {
             headline: "L'excellence automobile, à votre service",
-            subheadline: "Un garage premium pour l'entretien et la personnalisation de votre véhicule.",
+            subheadline: "Entretien, préparation esthétique et personnalisation. Chaque intervention garantie deux ans, pièces comprises.",
             ctaLabel: "Prendre rendez-vous",
             ctaLink: { href: "/contact", label: "Prendre rendez-vous" },
-            heroVariant: "grid3d",
+            heroVariant: "editorial",
+            backgroundImage: {
+              url: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1400&auto=format&fit=crop&q=70",
+              alt: "Voiture de sport grise devant l'atelier",
+            },
           },
         },
         {
