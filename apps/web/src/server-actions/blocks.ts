@@ -1,10 +1,11 @@
 "use server";
 
 import { and, eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { siteBlocks, sites } from "@/lib/db/schema";
 import { resolveIdentity } from "@/lib/identity";
+import { siteCacheTag } from "@/lib/site-pages";
 import { blockContentSchemas, type BlockType } from "@/validation/blocks";
 
 async function assertBlockOwnership(blockId: string) {
@@ -38,6 +39,7 @@ export async function updateBlockContent(blockId: string, content: unknown) {
 
   if (site.status === "published") {
     revalidatePath(`/s/${site.slug}`, "layout");
+    updateTag(siteCacheTag(site.slug));
   }
 
   return { ok: true as const };
@@ -53,6 +55,7 @@ export async function toggleBlockVisibility(blockId: string, isVisible: boolean)
 
   if (site.status === "published") {
     revalidatePath(`/s/${site.slug}`, "layout");
+    updateTag(siteCacheTag(site.slug));
   }
 }
 
@@ -87,5 +90,6 @@ export async function reorderBlocks(siteId: string, orderedBlockIds: string[]) {
 
   if (site.status === "published") {
     revalidatePath(`/s/${site.slug}`, "layout");
+    updateTag(siteCacheTag(site.slug));
   }
 }

@@ -1,11 +1,12 @@
 "use server";
 
 import { and, eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { sites, templates } from "@/lib/db/schema";
 import { getUserEntitlements } from "@/lib/entitlements";
 import { resolveIdentity } from "@/lib/identity";
+import { siteCacheTag } from "@/lib/site-pages";
 
 async function getOwnedSite(siteId: string) {
   const identity = await resolveIdentity();
@@ -51,6 +52,7 @@ export async function publishOwnedSite(site: typeof sites.$inferSelect) {
     .where(eq(sites.id, site.id));
 
   revalidatePath(`/s/${site.slug}`, "layout");
+  updateTag(siteCacheTag(site.slug));
   return { ok: true as const, slug: site.slug };
 }
 
@@ -68,5 +70,6 @@ export async function unpublishSite(siteId: string) {
     .where(eq(sites.id, site.id));
 
   revalidatePath(`/s/${site.slug}`, "layout");
+  updateTag(siteCacheTag(site.slug));
   return { ok: true as const };
 }

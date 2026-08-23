@@ -1,11 +1,12 @@
 "use server";
 
 import { and, eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { siteBlocks, sitePages, sites } from "@/lib/db/schema";
 import { resolveIdentity } from "@/lib/identity";
 import { getUserEntitlements } from "@/lib/entitlements";
+import { siteCacheTag } from "@/lib/site-pages";
 import { slugify } from "@/lib/slug";
 
 // A page a user adds by hand starts with the three sections that make a page
@@ -69,8 +70,15 @@ async function assertSiteOwnership(siteId: string) {
 }
 
 function revalidateSite(slug: string, status: string) {
+  if (status !== "published") return;
   // "layout" so every page under the site is revalidated, not just its root.
-  if (status === "published") revalidatePath(`/s/${slug}`, "layout");
+  revalidatePath(`/s/${slug}`, "layout");
+  // And the tag, because revalidatePath does not reach the unstable_cache
+  // entry holding this site's data (see lib/site-pages.ts). updateTag rather
+  // than revalidateTag: the latter now serves stale content while it
+  // refreshes, so someone who just published would reload and still see the
+  // old page. updateTag expires immediately — read your own writes.
+  updateTag(siteCacheTag(slug));
 }
 
 export async function createPage(siteId: string, title: string) {
