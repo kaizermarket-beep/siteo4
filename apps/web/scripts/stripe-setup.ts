@@ -17,12 +17,16 @@ import Stripe from "stripe";
 import * as schema from "../src/lib/db/schema";
 
 const PLAN_LABELS: Record<string, { name: string; description: string }> = {
-  eco: {
-    name: "Siteo Eco",
+  starter: {
+    name: "Siteo Starter",
     description: "1 site, tous les modèles de base, hébergement inclus.",
   },
-  premium: {
-    name: "Siteo Premium",
+  pro: {
+    name: "Siteo Pro",
+    description: "1 site, avec les modèles premium multi-pages, hébergement inclus.",
+  },
+  agence: {
+    name: "Siteo Agence",
     description: "Jusqu'à 5 sites, modèles premium, hébergement inclus.",
   },
 };

@@ -4,8 +4,10 @@ import { plans, subscriptions, users } from "./db/schema";
 
 const TRIAL_DAYS = 7;
 
+export type PlanKey = "starter" | "pro" | "agence";
+
 export type Entitlements = {
-  planKey: "eco" | "premium" | "trial" | "expired";
+  planKey: PlanKey | "trial" | "expired";
   maxSites: number;
   allowsPremiumTemplates: boolean;
   allowsPublish: boolean;
@@ -32,7 +34,7 @@ export async function getUserEntitlements(userId: string): Promise<Entitlements>
 
   if (active) {
     return {
-      planKey: active.plan.key as "eco" | "premium",
+      planKey: active.plan.key as PlanKey,
       maxSites: active.plan.maxSites + user.extraSiteCredits,
       allowsPremiumTemplates: active.plan.allowsPremiumTemplates,
       allowsPublish: active.plan.allowsPublish,

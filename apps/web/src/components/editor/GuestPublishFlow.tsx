@@ -9,24 +9,34 @@ const ROOT_DOMAIN = process.env.NEXT_PUBLIC_ROOT_DOMAIN;
 
 const plans = [
   {
-    key: "eco",
-    name: "Eco",
+    key: "starter",
+    name: "Starter",
     icon: "🌱",
     tagline: "Pour démarrer",
-    price: "10€",
+    price: "12€",
     period: "/mois",
     features: ["1 site", "Modèles de base"],
     highlighted: false,
   },
   {
-    key: "premium",
-    name: "Premium",
+    key: "pro",
+    name: "Pro",
     icon: "🚀",
     tagline: "Pour se démarquer",
-    price: "25€",
+    price: "28€",
+    period: "/mois",
+    features: ["1 site", "Modèles premium"],
+    highlighted: true,
+  },
+  {
+    key: "agence",
+    name: "Agence",
+    icon: "🏢",
+    tagline: "Pour plusieurs sites",
+    price: "40€",
     period: "/mois",
     features: ["Jusqu'à 5 sites", "Modèles premium"],
-    highlighted: true,
+    highlighted: false,
   },
 ] as const;
 
@@ -49,7 +59,7 @@ export function GuestPublishFlow({
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [stepError, setStepError] = useState<string | null>(null);
-  const [plan, setPlan] = useState<"eco" | "premium">("premium");
+  const [plan, setPlan] = useState<"starter" | "pro" | "agence">("pro");
   const [siteName, setSiteName] = useState(initialSiteName);
   const [slugEdited, setSlugEdited] = useState(false);
   const [slug, setSlug] = useState(initialSlug);
@@ -195,7 +205,7 @@ export function GuestPublishFlow({
                 ✨ 7 jours d&apos;essai gratuit, sans carte bancaire
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
               {plans.map((p) => (
                 <label
                   key={p.key}

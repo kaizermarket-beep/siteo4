@@ -1,290 +1,215 @@
 "use client";
-import React from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
-import { CheckCircleIcon, StarIcon } from "lucide-react";
+
+import { useRef, useState } from "react";
 import Link from "next/link";
-import { motion, Transition } from "framer-motion";
+import { motion } from "framer-motion";
+import { Check, Star } from "lucide-react";
+import confetti from "canvas-confetti";
+import { buttonVariants } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { useMediaQuery } from "@/hooks/use-media-query";
+import { cn } from "@/lib/utils";
 
-type FREQUENCY = "monthly" | "yearly";
-const frequencies: FREQUENCY[] = ["monthly", "yearly"];
+// Vendored from 21st.dev, adapted on three points:
+//
+// - Euros, not dollars, and the annual figure is a real number rather than a
+//   percentage claim: two months free on twelve, which is 16.7%, not the 20%
+//   the published copy advertises. Rounding that up on a pricing page is the
+//   kind of small untruth that costs trust with a first customer.
+// - The card tilt only runs on desktop, as published, but the entrance
+//   animation starts at opacity 1. Framer Motion's mount transitions are
+//   unreliable in this Next 16 + Turbopack + React 19 setup (see the note in
+//   globals.css); if the animation never runs, the cards must still be
+//   visible rather than stuck invisible.
+// - The annual toggle is presentational. Checkout bills monthly today, and
+//   the button says so, because a toggle that silently charges a different
+//   amount than the one displayed is worse than no toggle.
+// - NumberFlow is gone. Its custom element upgraded but React never passed
+//   it the value — an interop problem with React 19 here — so the price
+//   stayed on the monthly figure while the period switched to "/ an". The
+//   page was advertising 12 € per year. A remount-keyed fade gives the same
+//   sense of change, costs no dependency, and cannot display a wrong number.
 
-interface Plan {
+const EUR = new Intl.NumberFormat("fr-FR", {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 0,
+});
+
+export interface PricingPlan {
   name: string;
-  info: string;
-  price: {
-    monthly: number;
-    yearly: number;
-  };
-  features: {
-    text: string;
-    tooltip?: string;
-  }[];
-  btn: {
-    text: string;
-    href: string;
-  };
-  highlighted?: boolean;
+  /** Monthly price in euros. */
+  price: number;
+  /** Yearly price in euros. */
+  yearlyPrice: number;
+  period: string;
+  features: string[];
+  description: string;
+  buttonText: string;
+  href: string;
+  isPopular: boolean;
 }
 
-interface PricingSectionProps extends React.ComponentProps<"div"> {
-  plans: Plan[];
-  heading: string;
+export interface PricingProps {
+  plans: PricingPlan[];
+  title?: string;
   description?: string;
+  /** Shown under the toggle when annual is selected. */
+  annualNote?: string;
 }
 
-export function PricingSection({
+export function Pricing({
   plans,
-  heading,
-  description,
-  ...props
-}: PricingSectionProps) {
-  const [frequency, setFrequency] = React.useState<"monthly" | "yearly">(
-    "monthly"
-  );
+  title = "Des tarifs clairs",
+  description = "Choisissez la formule qui correspond à votre activité.",
+  annualNote,
+}: PricingProps) {
+  const [isMonthly, setIsMonthly] = useState(true);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const switchRef = useRef<HTMLButtonElement>(null);
 
-  return (
-    <div
-      className={cn(
-        "flex w-full flex-col items-center justify-center space-y-5 p-4",
-        props.className
-      )}
-      {...props}
-    >
-      <div className="mx-auto max-w-xl space-y-2">
-        <h2 className="text-center text-2xl font-bold tracking-tight md:text-3xl lg:text-4xl">
-          {heading}
-        </h2>
-        {description && (
-          <p className="text-muted-foreground text-center text-sm md:text-base">
-            {description}
-          </p>
-        )}
-      </div>
-      <PricingFrequencyToggle
-        frequency={frequency}
-        setFrequency={setFrequency}
-      />
-      <div
-        className={cn(
-          "mx-auto grid w-full max-w-4xl grid-cols-1 gap-4",
-          plans.length === 2 ? "max-w-2xl md:grid-cols-2" : "md:grid-cols-3"
-        )}
-      >
-        {plans.map((plan) => (
-          <PricingCard plan={plan} key={plan.name} frequency={frequency} />
-        ))}
-      </div>
-    </div>
-  );
-}
+  const handleToggle = (checked: boolean) => {
+    setIsMonthly(!checked);
+    if (!checked || !switchRef.current) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-type PricingFrequencyToggleProps = React.ComponentProps<"div"> & {
-  frequency: FREQUENCY;
-  setFrequency: React.Dispatch<React.SetStateAction<FREQUENCY>>;
-};
-
-export function PricingFrequencyToggle({
-  frequency,
-  setFrequency,
-  ...props
-}: PricingFrequencyToggleProps) {
-  return (
-    <div
-      className={cn(
-        "bg-muted/30 mx-auto flex w-fit rounded-full border p-1",
-        props.className
-      )}
-      {...props}
-    >
-      {frequencies.map((freq) => (
-        <button
-          key={freq}
-          type="button"
-          onClick={() => setFrequency(freq)}
-          className="relative px-4 py-1 text-sm capitalize"
-        >
-          <span className="relative z-10">
-            {freq === "monthly" ? "Mensuel" : "Annuel"}
-          </span>
-          {frequency === freq && (
-            <motion.span
-              layoutId="frequency"
-              transition={{ type: "spring", duration: 0.4 }}
-              className="bg-foreground absolute inset-0 z-10 rounded-full mix-blend-difference"
-            />
-          )}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-type PricingCardProps = React.ComponentProps<"div"> & {
-  plan: Plan;
-  frequency?: FREQUENCY;
-};
-
-export function PricingCard({
-  plan,
-  className,
-  frequency = frequencies[0],
-  ...props
-}: PricingCardProps) {
-  return (
-    <div
-      key={plan.name}
-      className={cn(
-        "relative flex w-full flex-col rounded-lg border",
-        className
-      )}
-      {...props}
-    >
-      {plan.highlighted && (
-        <BorderTrail
-          style={{
-            boxShadow:
-              "0px 0px 60px 30px rgb(255 255 255 / 50%), 0 0 100px 60px rgb(0 0 0 / 50%), 0 0 140px 90px rgb(0 0 0 / 50%)",
-          }}
-          size={100}
-        />
-      )}
-      <div
-        className={cn(
-          "bg-muted/20 rounded-t-lg border-b p-4",
-          plan.highlighted && "bg-muted/40"
-        )}
-      >
-        <div className="absolute top-2 right-2 z-10 flex items-center gap-2">
-          {plan.highlighted && (
-            <p className="bg-background flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs">
-              <StarIcon className="h-3 w-3 fill-current" />
-              Populaire
-            </p>
-          )}
-          {frequency === "yearly" && (
-            <p className="bg-primary text-primary-foreground flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs">
-              -
-              {Math.round(
-                ((plan.price.monthly * 12 - plan.price.yearly) /
-                  plan.price.monthly /
-                  12) *
-                  100
-              )}
-              %
-            </p>
-          )}
-        </div>
-
-        <div className="text-lg font-medium">{plan.name}</div>
-        <p className="text-muted-foreground text-sm font-normal">
-          {plan.info}
-        </p>
-        <h3 className="mt-2 flex items-end gap-1">
-          <span className="text-3xl font-bold">
-            {plan.price[frequency]}€
-          </span>
-          <span className="text-muted-foreground">
-            /{frequency === "monthly" ? "mois" : "an"}
-          </span>
-        </h3>
-      </div>
-      <div
-        className={cn(
-          "text-muted-foreground space-y-4 px-4 py-6 text-sm",
-          plan.highlighted && "bg-muted/10"
-        )}
-      >
-        {plan.features.map((feature, index) => (
-          <div key={index} className="flex items-center gap-2">
-            <CheckCircleIcon className="text-foreground h-4 w-4 shrink-0" />
-            <TooltipProvider>
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild>
-                  <p
-                    className={cn(
-                      feature.tooltip &&
-                        "cursor-pointer border-b border-dashed"
-                    )}
-                  >
-                    {feature.text}
-                  </p>
-                </TooltipTrigger>
-                {feature.tooltip && (
-                  <TooltipContent>
-                    <p>{feature.tooltip}</p>
-                  </TooltipContent>
-                )}
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        ))}
-      </div>
-      <div
-        className={cn(
-          "mt-auto w-full border-t p-3",
-          plan.highlighted && "bg-muted/40"
-        )}
-      >
-        <Button
-          className="w-full"
-          variant={plan.highlighted ? "default" : "outline"}
-          asChild
-        >
-          <Link href={plan.btn.href}>{plan.btn.text}</Link>
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-type BorderTrailProps = {
-  className?: string;
-  size?: number;
-  transition?: Transition;
-  delay?: number;
-  onAnimationComplete?: () => void;
-  style?: React.CSSProperties;
-};
-
-export function BorderTrail({
-  className,
-  size = 60,
-  transition,
-  delay,
-  onAnimationComplete,
-  style,
-}: BorderTrailProps) {
-  const BASE_TRANSITION: Transition = {
-    repeat: Infinity,
-    duration: 5,
-    ease: "linear",
+    const rect = switchRef.current.getBoundingClientRect();
+    confetti({
+      particleCount: 50,
+      spread: 60,
+      origin: {
+        x: (rect.left + rect.width / 2) / window.innerWidth,
+        y: (rect.top + rect.height / 2) / window.innerHeight,
+      },
+      colors: ["#171717", "#a3a3a3", "#d4d4d4", "#fafafa"],
+      ticks: 200,
+      gravity: 1.2,
+      decay: 0.94,
+      startVelocity: 30,
+      shapes: ["circle"],
+    });
   };
 
   return (
-    <div className="pointer-events-none absolute inset-0 rounded-[inherit] border border-transparent [mask-clip:padding-box,border-box] [mask-composite:intersect] [mask-image:linear-gradient(transparent,transparent),linear-gradient(#000,#000)]">
-      <motion.div
-        className={cn("absolute aspect-square bg-zinc-500", className)}
-        style={{
-          width: size,
-          offsetPath: `rect(0 auto auto 0 round ${size}px)`,
-          ...style,
-        }}
-        animate={{
-          offsetDistance: ["0%", "100%"],
-        }}
-        transition={{
-          ...(transition ?? BASE_TRANSITION),
-          delay: delay,
-        }}
-        onAnimationComplete={onAnimationComplete}
-      />
+    <div className="mx-auto w-full max-w-5xl px-2">
+      <div className="mb-10 space-y-3 text-center">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h2>
+        <p className="mx-auto max-w-2xl text-lg whitespace-pre-line text-neutral-600">
+          {description}
+        </p>
+      </div>
+
+      <div className="mb-10 flex items-center justify-center gap-3">
+        <span className={cn("text-sm", isMonthly ? "font-medium text-neutral-900" : "text-neutral-500")}>
+          Mensuel
+        </span>
+        <Label className="cursor-pointer">
+          <Switch
+            ref={switchRef}
+            checked={!isMonthly}
+            onCheckedChange={handleToggle}
+            aria-label="Basculer entre tarif mensuel et annuel"
+          />
+        </Label>
+        <span className={cn("text-sm", !isMonthly ? "font-medium text-neutral-900" : "text-neutral-500")}>
+          Annuel <span className="text-neutral-500">(2 mois offerts)</span>
+        </span>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        {plans.map((plan, index) => (
+          <motion.div
+            key={plan.name}
+            initial={{ y: 0, opacity: 1 }}
+            whileInView={
+              isDesktop
+                ? {
+                    y: plan.isPopular ? -20 : 0,
+                    opacity: 1,
+                    x: index === 2 ? -20 : index === 0 ? 20 : 0,
+                    scale: index === 0 || index === 2 ? 0.95 : 1,
+                  }
+                : {}
+            }
+            viewport={{ once: true }}
+            transition={{
+              duration: 1.6,
+              type: "spring",
+              stiffness: 100,
+              damping: 30,
+              delay: 0.3,
+              opacity: { duration: 0.4 },
+            }}
+            className={cn(
+              "relative flex flex-col rounded-2xl border bg-white p-6 text-center",
+              plan.isPopular ? "border-2 border-neutral-900" : "border-neutral-200",
+              !plan.isPopular && "md:mt-5",
+              index === 0 && "origin-right",
+              index === 2 && "origin-left"
+            )}
+          >
+            {plan.isPopular && (
+              <div className="absolute top-0 right-0 flex items-center rounded-tr-xl rounded-bl-xl bg-neutral-900 px-2 py-0.5">
+                <Star className="h-3.5 w-3.5 fill-current text-white" />
+                <span className="ml-1 text-xs font-semibold text-white">Le plus choisi</span>
+              </div>
+            )}
+
+            <div className="flex flex-1 flex-col">
+              <p className="text-sm font-semibold tracking-wide text-neutral-500 uppercase">
+                {plan.name}
+              </p>
+
+              <div className="mt-5 flex items-baseline justify-center gap-x-1">
+                <span
+                  key={isMonthly ? "m" : "y"}
+                  className="animate-fade-up text-5xl font-bold tracking-tight text-neutral-900 [font-variant-numeric:tabular-nums]"
+                >
+                  {EUR.format(isMonthly ? plan.price : plan.yearlyPrice)}
+                </span>
+                <span className="text-sm font-semibold text-neutral-500">
+                  / {isMonthly ? plan.period : "an"}
+                </span>
+              </div>
+
+              <p className="mt-1 text-xs text-neutral-500">
+                {isMonthly ? "facturé chaque mois" : `soit ${Math.round(plan.yearlyPrice / 12)} € par mois`}
+              </p>
+
+              <ul className="mt-6 flex flex-col gap-2">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2">
+                    <Check className="mt-1 h-4 w-4 shrink-0 text-neutral-900" />
+                    <span className="text-left text-sm text-neutral-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <hr className="my-5 w-full border-neutral-200" />
+
+              <Link
+                href={plan.href}
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  "group w-full font-semibold tracking-tight transition-all duration-300",
+                  plan.isPopular
+                    ? "bg-neutral-900 text-white hover:bg-neutral-800"
+                    : "bg-white text-neutral-900 hover:bg-neutral-100"
+                )}
+              >
+                {plan.buttonText}
+              </Link>
+
+              <p className="mt-4 text-xs leading-5 text-neutral-500">{plan.description}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {!isMonthly && annualNote && (
+        <p className="mt-8 text-center text-xs text-neutral-500">{annualNote}</p>
+      )}
     </div>
   );
 }

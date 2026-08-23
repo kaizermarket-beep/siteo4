@@ -1,40 +1,64 @@
 import { templateCategories } from "@/templates/types";
 import { BuilderHero } from "@/components/marketing/BuilderHero";
-import { PricingSection } from "@/components/ui/pricing";
+import { Pricing, type PricingPlan } from "@/components/ui/pricing";
 import { TestimonialsMarquee } from "@/components/marketing/TestimonialsMarquee";
 import { HighlightsMarquee } from "@/components/marketing/HighlightsMarquee";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { MetierCard } from "@/components/marketing/MetierCard";
 
-const pricingPlans = [
+// Annual figures are ten months, not twelve — two months offered. Kept as
+// explicit numbers rather than a computed discount so the page can never
+// advertise a reduction the checkout does not apply.
+const pricingPlans: PricingPlan[] = [
   {
-    name: "Eco",
-    info: "Pour démarrer en solo",
-    price: { monthly: 10, yearly: 100 },
+    name: "Starter",
+    price: 12,
+    yearlyPrice: 120,
+    period: "mois",
     features: [
-      { text: "1 site" },
-      { text: "Tous les modèles de base" },
-      {
-        text: "Sous-domaine gratuit",
-        tooltip: "Votre site est en ligne sur monsite.siteo.app, inclus sans surcoût.",
-      },
+      "1 site publié",
+      "Tous les modèles de base",
+      "Sous-domaine et hébergement inclus",
+      "Modifications illimitées",
     ],
-    btn: { text: "Commencer l'essai gratuit", href: "/signup" },
+    description: "Pour un artisan ou un commerce qui veut simplement exister en ligne.",
+    buttonText: "Commencer l'essai gratuit",
+    href: "/signup",
+    isPopular: false,
   },
   {
-    name: "Premium",
-    info: "Pour les indépendants qui grandissent",
-    price: { monthly: 25, yearly: 250 },
+    name: "Pro",
+    price: 28,
+    yearlyPrice: 280,
+    period: "mois",
     features: [
-      { text: "Jusqu'à 5 sites" },
-      { text: "Modèles premium" },
-      {
-        text: "Sites supplémentaires à la carte",
-        tooltip: "Ajoutez des sites au-delà de 5 à tarif préférentiel.",
-      },
+      "1 site publié",
+      "Modèles premium multi-pages",
+      "Pages Prestations, Galerie, Contact",
+      "Sous-domaine et hébergement inclus",
+      "Modifications illimitées",
     ],
-    btn: { text: "Commencer l'essai gratuit", href: "/signup" },
-    highlighted: true,
+    description: "Le même site qu'en Starter, mais avec les modèles haut de gamme.",
+    buttonText: "Commencer l'essai gratuit",
+    href: "/signup",
+    isPopular: true,
+  },
+  {
+    name: "Agence",
+    price: 40,
+    yearlyPrice: 400,
+    period: "mois",
+    features: [
+      "Jusqu'à 5 sites publiés",
+      "Tout ce que contient Pro",
+      "Un seul compte pour tous vos sites",
+      "Sous-domaine et hébergement inclus",
+      "Modifications illimitées",
+    ],
+    description: "Pour qui gère plusieurs établissements, ou crée des sites pour ses clients.",
+    buttonText: "Commencer l'essai gratuit",
+    href: "/signup",
+    isPopular: false,
   },
 ];
 
@@ -75,10 +99,12 @@ export default function LandingPage() {
 
       {/* Pricing */}
       <section className="bg-stone-300/50 px-6 py-20">
-        <PricingSection
+        <Pricing
           plans={pricingPlans}
-          heading="Tarifs"
-          description="7 jours d'essai gratuit, sans carte bancaire. Ensuite, choisissez votre formule."
+          title="Des tarifs clairs"
+          description={`7 jours d'essai gratuit, sans carte bancaire.
+Ensuite, choisissez la formule qui correspond à votre activité.`}
+          annualNote="Le paiement annuel n'est pas encore disponible : la souscription est mensuelle, résiliable à tout moment."
         />
       </section>
     </main>

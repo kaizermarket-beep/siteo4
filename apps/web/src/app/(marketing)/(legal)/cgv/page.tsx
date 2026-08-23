@@ -63,21 +63,33 @@ export default function CgvPage() {
           head={["Formule", "Prix", "Contenu"]}
           rows={[
             [
-              "Eco",
+              "Starter",
               <>
-                <Todo>10 € — préciser TTC ou HT</Todo> / mois
+                <Todo>12 € — préciser TTC ou HT</Todo> / mois
               </>,
               "1 site publié, modèles de base, hébergement et nom de sous-domaine inclus.",
             ],
             [
-              "Premium",
+              "Pro",
               <>
-                <Todo>25 € — préciser TTC ou HT</Todo> / mois
+                <Todo>28 € — préciser TTC ou HT</Todo> / mois
               </>,
-              "Jusqu'à 5 sites publiés, modèles premium multi-pages, hébergement et nom de sous-domaine inclus.",
+              "1 site publié, modèles premium multi-pages, hébergement et nom de sous-domaine inclus.",
+            ],
+            [
+              "Agence",
+              <>
+                <Todo>40 € — préciser TTC ou HT</Todo> / mois
+              </>,
+              "Jusqu'à 5 sites publiés, mêmes fonctionnalités que la formule Pro.",
             ],
           ]}
         />
+        <p className="text-sm text-neutral-600">
+          Les tarifs annuels affichés sur la page publique (deux mois offerts) sont indicatifs :
+          la souscription en ligne est aujourd&apos;hui mensuelle uniquement. Cette mention doit
+          être retirée le jour où le paiement annuel est réellement proposé.
+        </p>
         <p>
           Le détail à jour des formules figure sur la page de tarification du site. Siteo peut faire
           évoluer le contenu des formules ; toute évolution défavorable au client en cours

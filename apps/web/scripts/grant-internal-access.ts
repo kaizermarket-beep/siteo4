@@ -111,9 +111,9 @@ async function main() {
   const [premium] = await db
     .select()
     .from(schema.plans)
-    .where(eq(schema.plans.key, "premium"));
+    .where(eq(schema.plans.key, "agence"));
   if (!premium) {
-    console.error("Plan 'premium' introuvable — lancez d'abord `pnpm --filter web db:seed`.");
+    console.error("Plan 'agence' introuvable — lancez d'abord `pnpm --filter web db:seed`.");
     process.exit(1);
   }
 

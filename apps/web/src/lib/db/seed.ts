@@ -48,21 +48,44 @@ async function main() {
     }
   }
 
-  // 2. Plans — 7-day free trial (no card), then Eco or Premium.
-  // Stripe price IDs stay null until real API keys are wired up.
+  // 2. Plans — 7-day free trial (no card), then Starter, Pro or Agence.
+  //
+  // Renamed from the earlier eco/premium pair. Subscriptions point at the
+  // plan's id, not its key, so renaming in place keeps every existing
+  // subscriber attached to the plan they bought.
+  const RENAMES: [string, string][] = [
+    ["eco", "starter"],
+    ["premium", "pro"],
+  ];
+  for (const [from, to] of RENAMES) {
+    const [old] = await db.select().from(schema.plans).where(eq(schema.plans.key, from));
+    const [already] = await db.select().from(schema.plans).where(eq(schema.plans.key, to));
+    if (old && !already) {
+      await db.update(schema.plans).set({ key: to }).where(eq(schema.plans.id, old.id));
+      console.log(`Renamed plan: ${from} -> ${to}`);
+    }
+  }
+
   const planDefs = [
     {
-      key: "eco",
-      priceEuros: 10,
-      stripePriceId: null,
+      key: "starter",
+      priceEuros: 12,
       maxSites: 1,
       allowsPremiumTemplates: false,
       allowsPublish: true,
     },
     {
-      key: "premium",
-      priceEuros: 25,
-      stripePriceId: null,
+      // Same single site as Starter; what you buy is access to the premium
+      // templates, not more of them.
+      key: "pro",
+      priceEuros: 28,
+      maxSites: 1,
+      allowsPremiumTemplates: true,
+      allowsPublish: true,
+    },
+    {
+      key: "agence",
+      priceEuros: 40,
       maxSites: 5,
       allowsPremiumTemplates: true,
       allowsPublish: true,
@@ -71,10 +94,13 @@ async function main() {
   for (const def of planDefs) {
     const [existing] = await db.select().from(schema.plans).where(eq(schema.plans.key, def.key));
     if (existing) {
+      // stripePriceId is deliberately not in `def`: it is written by
+      // scripts/stripe-setup.ts, and re-seeding used to wipe it, which
+      // silently disabled checkout until someone re-ran the setup script.
       await db.update(schema.plans).set(def).where(eq(schema.plans.id, existing.id));
       console.log(`Updated plan: ${def.key}`);
     } else {
-      await db.insert(schema.plans).values(def);
+      await db.insert(schema.plans).values({ ...def, stripePriceId: null });
       console.log(`Created plan: ${def.key}`);
     }
   }

@@ -11,8 +11,9 @@ function formatDaysLeft(trialEndsAt: Date) {
 }
 
 const PLAN_COPY: Record<string, { label: string; blurb: string; highlighted?: boolean }> = {
-  eco: { label: "Eco", blurb: "1 site, tous les modèles de base." },
-  premium: { label: "Premium", blurb: "Jusqu'à 5 sites, modèles premium.", highlighted: true },
+  starter: { label: "Starter", blurb: "1 site, tous les modèles de base." },
+  pro: { label: "Pro", blurb: "1 site, avec les modèles premium.", highlighted: true },
+  agence: { label: "Agence", blurb: "Jusqu'à 5 sites, modèles premium." },
 };
 
 const STATUS_COPY: Record<string, string> = {
@@ -115,7 +116,7 @@ export default async function BillingPage({
             </p>
           )}
 
-          <div className="grid grid-cols-1 gap-6 sm:max-w-2xl sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 sm:max-w-3xl sm:grid-cols-3">
             {allPlans
               .filter((p) => PLAN_COPY[p.key])
               .sort((a, b) => a.priceEuros - b.priceEuros)
