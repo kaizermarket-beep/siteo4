@@ -1,7 +1,8 @@
 // Grants an account permanent Premium entitlements without a payment.
 //
-//   pnpm --filter web grant-access <email>          # accorder
-//   pnpm --filter web grant-access <email> --revoke # retirer
+//   pnpm --filter web grant-access <email>              # accorder
+//   pnpm --filter web grant-access <email> --sites 50   # + relever le plafond
+//   pnpm --filter web grant-access <email> --revoke     # tout retirer
 //
 // Why this exists: the operator of Siteo needs to publish sites on their own
 // service, and getUserEntitlements gives every account — theirs included —
@@ -18,18 +19,40 @@
 // "internal access" instead of a portal button that would fail, and the
 // Stripe webhook upserts on that same column, so it can never overwrite a
 // row where it is null.
-import { and, eq } from "drizzle-orm";
+//
+// `--sites N` raises the ceiling through users.extraSiteCredits rather than
+// through plans.maxSites. The distinction matters: plans.maxSites is the
+// product sold to every Premium customer, and raising it would silently
+// promise them fifty sites for the price of five. extraSiteCredits is
+// per-account, and entitlements.ts already adds it on top of the plan.
+//
+// Beware what the ceiling actually counts. createSiteForUser counts *every*
+// row in `sites` belonging to the account, with no filter on status — an
+// abandoned draft occupies a slot exactly like a live client site.
+import { and, eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import * as schema from "../src/lib/db/schema";
 
 const INTERNAL_CUSTOMER_ID = "internal_no_stripe";
 
+function parseSites(argv: string[]): number | null {
+  const i = argv.indexOf("--sites");
+  if (i === -1) return null;
+  const n = Number(argv[i + 1]);
+  if (!Number.isInteger(n) || n < 1) {
+    console.error("--sites attend un entier positif, ex. --sites 50");
+    process.exit(1);
+  }
+  return n;
+}
+
 async function main() {
   const email = process.argv[2]?.trim().toLowerCase();
   const revoke = process.argv.includes("--revoke");
+  const targetSites = parseSites(process.argv);
 
   if (!email) {
-    console.error("Usage: grant-internal-access <email> [--revoke]");
+    console.error("Usage: grant-internal-access <email> [--sites N] [--revoke]");
     process.exit(1);
   }
 
@@ -59,7 +82,19 @@ async function main() {
     for (const row of internal) {
       await db.delete(schema.subscriptions).where(eq(schema.subscriptions.id, row.id));
     }
-    console.log(`Accès interne retiré pour ${email} (${internal.length} ligne(s)).`);
+    // Credits have to go with the subscription. Left behind, they would
+    // still be added to whatever plan the account lands on next — an Eco
+    // subscription would come with fifty sites instead of one. Nothing
+    // sells credits today, so any balance here was granted by this script.
+    if (user.extraSiteCredits > 0) {
+      await db
+        .update(schema.users)
+        .set({ extraSiteCredits: 0 })
+        .where(eq(schema.users.id, user.id));
+    }
+    console.log(
+      `Accès interne retiré pour ${email} (${internal.length} ligne(s), ${user.extraSiteCredits} crédit(s) remis à zéro).`
+    );
     process.exit(0);
   }
 
@@ -120,9 +155,38 @@ async function main() {
     console.log(`Accès interne accordé à ${email}.`);
   }
 
+  if (targetSites !== null) {
+    // The flag reads as a total, because that is what the operator thinks
+    // in ("I want fifty sites"), not as a delta on top of the plan.
+    const credits = Math.max(0, targetSites - premium.maxSites);
+    if (targetSites < premium.maxSites) {
+      console.warn(
+        `--sites ${targetSites} est en dessous du plan Premium (${premium.maxSites}) : plafond laissé à ${premium.maxSites}.`
+      );
+    }
+    await db
+      .update(schema.users)
+      .set({ extraSiteCredits: credits })
+      .where(eq(schema.users.id, user.id));
+  }
+
+  // Report the entitlements as the application itself computes them, rather
+  // than as this script believes it wrote them — the two have to agree.
+  const { getUserEntitlements } = await import("../src/lib/entitlements");
+  const entitlements = await getUserEntitlements(user.id);
+  const [{ count: siteCount }] = await db
+    .select({ count: sql<number>`count(*)::int` })
+    .from(schema.sites)
+    .where(eq(schema.sites.userId, user.id));
+
   console.log(
-    `→ Premium : ${premium.maxSites} sites, modèles premium, publication autorisée. Aucun paiement.`
+    `→ plan « ${entitlements.planKey} » · ${siteCount}/${entitlements.maxSites} sites utilisés · ` +
+      `modèles premium : ${entitlements.allowsPremiumTemplates ? "oui" : "non"} · ` +
+      `publication : ${entitlements.allowsPublish ? "oui" : "non"} · aucun paiement.`
   );
+  if (siteCount >= entitlements.maxSites) {
+    console.warn("⚠ Plafond déjà atteint. Rappel : les brouillons comptent autant que les sites publiés.");
+  }
   process.exit(0);
 }
 
