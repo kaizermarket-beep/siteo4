@@ -180,6 +180,44 @@ export const siteBlocks = pgTable(
   (table) => [uniqueIndex("site_block_page_position_idx").on(table.pageId, table.position)]
 );
 
+export const reservationStatusValues = ["pending", "confirmed", "declined", "cancelled"] as const;
+export type ReservationStatus = (typeof reservationStatusValues)[number];
+
+// Booking requests left by visitors on a published site.
+//
+// Runtime data, so a table rather than block content: the restaurant's
+// capacity is configuration and lives in the reservation block, but what has
+// actually been booked changes by the minute and has to be queryable to
+// compute what is still free.
+//
+// `status` starts at "pending" on purpose. Nothing here confirms a table —
+// the restaurant does that. The public form says so, because telling a
+// diner their table is booked when no one has looked at it yet is a promise
+// the site cannot keep.
+export const siteReservations = pgTable(
+  "site_reservation",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    siteId: uuid("site_id")
+      .notNull()
+      .references(() => sites.id, { onDelete: "cascade" }),
+    // Local calendar day, not a timestamp: a service on the 14th is the 14th
+    // in the restaurant's town whatever the visitor's timezone.
+    serviceDate: text("service_date").notNull(),
+    slot: text("slot").notNull(),
+    partySize: integer("party_size").notNull(),
+    guestName: text("guest_name").notNull(),
+    guestPhone: text("guest_phone").notNull(),
+    guestEmail: text("guest_email"),
+    note: text("note"),
+    status: text("status").$type<ReservationStatus>().notNull().default("pending"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  // Availability is always read for one site, one day — sometimes one slot.
+  (table) => [index("site_reservation_lookup_idx").on(table.siteId, table.serviceDate, table.slot)]
+);
+
 export const plans = pgTable("plan", {
   id: uuid("id").primaryKey().defaultRandom(),
   key: text("key").notNull().unique(), // 'eco' | 'premium'

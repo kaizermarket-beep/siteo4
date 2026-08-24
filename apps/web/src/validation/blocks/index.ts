@@ -7,6 +7,7 @@ import { beforeAfterContentSchema } from "./before-after.schema";
 import { menuContentSchema } from "./menu.schema";
 import { contactContentSchema } from "./contact.schema";
 import { footerContentSchema } from "./footer.schema";
+import { reservationContentSchema } from "./reservation.schema";
 
 export const blockContentSchemas = {
   hero: heroContentSchema,
@@ -16,6 +17,7 @@ export const blockContentSchemas = {
   beforeAfter: beforeAfterContentSchema,
   menu: menuContentSchema,
   contact: contactContentSchema,
+  reservation: reservationContentSchema,
   footer: footerContentSchema,
 } as const;
 
@@ -36,6 +38,7 @@ export {
   beforeAfterContentSchema,
   menuContentSchema,
   contactContentSchema,
+  reservationContentSchema,
   footerContentSchema,
 };
 export type { HeroContent } from "./hero.schema";
@@ -46,3 +49,4 @@ export type { BeforeAfterContent } from "./before-after.schema";
 export type { MenuContent } from "./menu.schema";
 export type { ContactContent } from "./contact.schema";
 export type { FooterContent } from "./footer.schema";
+export type { ReservationContent } from "./reservation.schema";

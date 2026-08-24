@@ -39,6 +39,7 @@ export default async function EditSitePage({
   ]);
 
   const theme = site.theme as { primaryColor?: string; mode?: "light" | "dark" } | null;
+  const hasReservations = blocks.some((b) => b.blockType === "reservation");
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -53,9 +54,27 @@ export default async function EditSitePage({
           <span className="font-medium">{site.name}</span>
         </div>
         {identity.isGuest ? (
-          <GuestPublishFlow siteId={site.id} initialSiteName={site.name} initialSlug={site.slug} />
+          <div className="flex items-center gap-4">
+            {hasReservations && (
+              <Link
+                href={`/app/sites/${site.id}/reservations`}
+                className="text-sm text-neutral-500 hover:text-neutral-900"
+              >
+                Réservations
+              </Link>
+            )}
+            <GuestPublishFlow siteId={site.id} initialSiteName={site.name} initialSlug={site.slug} />
+          </div>
         ) : (
           <div className="flex items-center gap-4">
+            {hasReservations && (
+              <Link
+                href={`/app/sites/${site.id}/reservations`}
+                className="text-sm text-neutral-500 hover:text-neutral-900"
+              >
+                Réservations
+              </Link>
+            )}
             <Link href="/app/sites/new" className="text-sm text-neutral-500 hover:text-neutral-900">
               Voir d&apos;autres modèles
             </Link>

@@ -150,6 +150,22 @@ export const blockTypeDefs: BlockTypeDef[] = [
     ],
   },
   {
+    type: "reservation",
+    label: "Réservation",
+    fields: [
+      { key: "title", kind: "text", label: "Titre", maxLength: 60 },
+      { key: "description", kind: "richtext", label: "Description", maxLength: 200 },
+      { key: "tableCount", kind: "text", label: "Nombre de tables" },
+      { key: "seatCount", kind: "text", label: "Nombre de couverts" },
+      { key: "maxPartySize", kind: "text", label: "Personnes max par réservation" },
+      { key: "openDays", kind: "repeatable", label: "Jours de service", maxItems: 7 },
+      { key: "slots", kind: "repeatable", label: "Créneaux", minItems: 1, maxItems: 24 },
+      { key: "noticeHours", kind: "text", label: "Délai de prévenance (heures)" },
+      { key: "maxDaysAhead", kind: "text", label: "Réservable jusqu'à (jours)" },
+      { key: "phone", kind: "text", label: "Téléphone du restaurant" },
+    ],
+  },
+  {
     type: "footer",
     label: "Pied de page",
     fields: [

@@ -6,6 +6,7 @@ import { GalleryBlock } from "./GalleryBlock";
 import { BeforeAfterBlock } from "./BeforeAfterBlock";
 import { MenuBlock } from "./MenuBlock";
 import { ContactBlock } from "./ContactBlock";
+import { ReservationBlock } from "./ReservationBlock";
 import { FooterBlock } from "./FooterBlock";
 
 const blockComponents = {
@@ -16,6 +17,7 @@ const blockComponents = {
   beforeAfter: BeforeAfterBlock,
   menu: MenuBlock,
   contact: ContactBlock,
+  reservation: ReservationBlock,
   footer: FooterBlock,
 } as const;
 

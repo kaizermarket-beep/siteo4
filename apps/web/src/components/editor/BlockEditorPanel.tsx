@@ -8,6 +8,7 @@ import { GalleryForm } from "./forms/GalleryForm";
 import { BeforeAfterForm } from "./forms/BeforeAfterForm";
 import { MenuForm } from "./forms/MenuForm";
 import { ContactForm } from "./forms/ContactForm";
+import { ReservationForm } from "./forms/ReservationForm";
 import { FooterForm } from "./forms/FooterForm";
 import type {
   HeroContent,
@@ -17,6 +18,7 @@ import type {
   BeforeAfterContent,
   MenuContent,
   ContactContent,
+  ReservationContent,
   FooterContent,
 } from "@/validation/blocks";
 
@@ -63,6 +65,14 @@ export function BlockEditorPanel() {
     case "contact":
       return (
         <ContactForm key={block.id} blockId={block.id} defaultValues={block.content as ContactContent} />
+      );
+    case "reservation":
+      return (
+        <ReservationForm
+          key={block.id}
+          blockId={block.id}
+          defaultValues={block.content as ReservationContent}
+        />
       );
     case "footer":
       return <FooterForm key={block.id} blockId={block.id} defaultValues={block.content as FooterContent} />;
