@@ -2,7 +2,7 @@ import { and, asc, eq, gte } from "drizzle-orm";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
-import { siteReservations, sites } from "@/lib/db/schema";
+import { siteBlocks, siteReservations, sites } from "@/lib/db/schema";
 import { resolveIdentity } from "@/lib/identity";
 import { todayInParis } from "@/lib/reservations";
 import { ReservationRow } from "./ReservationRow";
@@ -37,6 +37,14 @@ export default async function ReservationsPage({
     .where(and(eq(sites.id, siteId), eq(sites.userId, identity.userId)));
   if (!site) notFound();
 
+  // A salon's page is a day book, a restaurant's is a service sheet. Same
+  // data, different word for it — read from the block the site actually has.
+  const [appointmentBlock] = await db
+    .select({ id: siteBlocks.id })
+    .from(siteBlocks)
+    .where(and(eq(siteBlocks.siteId, siteId), eq(siteBlocks.blockType, "appointment")));
+  const heading = appointmentBlock ? "Rendez-vous" : "Réservations";
+
   const today = todayInParis();
   const upcoming = await db
     .select()
@@ -55,7 +63,7 @@ export default async function ReservationsPage({
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl font-semibold text-neutral-900">Réservations</h1>
+          <h1 className="text-xl font-semibold text-neutral-900">{heading}</h1>
           <p className="text-sm text-neutral-500">{site.name}</p>
         </div>
         <Link
@@ -77,7 +85,9 @@ export default async function ReservationsPage({
 
       {upcoming.length === 0 ? (
         <div className="rounded-xl border border-neutral-200 px-6 py-12 text-center">
-          <p className="text-sm text-neutral-600">Aucune réservation à venir.</p>
+          <p className="text-sm text-neutral-600">
+            Aucun{appointmentBlock ? " rendez-vous" : "e réservation"} à venir.
+          </p>
           <p className="mt-2 text-xs text-neutral-400">
             Les demandes déposées depuis votre site apparaîtront ici.
           </p>
@@ -86,9 +96,12 @@ export default async function ReservationsPage({
         <div className="flex flex-col gap-8">
           {[...byDate.entries()].map(([date, rows]) => {
             const [y, m, d] = date.split("-").map(Number);
-            const covers = rows
-              .filter((r) => r.status !== "declined")
-              .reduce((sum, r) => sum + r.partySize, 0);
+            const live = rows.filter((r) => r.status !== "declined");
+            // Appointment rows carry a service name, restaurant rows do not —
+            // so the same page reads as a day book for a salon and as a
+            // service sheet for a restaurant, without a second component.
+            const isAppointments = live.every((r) => r.serviceName !== null);
+            const covers = live.reduce((sum, r) => sum + r.partySize, 0);
 
             return (
               <section key={date} className="flex flex-col gap-3">
@@ -97,8 +110,14 @@ export default async function ReservationsPage({
                     {DATE_FMT.format(new Date(Date.UTC(y, m - 1, d)))}
                   </h2>
                   <span className="text-sm text-neutral-500">
-                    {rows.length} table{rows.length > 1 ? "s" : ""} · {covers} couvert
-                    {covers > 1 ? "s" : ""}
+                    {isAppointments ? (
+                      `${rows.length} rendez-vous`
+                    ) : (
+                      <>
+                        {rows.length} table{rows.length > 1 ? "s" : ""} · {covers} couvert
+                        {covers > 1 ? "s" : ""}
+                      </>
+                    )}
                   </span>
                 </div>
                 <ul className="flex flex-col gap-2">
@@ -107,7 +126,10 @@ export default async function ReservationsPage({
                       key={r.id}
                       id={r.id}
                       slot={r.slot}
+                      serviceDate={r.serviceDate}
                       partySize={r.partySize}
+                      serviceName={r.serviceName}
+                      durationMinutes={r.durationMinutes}
                       guestName={r.guestName}
                       guestPhone={r.guestPhone}
                       guestEmail={r.guestEmail}

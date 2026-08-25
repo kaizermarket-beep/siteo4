@@ -7,6 +7,7 @@ import { BeforeAfterBlock } from "./BeforeAfterBlock";
 import { MenuBlock } from "./MenuBlock";
 import { ContactBlock } from "./ContactBlock";
 import { ReservationBlock } from "./ReservationBlock";
+import { AppointmentBlock } from "./AppointmentBlock";
 import { FooterBlock } from "./FooterBlock";
 
 const blockComponents = {
@@ -18,6 +19,7 @@ const blockComponents = {
   menu: MenuBlock,
   contact: ContactBlock,
   reservation: ReservationBlock,
+  appointment: AppointmentBlock,
   footer: FooterBlock,
 } as const;
 

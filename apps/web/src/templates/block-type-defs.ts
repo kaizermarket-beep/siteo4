@@ -166,6 +166,35 @@ export const blockTypeDefs: BlockTypeDef[] = [
     ],
   },
   {
+    type: "appointment",
+    label: "Rendez-vous",
+    fields: [
+      { key: "title", kind: "text", label: "Titre", maxLength: 60 },
+      { key: "description", kind: "richtext", label: "Description", maxLength: 200 },
+      {
+        key: "services",
+        kind: "repeatable",
+        label: "Prestations",
+        minItems: 1,
+        maxItems: 12,
+        itemFields: [
+          { key: "name", kind: "text", label: "Prestation", maxLength: 60 },
+          { key: "durationMinutes", kind: "text", label: "Durée (minutes)" },
+          { key: "price", kind: "text", label: "Prix", maxLength: 20 },
+        ],
+      },
+      { key: "notePlaceholder", kind: "text", label: "Aide à la saisie", maxLength: 100 },
+      { key: "hours", kind: "repeatable", label: "Horaires par jour", maxItems: 7 },
+      { key: "closedDates", kind: "repeatable", label: "Fermetures exceptionnelles", maxItems: 60 },
+      { key: "staffCount", kind: "text", label: "Rendez-vous simultanés" },
+      { key: "slotStep", kind: "text", label: "Pas des créneaux (minutes)" },
+      { key: "noticeHours", kind: "text", label: "Délai de prévenance (heures)" },
+      { key: "maxDaysAhead", kind: "text", label: "Réservable jusqu'à (jours)" },
+      { key: "phone", kind: "text", label: "Téléphone du salon" },
+      { key: "notifyEmail", kind: "text", label: "Email de notification" },
+    ],
+  },
+  {
     type: "footer",
     label: "Pied de page",
     fields: [

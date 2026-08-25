@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { setReservationStatus } from "@/server-actions/reservations";
+import { rescheduleReservation, setReservationStatus } from "@/server-actions/reservations";
 import type { ReservationStatus } from "@/lib/db/schema";
 
 const STATUS_COPY: Record<ReservationStatus, { label: string; className: string }> = {
@@ -14,7 +14,10 @@ const STATUS_COPY: Record<ReservationStatus, { label: string; className: string 
 export function ReservationRow({
   id,
   slot,
+  serviceDate,
   partySize,
+  serviceName,
+  durationMinutes,
   guestName,
   guestPhone,
   guestEmail,
@@ -23,7 +26,10 @@ export function ReservationRow({
 }: {
   id: string;
   slot: string;
+  serviceDate: string;
   partySize: number;
+  serviceName: string | null;
+  durationMinutes: number | null;
   guestName: string;
   guestPhone: string;
   guestEmail: string | null;
@@ -31,6 +37,8 @@ export function ReservationRow({
   status: ReservationStatus;
 }) {
   const [status, setStatus] = useState(initialStatus);
+  const [when, setWhen] = useState({ date: serviceDate, slot });
+  const [editing, setEditing] = useState(false);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
@@ -43,29 +51,51 @@ export function ReservationRow({
         await setReservationStatus(id, next);
       } catch (e) {
         // Put the badge back rather than leave the owner believing they
-        // confirmed a table they did not.
+        // confirmed a slot they did not.
         setStatus(previous);
         setError(e instanceof Error ? e.message : "Échec de la mise à jour.");
       }
     });
   }
 
+  function move(date: string, time: string) {
+    const previous = when;
+    setWhen({ date, slot: time });
+    setEditing(false);
+    setError(null);
+    startTransition(async () => {
+      try {
+        await rescheduleReservation(id, date, time);
+      } catch (e) {
+        setWhen(previous);
+        setError(e instanceof Error ? e.message : "Échec du déplacement.");
+      }
+    });
+  }
+
   const copy = STATUS_COPY[status];
+  const inputClass = "rounded-md border border-neutral-300 px-2 py-1 text-sm";
 
   return (
     <li className="flex flex-col gap-3 rounded-lg border border-neutral-200 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 flex-col gap-1">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-medium text-neutral-900 [font-variant-numeric:tabular-nums]">
-            {slot}
+            {when.slot}
           </span>
           <span className="text-sm text-neutral-500">
-            {partySize} pers. · {guestName}
+            {serviceName
+              ? `${serviceName}${durationMinutes ? ` · ${durationMinutes} min` : ""}`
+              : `${partySize} pers.`}{" "}
+            · {guestName}
           </span>
           <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${copy.className}`}>
             {copy.label}
           </span>
         </div>
+        {when.date !== serviceDate && (
+          <p className="text-xs text-neutral-500">Déplacé au {when.date}</p>
+        )}
         <div className="flex flex-wrap items-center gap-x-4 text-sm text-neutral-600">
           <a href={`tel:${guestPhone.replace(/\s+/g, "")}`} className="underline">
             {guestPhone}
@@ -78,9 +108,51 @@ export function ReservationRow({
         </div>
         {note && <p className="text-sm text-neutral-500 italic">« {note} »</p>}
         {error && <p className="text-sm text-red-600">{error}</p>}
+
+        {editing && (
+          <form
+            className="mt-1 flex flex-wrap items-center gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const data = new FormData(e.currentTarget);
+              move(String(data.get("date")), String(data.get("slot")));
+            }}
+          >
+            <input
+              name="date"
+              type="date"
+              required
+              defaultValue={when.date}
+              aria-label="Nouvelle date"
+              className={inputClass}
+            />
+            <input
+              name="slot"
+              type="time"
+              required
+              defaultValue={when.slot}
+              aria-label="Nouvelle heure"
+              className={inputClass}
+            />
+            <button
+              type="submit"
+              disabled={pending}
+              className="rounded-md bg-neutral-900 px-3 py-1.5 text-sm text-white disabled:opacity-50"
+            >
+              Déplacer
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditing(false)}
+              className="text-sm text-neutral-500 underline"
+            >
+              Fermer
+            </button>
+          </form>
+        )}
       </div>
 
-      <div className="flex shrink-0 gap-2">
+      <div className="flex shrink-0 flex-wrap gap-2">
         {status !== "confirmed" && (
           <button
             type="button"
@@ -89,6 +161,24 @@ export function ReservationRow({
             className="rounded-md bg-neutral-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-neutral-800 disabled:opacity-50"
           >
             Confirmer
+          </button>
+        )}
+        <button
+          type="button"
+          onClick={() => setEditing((v) => !v)}
+          disabled={pending}
+          className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+        >
+          Déplacer
+        </button>
+        {status !== "cancelled" && (
+          <button
+            type="button"
+            onClick={() => change("cancelled")}
+            disabled={pending}
+            className="rounded-md border border-neutral-300 px-3 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 disabled:opacity-50"
+          >
+            Annuler
           </button>
         )}
         {status !== "declined" && (

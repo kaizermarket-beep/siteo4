@@ -1,7 +1,8 @@
 import "server-only";
 import { and, eq, inArray, sql } from "drizzle-orm";
 import { db } from "./db";
-import { siteBlocks, sitePages, siteReservations, sites } from "./db/schema";
+import { siteReservations } from "./db/schema";
+import { loadPublishedBlock } from "./published-block";
 import { reservationContentSchema, type ReservationContent } from "@/validation/blocks/reservation.schema";
 
 /** A calendar day as "YYYY-MM-DD", the form the browser's date input uses. */
@@ -18,52 +19,19 @@ export type SlotAvailability = {
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
- * The reservation settings of a published site.
- *
- * Read from the block rather than from a settings table: capacity and
- * service hours are content the owner edits, and keeping them in the block
- * means they travel with the page, get validated by the same Zod schema,
- * and need no second editing surface.
- *
- * Returns null when the site is not published or has no visible reservation
- * block — which is also the authorisation check for the public endpoints. A
- * site that does not show a reservation form must not accept bookings.
+ * The reservation settings of a published site, or null when it takes none.
+ * See loadPublishedBlock for why the settings live in the block itself.
  */
 export async function loadReservationSettings(
   siteSlug: string
 ): Promise<{ siteId: string; settings: ReservationContent } | null> {
-  const [site] = await db
-    .select({ id: sites.id })
-    .from(sites)
-    .where(and(eq(sites.slug, siteSlug), eq(sites.status, "published")));
-  if (!site) return null;
+  const found = await loadPublishedBlock(siteSlug, "reservation");
+  if (!found) return null;
 
-  const pageIds = await db
-    .select({ id: sitePages.id })
-    .from(sitePages)
-    .where(eq(sitePages.siteId, site.id));
-  if (pageIds.length === 0) return null;
-
-  const [block] = await db
-    .select({ content: siteBlocks.content })
-    .from(siteBlocks)
-    .where(
-      and(
-        eq(siteBlocks.siteId, site.id),
-        eq(siteBlocks.blockType, "reservation"),
-        eq(siteBlocks.isVisible, true),
-        inArray(
-          siteBlocks.pageId,
-          pageIds.map((p) => p.id)
-        )
-      )
-    );
-  if (!block) return null;
-
-  const parsed = reservationContentSchema.safeParse(block.content);
+  const parsed = reservationContentSchema.safeParse(found.content);
   if (!parsed.success) return null;
 
-  return { siteId: site.id, settings: parsed.data };
+  return { siteId: found.siteId, settings: parsed.data };
 }
 
 /** Local calendar day in Europe/Paris, where the restaurants are. */
@@ -84,7 +52,7 @@ export function todayInParis(): ServiceDate {
  * Paris is UTC+1 in winter and UTC+2 in summer, and hard-coding either puts
  * every booking an hour out for half the year.
  */
-function msUntil(date: ServiceDate, slot: string): number {
+export function msUntil(date: ServiceDate, slot: string): number {
   const [y, m, d] = date.split("-").map(Number);
   const [hh, mm] = slot.split(":").map(Number);
   const asIfUtc = Date.UTC(y, m - 1, d, hh, mm);

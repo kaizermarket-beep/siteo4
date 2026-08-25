@@ -206,6 +206,12 @@ export const siteReservations = pgTable(
     serviceDate: text("service_date").notNull(),
     slot: text("slot").notNull(),
     partySize: integer("party_size").notNull(),
+    // Set by appointment bookings (hair salons and the like), null for
+    // restaurant tables. An appointment occupies a chair for a length of
+    // time, so availability is an overlap test rather than a per-slot count
+    // — which needs the duration stored with the booking, not just its start.
+    serviceName: text("service_name"),
+    durationMinutes: integer("duration_minutes"),
     guestName: text("guest_name").notNull(),
     guestPhone: text("guest_phone").notNull(),
     guestEmail: text("guest_email"),

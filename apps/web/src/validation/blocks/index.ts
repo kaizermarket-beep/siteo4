@@ -8,6 +8,7 @@ import { menuContentSchema } from "./menu.schema";
 import { contactContentSchema } from "./contact.schema";
 import { footerContentSchema } from "./footer.schema";
 import { reservationContentSchema } from "./reservation.schema";
+import { appointmentContentSchema } from "./appointment.schema";
 
 export const blockContentSchemas = {
   hero: heroContentSchema,
@@ -18,6 +19,7 @@ export const blockContentSchemas = {
   menu: menuContentSchema,
   contact: contactContentSchema,
   reservation: reservationContentSchema,
+  appointment: appointmentContentSchema,
   footer: footerContentSchema,
 } as const;
 
@@ -39,6 +41,7 @@ export {
   menuContentSchema,
   contactContentSchema,
   reservationContentSchema,
+  appointmentContentSchema,
   footerContentSchema,
 };
 export type { HeroContent } from "./hero.schema";
@@ -50,3 +53,4 @@ export type { MenuContent } from "./menu.schema";
 export type { ContactContent } from "./contact.schema";
 export type { FooterContent } from "./footer.schema";
 export type { ReservationContent } from "./reservation.schema";
+export type { AppointmentContent, AppointmentService } from "./appointment.schema";

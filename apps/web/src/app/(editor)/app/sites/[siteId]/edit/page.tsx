@@ -39,7 +39,12 @@ export default async function EditSitePage({
   ]);
 
   const theme = site.theme as { primaryColor?: string; mode?: "light" | "dark" } | null;
-  const hasReservations = blocks.some((b) => b.blockType === "reservation");
+  // Restaurants take tables, salons take appointments; both land in the same
+  // list, so the link appears for either and is labelled for the one in use.
+  const bookingBlock = blocks.find(
+    (b) => b.blockType === "reservation" || b.blockType === "appointment"
+  );
+  const bookingLabel = bookingBlock?.blockType === "appointment" ? "Rendez-vous" : "Réservations";
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -55,24 +60,24 @@ export default async function EditSitePage({
         </div>
         {identity.isGuest ? (
           <div className="flex items-center gap-4">
-            {hasReservations && (
+            {bookingBlock && (
               <Link
                 href={`/app/sites/${site.id}/reservations`}
                 className="text-sm text-neutral-500 hover:text-neutral-900"
               >
-                Réservations
+                {bookingLabel}
               </Link>
             )}
             <GuestPublishFlow siteId={site.id} initialSiteName={site.name} initialSlug={site.slug} />
           </div>
         ) : (
           <div className="flex items-center gap-4">
-            {hasReservations && (
+            {bookingBlock && (
               <Link
                 href={`/app/sites/${site.id}/reservations`}
                 className="text-sm text-neutral-500 hover:text-neutral-900"
               >
-                Réservations
+                {bookingLabel}
               </Link>
             )}
             <Link href="/app/sites/new" className="text-sm text-neutral-500 hover:text-neutral-900">
