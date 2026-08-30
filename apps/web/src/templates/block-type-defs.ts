@@ -13,6 +13,17 @@ export const blockTypeDefs: BlockTypeDef[] = [
       { key: "ctaLabel", kind: "text", label: "Texte du bouton", maxLength: 30 },
       { key: "ctaLink", kind: "link", label: "Lien du bouton" },
       { key: "backgroundImage", kind: "image", label: "Image de fond" },
+      {
+        key: "heroBadges",
+        kind: "repeatable",
+        label: "Avis affichés",
+        maxItems: 4,
+        itemFields: [
+          { key: "value", kind: "text", label: "Note", maxLength: 12 },
+          { key: "label", kind: "text", label: "Source", maxLength: 20 },
+          { key: "href", kind: "link", label: "Lien" },
+        ],
+      },
     ],
   },
   {
@@ -98,6 +109,7 @@ export const blockTypeDefs: BlockTypeDef[] = [
     type: "menu",
     label: "Carte / Menu",
     fields: [
+      { key: "layout", kind: "text", label: "Affichage (list ou tabs)" },
       { key: "title", kind: "text", label: "Titre", maxLength: 60 },
       { key: "description", kind: "richtext", label: "Description", maxLength: 200 },
       {

@@ -15,6 +15,11 @@ export const menuContentSchema = z.object({
   title: z.string().max(60).default(""),
   description: z.string().max(200).default(""),
   categories: z.array(menuCategorySchema).min(1).max(6),
+  // "list" stacks every category; "tabs" shows one at a time behind a row of
+  // buttons. Tabs suit a house with two or three *alternative* offers — the
+  // lunch menu and the evening menu are not read together — while a brasserie
+  // card, where the visitor scans starters then mains, wants the list.
+  layout: z.enum(["list", "tabs"]).default("list"),
   // When enabled, visitors can build a WhatsApp order message straight from
   // the menu — no cart/checkout backend, just a pre-filled chat to the
   // number below that the owner confirms manually.

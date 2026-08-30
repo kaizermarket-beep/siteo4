@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { imageSchema, linkSchema } from "./shared";
+import { imageSchema, linkSchema, safeHrefSchema } from "./shared";
 
 // "blobs" = current soft drifting blobs (light or dark, subtle). The other
 // three force a dark, immersive backdrop regardless of the template's own
@@ -74,6 +74,21 @@ export const heroContentSchema = z.object({
       })
     )
     .max(8)
+    .optional(),
+  // Review scores shown in the hero, each linking to where the score lives.
+  // A restaurant's rating is the most persuasive thing on its home page, and
+  // it is worth nothing if the visitor cannot go and check it — hence the
+  // href, and hence "4,8" as free text rather than a number: some houses show
+  // a distinction, not a mark out of five.
+  heroBadges: z
+    .array(
+      z.object({
+        value: z.string().max(12).default(""),
+        label: z.string().max(20).default(""),
+        href: safeHrefSchema,
+      })
+    )
+    .max(4)
     .optional(),
 });
 

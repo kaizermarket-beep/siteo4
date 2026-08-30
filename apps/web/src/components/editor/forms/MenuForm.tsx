@@ -94,6 +94,13 @@ export function MenuForm({ blockId, defaultValues }: { blockId: string; defaultV
         <textarea {...register("description")} rows={2} className={inputClass} />
       </Field>
 
+      <Field label="Affichage">
+        <select {...register("layout")} className={inputClass}>
+          <option value="list">Tout à la suite</option>
+          <option value="tabs">Onglets (une carte à la fois)</option>
+        </select>
+      </Field>
+
       <div className="flex flex-col gap-4">
         <span className="text-sm font-medium text-neutral-700">Catégories</span>
         {fields.map((field, categoryIndex) => (

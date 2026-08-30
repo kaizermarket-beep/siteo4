@@ -1338,6 +1338,218 @@ export const templates: TemplateDefinition[] = [
     },
   },
   {
+    slug: "table-gastronomique",
+    name: "Table Gastronomique",
+    description: "Quatre pages pour une table de dégustation : en-tête éditorial avec avis, carte en onglets midi/soir, réservation en ligne.",
+    category: "restauration",
+    isPremium: true,
+    featured: true,
+    schema: {
+      blockTypes: blockTypeDefs,
+      accentColor: "#8A6E3C",
+      defaultBlocks: [
+        {
+          type: "hero",
+          position: 10,
+          content: {
+            headline: "Une seule carte, écrite chaque semaine avec les producteurs",
+            subheadline: "Trente-huit couverts, un menu en étapes, et le marché comme seule contrainte.",
+            ctaLabel: "Réserver une table",
+            ctaLink: { href: "/reserver", label: "Réserver une table" },
+            heroVariant: "editorial",
+            backgroundImage: {
+              url: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=1600&auto=format&fit=crop&q=70",
+              alt: "Le chef en cuisine",
+            },
+            heroBadges: [
+              { value: "4,8", label: "Google", href: "https://www.google.com/maps" },
+              { value: "4,9", label: "Tripadvisor", href: "https://www.tripadvisor.fr" },
+              { value: "2026", label: "Table remarquée", href: "" },
+            ],
+          },
+        },
+        {
+          type: "features",
+          position: 20,
+          content: {
+            title: "La maison",
+            items: [
+              { icon: "01", title: "Le marché décide", description: "La carte change le mardi, après le retour du marché. Ce qui n'était pas beau ce matin n'est pas à table ce soir." },
+              { icon: "02", title: "Trente-huit couverts", description: "Un seul service par soir. Vous gardez votre table toute la soirée, personne ne vient vous la reprendre." },
+              { icon: "03", title: "Producteurs nommés", description: "Chaque plat porte le nom de qui l'a fait pousser, élevé ou pêché. Ils sont à moins de deux cents kilomètres." },
+            ],
+          },
+        },
+        {
+          type: "footer",
+          position: 30,
+          content: { text: "© 2026 — Fait avec Siteo", links: [] },
+        },
+      ],
+      pages: [
+        {
+          slug: "la-carte",
+          title: "La carte",
+          position: 20,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "La carte",
+                subheadline: "Le déjeuner et le dîner ne se lisent pas ensemble : choisissez le vôtre.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "menu",
+              position: 20,
+              content: {
+                title: "Menu carte blanche",
+                description: "Une proposition unique, servie en étapes. Prévenez-nous à la réservation pour toute allergie.",
+                layout: "tabs",
+                categories: [
+                  {
+                    name: "Le midi",
+                    items: [
+                      { name: "Déjeuner en 3 étapes", description: "Entrée, plat, dessert. En semaine, hors jours fériés.", price: "47 €" },
+                      { name: "Déjeuner en 5 étapes", description: "Amuse-bouche, deux entrées, plat, dessert.", price: "85 €" },
+                      { name: "Accord mets & vins, 3 verres", description: "Servis au verre, commentés à table.", price: "32 €" },
+                    ],
+                  },
+                  {
+                    name: "Le soir",
+                    items: [
+                      { name: "Dîner en 7 étapes", description: "Amuse-bouche, trois entrées, poisson, viande, pré-dessert, dessert.", price: "145 €" },
+                      { name: "Accord mets & vins, 6 verres", description: "Une sélection de vignerons en biodynamie.", price: "78 €" },
+                      { name: "Accord sans alcool", description: "Infusions, jus lactofermentés, kombuchas maison.", price: "48 €" },
+                    ],
+                  },
+                  {
+                    name: "La cave",
+                    items: [
+                      { name: "Vins au verre", description: "Six références qui tournent toutes les deux semaines.", price: "9 à 18 €" },
+                      { name: "Bouteilles", description: "Deux cent vingt références, dont la moitié en biodynamie.", price: "38 à 400 €" },
+                      { name: "Droit de bouchon", description: "Une bouteille par table, sur demande à la réservation.", price: "25 €" },
+                    ],
+                  },
+                ],
+                orderEnabled: false,
+                orderPhone: "",
+              },
+            },
+            {
+              type: "gallery",
+              position: 30,
+              content: {
+                title: "À table",
+                images: [
+                  { image: { url: "https://images.unsplash.com/photo-1750943082452-c714763f73b2?w=900&auto=format&fit=crop&q=60", alt: "Assiette dressée par le chef" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1536236502598-7dd171f8e852?w=900&auto=format&fit=crop&q=60", alt: "Plats à partager" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1646473315764-c6cd47fe74c3?w=900&auto=format&fit=crop&q=60", alt: "Table dressée en salle" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "la-maison",
+          title: "La maison",
+          position: 30,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "La maison",
+                subheadline: "Une ancienne imprimerie, un piano de cuisson ouvert sur la salle, et personne entre vous et celui qui cuisine.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "features",
+              position: 20,
+              content: {
+                title: "Ce qui se passe en cuisine",
+                items: [
+                  { icon: "🔥", title: "Cuisson au feu de bois", description: "Un four à braise pour les viandes et les légumes racines. Il est allumé à 9h et ne s'éteint pas de la journée." },
+                  { icon: "🫙", title: "Conserverie maison", description: "Ce que l'été donne en trop, l'hiver le retrouve : lactofermentations, vinaigres, garums de poisson." },
+                  { icon: "🌾", title: "Pain du jour", description: "Levain naturel, farine d'un moulin à trente kilomètres, cuit deux heures avant le service." },
+                ],
+              },
+            },
+            {
+              type: "gallery",
+              position: 30,
+              content: {
+                title: "La salle et la cuisine",
+                images: [
+                  { image: { url: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=900&auto=format&fit=crop&q=60", alt: "Le chef en cuisine" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1646473315764-c6cd47fe74c3?w=900&auto=format&fit=crop&q=60", alt: "La salle avant le service" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1750943082452-c714763f73b2?w=900&auto=format&fit=crop&q=60", alt: "Dressage d'une assiette" }, caption: "" },
+                  { image: { url: "https://images.unsplash.com/photo-1536236502598-7dd171f8e852?w=900&auto=format&fit=crop&q=60", alt: "Le service en salle" }, caption: "" },
+                ],
+              },
+            },
+          ],
+        },
+        {
+          slug: "reserver",
+          title: "Réserver",
+          position: 40,
+          blocks: [
+            {
+              type: "hero",
+              position: 10,
+              content: {
+                headline: "Réserver",
+                subheadline: "Douze tables. Choisissez votre jour et votre nombre de convives : ce qui reste s'affiche en direct.",
+                ctaLabel: "",
+                ctaLink: { href: "", label: "" },
+                heroVariant: "pageHeader",
+              },
+            },
+            {
+              type: "reservation",
+              position: 20,
+              content: {
+                title: "Votre table",
+                description: "Le menu étant servi en étapes, la table est gardée pour vous toute la soirée.",
+                tableCount: 12,
+                seatCount: 38,
+                maxPartySize: 8,
+                openDays: [2, 3, 4, 5, 6],
+                slots: ["12:15", "12:45", "13:15", "19:30", "20:00", "20:30", "21:00"],
+                noticeHours: 24,
+                maxDaysAhead: 90,
+                phone: "01 45 67 89 12",
+                whatsappPhone: "",
+              },
+            },
+            {
+              type: "contact",
+              position: 30,
+              content: {
+                title: "Nous écrire",
+                description: "Privatisation, allergies, groupe de plus de huit : écrivez-nous, nous répondons dans la journée.",
+                email: "contact@exemple.fr",
+                phone: "01 45 67 89 12",
+                address: "17 rue de l'Imprimerie, 75011 Paris",
+                hours: "Mar-Sam : 12h-14h et 19h-22h\nDim-Lun : Fermé",
+                socialLinks: [{ platform: "Instagram", href: "https://instagram.com" }],
+                showForm: true,
+              },
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     slug: "snack-food-truck",
     name: "Snack & Food Truck",
     description: "Un hero 3D immersif avec vos meilleurs clichés, pour un snack ou food truck qui donne envie.",

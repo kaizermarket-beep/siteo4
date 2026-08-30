@@ -325,8 +325,48 @@ function EditorialFrame({
             {content.ctaLabel}
           </a>
         )}
+
+        <HeroBadges badges={content.heroBadges} />
       </div>
     </section>
+  );
+}
+
+/**
+ * Review scores, as pills that lead to the review itself.
+ *
+ * Each one is a link, never a bare number: a score a visitor cannot verify
+ * is decoration. External addresses open in a new tab so the page they were
+ * reading is still there when they come back; an in-page anchor does not.
+ */
+function HeroBadges({ badges }: { badges: HeroContent["heroBadges"] }) {
+  if (!badges || badges.length === 0) return null;
+
+  return (
+    <ul className="animate-fade-up mt-2 flex flex-wrap gap-3" style={{ animationDelay: "0.3s" }}>
+      {badges.map((badge, i) => {
+        const external = /^https?:/.test(badge.href);
+        return (
+          <li key={i}>
+            <a
+              href={badge.href || "#"}
+              {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="flex flex-col items-center gap-0.5 rounded-full border border-white/25 px-4 py-2 text-white transition-colors hover:border-[var(--site-accent,#ffffff)] hover:text-[var(--site-accent,#ffffff)]"
+            >
+              <span
+                className="text-lg leading-none"
+                style={{ fontFamily: "var(--font-display-serif), Georgia, serif" }}
+              >
+                {badge.value}
+              </span>
+              <span className="text-[0.6rem] tracking-[0.18em] uppercase opacity-70">
+                {badge.label}
+              </span>
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
