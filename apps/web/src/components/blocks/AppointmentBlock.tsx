@@ -363,6 +363,14 @@ export function AppointmentBlock({ content }: { content: AppointmentContent }) {
               <p className="text-center text-xs text-neutral-500">
                 Votre rendez-vous sera confirmé avant d’être définitif.
               </p>
+              {/* Information au moment de la collecte (RGPD art. 13). Le
+                  professionnel est responsable de traitement, Siteo n'est
+                  qu'hébergeur du formulaire. */}
+              <p className="text-center text-xs text-neutral-400">
+                Vos nom, téléphone et email sont transmis à l&apos;établissement pour traiter
+                cette demande, et à rien d&apos;autre. Ils sont conservés 24 mois puis effacés.
+                Pour y accéder, les corriger ou les supprimer, contactez l&apos;établissement.
+              </p>
             </div>
           )}
         </form>

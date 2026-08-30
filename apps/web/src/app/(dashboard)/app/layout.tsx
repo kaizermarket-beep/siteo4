@@ -19,6 +19,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <Link href="/app/billing" className="text-neutral-600 hover:text-neutral-900">
             Facturation
           </Link>
+          <Link href="/app/compte" className="text-neutral-600 hover:text-neutral-900">
+            Mon compte
+          </Link>
           <span className="text-neutral-600">{session.user.email}</span>
           <form
             action={async () => {

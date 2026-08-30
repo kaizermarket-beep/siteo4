@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Bullets, LegalHeader, Section, Table, todo, Todo } from "../_components";
+import { Bullets, LegalHeader, Section, Table, Todo } from "../_components";
 
 export const metadata: Metadata = {
   title: "Politique de confidentialité — Siteo",
@@ -53,10 +53,12 @@ export default function ConfidentialitePage() {
             Pour les données que les visiteurs déposent sur les sites publiés par les utilisateurs
           </strong>{" "}
           — par exemple via un formulaire de contact — l&apos;utilisateur est responsable de
-          traitement et Siteo agit comme sous-traitant. Un contrat de sous-traitance au sens de
-          l&apos;article 28 du RGPD doit encadrer cette relation :{" "}
-          <Todo>rédiger et annexer l&apos;accord de sous-traitance (DPA) proposé aux utilisateurs</Todo>
-          .
+          traitement et Siteo agit comme sous-traitant. Cette relation est encadrée par
+          l&apos;{" "}
+          <Link href="/sous-traitance" className="underline">
+            accord de sous-traitance
+          </Link>{" "}
+          conclu au sens de l&apos;article 28 du RGPD.
         </p>
       </Section>
 
@@ -69,7 +71,9 @@ export default function ConfidentialitePage() {
               "Création et gestion du compte, authentification",
               "Exécution du contrat (art. 6.1.b)",
               <>
-                Durée du compte, puis <Todo>durée retenue</Todo> après suppression
+                Durée du compte. La suppression demandée depuis <Link href="/app/compte" className="underline">Mon compte</Link> efface le compte
+                immédiatement, sans période de rétention. Un brouillon créé sans compte est effacé
+                automatiquement après 30 jours sans activité.
               </>,
             ],
             [
@@ -77,7 +81,8 @@ export default function ConfidentialitePage() {
               "Fourniture du service : édition, publication et hébergement du site",
               "Exécution du contrat (art. 6.1.b)",
               <>
-                Durée du compte, puis <Todo>durée retenue</Todo>
+                Durée du compte. Effacé avec lui, immédiatement et en cascade (pages, blocs,
+                réservations reçues).
               </>,
             ],
             [
@@ -90,9 +95,7 @@ export default function ConfidentialitePage() {
               "Adresse IP, associée aux tentatives d'inscription, de connexion et d'import d'images",
               "Limitation du nombre de tentatives, prévention des abus et des attaques par force brute",
               "Intérêt légitime à la sécurité du service (art. 6.1.f)",
-              <>
-                <Todo>durée retenue — recommandation : quelques jours à 12 mois maximum</Todo>
-              </>,
+              "7 jours, par purge automatique quotidienne",
             ],
             [
               "Identifiant de session et cookie de rattachement d'un brouillon",
@@ -104,6 +107,12 @@ export default function ConfidentialitePage() {
                   page cookies
                 </Link>
               </>,
+            ],
+            [
+              "Réservations et rendez-vous déposés par les clients d'un site publié : nom, téléphone, email, précisions libres",
+              "Transmission de la demande au professionnel, affichage des disponibilités",
+              "Exécution du contrat entre le client final et le professionnel (art. 6.1.b) ; Siteo agit comme sous-traitant",
+              "24 mois après la date du service, par purge automatique quotidienne",
             ],
             [
               "Identifiant Google, adresse électronique et nom, en cas de connexion via Google",
@@ -172,13 +181,17 @@ export default function ConfidentialitePage() {
               </>,
             ],
             [
-              todo("prestataire d'envoi d'emails"),
-              "Emails transactionnels : confirmation, facturation, réinitialisation de mot de passe",
+              "Resend",
+              "Emails transactionnels : accusé de réception et confirmation d'un rendez-vous ou d'une réservation",
               <>
+                Société établie aux États-Unis. Transfert hors UE à encadrer par les clauses
+                contractuelles types —{" "}
                 <Todo>
-                  aucun prestataire d&apos;email n&apos;est branché à ce jour — à compléter dès que
-                  c&apos;est le cas
+                  signer le DPA Resend et vérifier la région d&apos;envoi avant toute mise en
+                  production ; à défaut de configuration, aucun email n&apos;est envoyé et aucune
+                  donnée ne quitte l&apos;infrastructure
                 </Todo>
+                .
               </>,
             ],
           ]}
@@ -220,16 +233,26 @@ export default function ConfidentialitePage() {
           items={[
             <>
               <strong>Accès et portabilité</strong> : obtenir une copie des données et, pour celles
-              fournies par la personne, un format structuré et lisible par machine.
+              fournies par la personne, un format structuré et lisible par machine. Ce droit
+              s&apos;exerce sans démarche ni délai depuis{" "}
+              <Link href="/app/compte" className="underline">
+                Mon compte
+              </Link>{" "}
+              : le bouton « Télécharger mes données » produit un fichier JSON complet.
             </>,
             <>
               <strong>Rectification</strong> : corriger une donnée inexacte. Les informations du
               compte et le contenu des sites sont directement modifiables depuis le service.
             </>,
             <>
-              <strong>Effacement</strong> : demander la suppression du compte et des sites associés,
-              sous réserve des données que Siteo doit conserver au titre d&apos;une obligation
-              légale (facturation notamment).
+              <strong>Effacement</strong> : la suppression du compte s&apos;effectue directement
+              depuis{" "}
+              <Link href="/app/compte" className="underline">
+                Mon compte
+              </Link>
+              . Elle est immédiate et efface en cascade les sites, leurs pages, leur contenu et les
+              réservations reçues. Seules les pièces comptables déjà émises sont conservées dix ans,
+              cas expressément prévu par l&apos;article 17.3.b du RGPD.
             </>,
             <>
               <strong>Opposition et limitation</strong> : s&apos;opposer à un traitement fondé sur

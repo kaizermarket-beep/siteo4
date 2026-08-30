@@ -337,6 +337,14 @@ export function ReservationBlock({ content }: { content: ReservationContent }) {
               <p className="text-center text-xs text-neutral-500">
                 Votre table sera confirmée par le restaurant.
               </p>
+              {/* Information au moment de la collecte (RGPD art. 13). Le
+                  restaurant est responsable de traitement, Siteo n'est
+                  qu'hébergeur du formulaire. */}
+              <p className="text-center text-xs text-neutral-400">
+                Vos nom et téléphone sont transmis au restaurant pour traiter cette demande, et à
+                rien d&apos;autre. Ils sont conservés 24 mois puis effacés. Pour y accéder, les
+                corriger ou les supprimer, contactez le restaurant.
+              </p>
             </div>
           )}
         </form>

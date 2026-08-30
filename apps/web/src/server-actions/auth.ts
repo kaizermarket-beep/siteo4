@@ -7,7 +7,8 @@ import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import { rateLimit } from "@/lib/rate-limit";
 import { signIn } from "@/lib/auth";
-import { BCRYPT_COST } from "@/lib/password";
+import { BCRYPT_COST, rejectPassword } from "@/lib/password";
+import { clientIp } from "@/lib/client-ip";
 
 export type SignupState = { error?: string } | undefined;
 
@@ -19,7 +20,7 @@ function hasAcceptedTerms(formData: FormData): boolean {
 }
 
 export async function signup(_prevState: SignupState, formData: FormData): Promise<SignupState> {
-  const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
+  const ip = clientIp(await headers());
   const { allowed } = await rateLimit(`signup:${ip}`, 5, 10 * 60 * 1000);
   if (!allowed) {
     return { error: "Trop de tentatives. Réessayez dans quelques minutes." };
@@ -33,8 +34,9 @@ export async function signup(_prevState: SignupState, formData: FormData): Promi
   if (!email || !password) {
     return { error: "Email et mot de passe requis." };
   }
-  if (password.length < 8) {
-    return { error: "Le mot de passe doit contenir au moins 8 caractères." };
+  const weak = rejectPassword(password, email);
+  if (weak) {
+    return { error: weak };
   }
   if (!hasAcceptedTerms(formData)) {
     return {

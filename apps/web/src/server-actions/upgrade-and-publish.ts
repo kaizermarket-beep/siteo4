@@ -8,10 +8,11 @@ import { db } from "@/lib/db";
 import { sites, users } from "@/lib/db/schema";
 import { rateLimit } from "@/lib/rate-limit";
 import { signIn } from "@/lib/auth";
-import { BCRYPT_COST } from "@/lib/password";
+import { BCRYPT_COST, rejectPassword } from "@/lib/password";
 import { resolveIdentity, clearGuestCookie } from "@/lib/identity";
 import { slugify, validateSlug } from "@/lib/slug";
 import { publishOwnedSite } from "./publish";
+import { clientIp } from "@/lib/client-ip";
 
 export type UpgradeAndPublishState = { error?: string } | undefined;
 
@@ -38,7 +39,7 @@ export async function upgradeAndPublish(
     return { error: "Site introuvable." };
   }
 
-  const ip = (await headers()).get("x-forwarded-for") ?? "unknown";
+  const ip = clientIp(await headers());
   const { allowed } = await rateLimit(`signup:${ip}`, 5, 10 * 60 * 1000);
   if (!allowed) {
     return { error: "Trop de tentatives. Réessayez dans quelques minutes." };
@@ -53,8 +54,9 @@ export async function upgradeAndPublish(
   if (!email || !password) {
     return { error: "Email et mot de passe requis." };
   }
-  if (password.length < 8) {
-    return { error: "Le mot de passe doit contenir au moins 8 caractères." };
+  const weak = rejectPassword(password, email);
+  if (weak) {
+    return { error: weak };
   }
   // Enforced here, not only by the checkbox's `required` attribute: this
   // action is reachable by posting the form directly.

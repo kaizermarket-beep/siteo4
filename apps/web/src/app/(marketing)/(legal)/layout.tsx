@@ -6,6 +6,7 @@ const pages = [
   { href: "/cgu", label: "CGU" },
   { href: "/confidentialite", label: "Confidentialité" },
   { href: "/cookies", label: "Cookies" },
+  { href: "/sous-traitance", label: "Sous-traitance" },
 ];
 
 export default function LegalLayout({ children }: { children: React.ReactNode }) {

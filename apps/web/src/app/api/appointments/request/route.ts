@@ -10,13 +10,14 @@ import {
   rejectDate,
 } from "@/lib/appointments";
 import { notifyBookingRequest } from "@/lib/booking-emails";
+import { clientIp } from "@/lib/client-ip";
 
 export const dynamic = "force-dynamic";
 
 const MAX_TEXT = 500;
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
+  const ip = clientIp(request.headers);
   const { allowed } = await rateLimit(`appointment:${ip}`, 10, 60 * 60 * 1000);
   if (!allowed) {
     return NextResponse.json(

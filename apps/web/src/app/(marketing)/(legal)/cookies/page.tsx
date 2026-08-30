@@ -49,9 +49,7 @@ export default function CookiesPage() {
             [
               mono("authjs.session-token"),
               "Maintient la session d'un utilisateur connecté. Sans lui, l'utilisateur devrait ressaisir ses identifiants à chaque page.",
-              <>
-                <Todo>durée de session configurée — 30 jours par défaut</Todo>
-              </>,
+              "30 jours",
               "Strictement nécessaire — HttpOnly, SameSite=Lax, Secure en production",
             ],
             [

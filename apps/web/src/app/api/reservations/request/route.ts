@@ -3,13 +3,14 @@ import { db } from "@/lib/db";
 import { siteReservations } from "@/lib/db/schema";
 import { rateLimit } from "@/lib/rate-limit";
 import { getAvailability, loadReservationSettings, rejectDate } from "@/lib/reservations";
+import { clientIp } from "@/lib/client-ip";
 
 export const dynamic = "force-dynamic";
 
 const MAX_TEXT = 500;
 
 export async function POST(request: Request) {
-  const ip = request.headers.get("x-forwarded-for") ?? "unknown";
+  const ip = clientIp(request.headers);
   const { allowed } = await rateLimit(`reservation:${ip}`, 10, 60 * 60 * 1000);
   if (!allowed) {
     return NextResponse.json(
